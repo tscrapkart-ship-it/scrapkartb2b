@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --color-background: var(--paper);
   --color-foreground: var(--ink);
@@ -28,6 +30,15 @@
   --color-cat-paper: var(--cat-paper);
   --color-cat-glass: var(--cat-glass);
   --color-cat-mixed: var(--cat-mixed);
+
+  --color-green-deep:   var(--green-deep);
+  --color-green-tint:   var(--green-tint);
+  --color-ink-2:        var(--ink-2);
+  --color-ink-4:        var(--ink-4);
+  --color-border-soft:  var(--border-soft);
+  --color-warning:      var(--warning);
+  --color-danger:       var(--danger);
+  --color-info:         var(--info);
 
   --font-sans: var(--font-archivo);
   --font-display: var(--font-archivo-black);
@@ -81,6 +92,9 @@
   --motion-base: 200ms;
   --motion-slow: 400ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Legacy radius token (sharp corners — kept for sonner.tsx + any pre-Phase-1 component) */
+  --radius: 0;
 }
 
 @layer base {
@@ -138,6 +152,9 @@
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 0 var(--ink);
   }
+  .press-in-green {
+    transition: transform var(--motion-fast) var(--ease), box-shadow var(--motion-fast) var(--ease);
+  }
   .press-in-green:hover {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 0 var(--green);
@@ -156,7 +173,7 @@
     width: 8px;
     height: 8px;
     background: var(--green);
-    border-radius: 999px;
+    border-radius: 999px !important;
     box-shadow: 0 0 0 3px rgba(0,200,66,0.25);
     animation: pulse 1.6s infinite;
     display: inline-block;
