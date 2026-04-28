@@ -21,7 +21,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "flex flex-wrap items-center gap-1.5 text-sm wrap-break-word text-muted-foreground",
+        "flex flex-wrap items-center gap-1.5 break-words font-mono text-xs uppercase tracking-[0.1em] text-[var(--ink-3)]",
         className
       )}
       {...props}
@@ -33,7 +33,7 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       data-slot="breadcrumb-item"
-      className={cn("inline-flex items-center gap-1", className)}
+      className={cn("inline-flex items-center gap-1.5", className)}
       {...props}
     />
   )
@@ -48,7 +48,7 @@ function BreadcrumbLink({
     defaultTagName: "a",
     props: mergeProps<"a">(
       {
-        className: cn("transition-colors hover:text-foreground", className),
+        className: cn("hover:text-[var(--ink)] transition-colors", className),
       },
       props
     ),
@@ -66,7 +66,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("font-normal text-foreground", className)}
+      className={cn("text-[var(--ink)]", className)}
       {...props}
     />
   )
@@ -79,15 +79,12 @@ function BreadcrumbSeparator({
 }: React.ComponentProps<"li">) {
   return (
     <li
-      data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("[&>svg]:size-3.5", className)}
+      className={cn("text-[var(--ink-4)]", className)}
       {...props}
     >
-      {children ?? (
-        <ChevronRightIcon />
-      )}
+      {children ?? "/"}
     </li>
   )
 }
@@ -102,7 +99,7 @@ function BreadcrumbEllipsis({
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "flex size-5 items-center justify-center [&>svg]:size-4",
+        "flex h-9 w-9 items-center justify-center",
         className
       )}
       {...props}
