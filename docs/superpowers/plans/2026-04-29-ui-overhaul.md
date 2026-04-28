@@ -187,7 +187,7 @@ The complete new file contents:
   --font-sans: var(--font-archivo);
   --font-display: var(--font-archivo-black);
   --font-serif: var(--font-dm-serif);
-  --font-mono: var(--font-mono);
+  --font-mono: var(--font-jetbrains-mono);
 
   --radius-sm: 0;
   --radius-md: 0;
