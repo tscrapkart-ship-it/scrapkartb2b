@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { BookOpen, ArrowRight } from "lucide-react";
+import { BookOpen } from "lucide-react";
+import { MarketingNav } from "@/components/shared/marketing-nav";
+import { MarketingFooter } from "@/components/shared/marketing-footer";
 
 async function getBlogs() {
   const { createClient } = await import("@/lib/supabase/server");
@@ -16,80 +18,89 @@ export default async function BlogsPage() {
   const blogs = await getBlogs();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 animate-fade-in">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 px-3 py-1.5 text-xs font-medium text-[#10B981] mb-4">
-            <BookOpen className="h-3.5 w-3.5" />
-            Blog
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">ScrapKart Blog</h1>
-          <p className="mt-3 text-[#737373] max-w-lg mx-auto text-lg">
-            Insights on industrial scrap, recycling, and the circular economy
+    <div className="min-h-screen bg-[var(--paper)] flex flex-col">
+      <MarketingNav />
+
+      {/* Hero block */}
+      <section className="border-b-2 border-[var(--ink)] py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h1 className="font-display text-4xl md:text-6xl uppercase">
+            ScrapKart{" "}
+            <em
+              className="font-serif-italic text-[var(--green-deep)]"
+              style={{ fontStyle: "italic" }}
+            >
+              blog.
+            </em>
+          </h1>
+          <p className="text-base md:text-lg mt-5 max-w-xl text-[var(--ink-2)]">
+            Insights on industrial scrap, recycling, and the circular economy.
           </p>
         </div>
+      </section>
 
-        {blogs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#262626] bg-[#141414]/50 py-20">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1A1A1A] border border-[#262626] mb-4">
-              <BookOpen className="h-7 w-7 text-[#525252]" />
+      {/* Articles grid */}
+      <section className="py-16 flex-1">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {blogs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center border-2 border-dashed border-[var(--ink)] bg-[var(--bg-soft)] py-24 text-center">
+              <div className="flex h-14 w-14 items-center justify-center border-2 border-[var(--ink)] bg-[var(--paper)] mb-4">
+                <BookOpen className="h-7 w-7 text-[var(--ink-3)]" />
+              </div>
+              <p className="font-display text-lg uppercase">No posts yet</p>
+              <p className="text-sm text-[var(--ink-3)] mt-1">Check back soon for new articles.</p>
             </div>
-            <p className="text-lg text-[#D4D4D4] font-semibold">No posts yet</p>
-            <p className="text-base text-[#525252] mt-1">Check back soon for new articles.</p>
-          </div>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2">
-            {blogs.map((blog: any, i: number) => (
-              <Link
-                key={blog.id}
-                href={`/blogs/${blog.slug}`}
-                className={`animate-slide-up delay-${Math.min(i + 1, 6)} group rounded-xl border border-[#262626] bg-[#141414] overflow-hidden transition-all hover:border-[#333] hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.08)]`}
-              >
-                {blog.cover_image && (
-                  <div className="aspect-video overflow-hidden bg-[#0A0A0A]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={blog.cover_image}
-                      alt={blog.title}
-                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                )}
-                <div className="p-5 space-y-2.5">
-                  <div className="flex items-center gap-2">
-                    {blog.is_featured && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[#10B981]/10 px-2 py-0.5 text-xs font-medium text-[#10B981]">
-                        <span className="h-1 w-1 rounded-full bg-[#10B981]" />
-                        Featured
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {blogs.map((blog: any) => (
+                <Link
+                  key={blog.id}
+                  href={`/blogs/${blog.slug}`}
+                  className="border-2 border-[var(--ink)] bg-[var(--paper)] shadow-hard press-in flex flex-col group"
+                >
+                  {blog.cover_image && (
+                    <div className="aspect-[16/9] border-b-2 border-[var(--ink)] bg-[var(--bg-soft)] overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={blog.cover_image}
+                        alt={blog.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6 flex flex-col gap-3 flex-1">
+                    <div className="flex items-center gap-2">
+                      {blog.is_featured && (
+                        <span className="font-mono text-[10px] uppercase tracking-[0.14em] border-2 border-[var(--green-deep)] bg-[var(--green-tint)] px-2 py-0.5 text-[var(--green-deep)]">
+                          Featured
+                        </span>
+                      )}
+                      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-3)]">
+                        {blog.published_at
+                          ? new Date(blog.published_at).toLocaleDateString("en-IN", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })
+                          : ""}
                       </span>
+                    </div>
+                    <h3 className="font-display text-xl leading-tight">{blog.title}</h3>
+                    {blog.excerpt && (
+                      <p className="text-sm text-[var(--ink-2)] flex-1 line-clamp-2">{blog.excerpt}</p>
                     )}
-                    <span className="text-sm text-[#3F3F3F]">
-                      {blog.published_at
-                        ? new Date(blog.published_at).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })
-                        : ""}
+                    <span className="font-display text-xs uppercase tracking-[0.1em] mt-2 text-[var(--ink-3)] group-hover:text-[var(--green-deep)] transition-colors">
+                      Read article →
                     </span>
                   </div>
-                  <h2 className="text-lg font-semibold text-white group-hover:text-[#10B981] transition-colors leading-snug">
-                    {blog.title}
-                  </h2>
-                  {blog.excerpt && (
-                    <p className="text-base text-[#737373] line-clamp-2">{blog.excerpt}</p>
-                  )}
-                  <div className="flex items-center gap-1 text-sm text-[#525252] group-hover:text-[#10B981] transition-colors pt-1">
-                    Read more
-                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <MarketingFooter />
     </div>
   );
 }

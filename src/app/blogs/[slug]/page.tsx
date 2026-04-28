@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Calendar, User } from "lucide-react";
+import { MarketingNav } from "@/components/shared/marketing-nav";
+import { MarketingFooter } from "@/components/shared/marketing-footer";
 
 async function getBlog(slug: string) {
   const { createClient } = await import("@/lib/supabase/server");
@@ -24,73 +25,74 @@ export default async function BlogPostPage({
   if (!blog) notFound();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 animate-fade-in">
+    <div className="min-h-screen bg-[var(--paper)] flex flex-col">
+      <MarketingNav />
+
+      <article className="mx-auto max-w-3xl w-full px-4 sm:px-6 lg:px-8 py-16 flex-1">
         {/* Back link */}
         <Link
           href="/blogs"
-          className="mb-8 inline-flex items-center gap-1 text-base text-[#525252] hover:text-[#10B981] transition-colors"
+          className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-3)] hover:text-[var(--green-deep)] transition-colors mb-8 inline-block"
         >
-          <ChevronLeft className="h-4 w-4" />
-          All Posts
+          ← All posts
         </Link>
+
+        {/* Meta */}
+        <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-3)] mb-3 flex flex-wrap items-center gap-3">
+          {(blog.author as any)?.name && (
+            <span>{(blog.author as any).name}</span>
+          )}
+          {(blog.author as any)?.name && blog.published_at && (
+            <span className="text-[var(--ink-4)]">·</span>
+          )}
+          {blog.published_at && (
+            <span>
+              {new Date(blog.published_at).toLocaleDateString("en-IN", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          )}
+          {blog.is_featured && (
+            <>
+              <span className="text-[var(--ink-4)]">·</span>
+              <span className="border-2 border-[var(--green-deep)] bg-[var(--green-tint)] px-2 py-0.5 text-[var(--green-deep)]">
+                Featured
+              </span>
+            </>
+          )}
+        </div>
+
+        {/* Title */}
+        <h1 className="font-display text-4xl md:text-5xl leading-[0.95]">{blog.title}</h1>
 
         {/* Cover image */}
         {blog.cover_image && (
-          <div className="mb-8 aspect-video overflow-hidden rounded-2xl border border-[#262626]">
+          <div className="aspect-[16/9] border-2 border-[var(--ink)] bg-[var(--bg-soft)] mt-8 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={blog.cover_image} alt={blog.title} className="h-full w-full object-cover" />
+            <img src={blog.cover_image} alt={blog.title} className="w-full h-full object-cover" />
           </div>
         )}
 
-        {/* Header */}
-        <div className="space-y-4 animate-slide-up delay-1">
-          {blog.is_featured && (
-            <span className="inline-flex items-center gap-1 rounded-md bg-[#10B981]/10 px-2.5 py-1 text-xs font-medium text-[#10B981]">
-              <span className="h-1 w-1 rounded-full bg-[#10B981]" />
-              Featured
-            </span>
-          )}
+        <div className="border-t-2 border-[var(--ink)] mt-10" />
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight break-words">{blog.title}</h1>
-
-          <div className="flex flex-wrap items-center gap-3 text-base text-[#737373]">
-            {(blog.author as any)?.name && (
-              <span className="flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5" />
-                {(blog.author as any).name}
-              </span>
-            )}
-            {blog.published_at && (
-              <>
-                <span className="text-[#3F3F3F]">·</span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5" />
-                  {new Date(blog.published_at).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </span>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Excerpt */}
+        {/* Excerpt as pull-quote */}
         {blog.excerpt && (
-          <p className="mt-6 text-xl text-[#A3A3A3] leading-relaxed border-l-2 border-[#10B981]/40 pl-4">
+          <p className="mt-8 text-xl text-[var(--ink-2)] leading-relaxed border-l-4 border-[var(--green)] pl-5">
             {blog.excerpt}
           </p>
         )}
 
-        {/* Content */}
-        <div className="mt-8 animate-slide-up delay-2">
-          <div className="whitespace-pre-wrap break-words text-[#D4D4D4] leading-relaxed text-lg">
+        {/* Content — plain-text rendering preserved from original */}
+        <div className="mt-10">
+          <div className="whitespace-pre-wrap break-words text-[var(--ink-2)] leading-relaxed text-base font-sans">
             {blog.content}
           </div>
         </div>
-      </div>
+      </article>
+
+      <MarketingFooter />
     </div>
   );
 }
