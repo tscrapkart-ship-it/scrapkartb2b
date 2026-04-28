@@ -53,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#10B981" />
+        <meta name="theme-color" content="#FFFFFF" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className={`${archivo.variable} ${archivoBlack.variable} ${dmSerif.variable} ${mono.variable} antialiased overflow-x-hidden`}>
