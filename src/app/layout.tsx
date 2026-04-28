@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, Archivo_Black, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
+import { LenisProvider } from "@/components/shared/lenis-provider";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -58,6 +59,7 @@ export default function RootLayout({
       </head>
       <body className={`${archivo.variable} ${archivoBlack.variable} ${dmSerif.variable} ${mono.variable} antialiased overflow-x-hidden`}>
         <NextTopLoader color="#0A0A0A" height={3} showSpinner={false} shadow="none" />
+        <LenisProvider />
         {children}
         <Toaster />
       </body>

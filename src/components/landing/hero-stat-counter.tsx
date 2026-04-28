@@ -51,7 +51,7 @@ export function HeroStatCounter() {
       {STATS.map((stat, i) => (
         <div
           key={stat.label}
-          className={`py-8 px-6 ${i < 3 ? "md:border-r-2 border-[var(--ink)]" : ""} ${i === 1 ? "border-r-2" : ""} ${i < 2 ? "border-b-2 md:border-b-0" : ""}`}
+          className={`py-8 px-6 text-center flex flex-col items-center justify-center ${i < 3 ? "md:border-r-2 border-[var(--ink)]" : ""} ${i === 1 ? "border-r-2" : ""} ${i < 2 ? "border-b-2 md:border-b-0" : ""}`}
         >
           <div ref={(el) => { refs.current[i] = el; }} className="font-display text-3xl md:text-4xl leading-none">
             {stat.prefix ?? ""}0{stat.suffix}

@@ -44,7 +44,7 @@ export default async function Home() {
                 By the <em className="font-serif-italic text-[var(--green)]" style={{ fontStyle: "italic" }}>truckload.</em>
               </h1>
               <p className="mt-6 max-w-xl text-base md:text-lg text-[var(--ink-2)] leading-[1.5]">
-                List your lot. Verified buyers bid. Settlement in 72 hours. The B2B marketplace built on the same trust network behind <a href="https://b2c.scrapkart.app" className="underline" target="_blank" rel="noopener">b2c.scrapkart.app</a>.
+                List your lot. Verified buyers bid. Settle in 72 hours. India&apos;s B2B marketplace for industrial scrap.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link
@@ -60,16 +60,16 @@ export default async function Home() {
                   Browse marketplace
                 </Link>
               </div>
-              <div className="mt-10 pt-6 border-t-2 border-[var(--ink)] flex flex-wrap gap-x-8 gap-y-4">
-                <div>
+              <div className="mt-10 pt-6 border-t-2 border-[var(--ink)] flex flex-wrap justify-center gap-x-12 gap-y-4">
+                <div className="text-center">
                   <div className="font-display text-2xl">₹2.4Cr</div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.14em] mt-1 text-[var(--ink-3)]">Monthly GMV</div>
                 </div>
-                <div>
+                <div className="text-center">
                   <div className="font-display text-2xl">120+</div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.14em] mt-1 text-[var(--ink-3)]">Verified yards</div>
                 </div>
-                <div>
+                <div className="text-center">
                   <div className="font-display text-2xl">72hrs</div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.14em] mt-1 text-[var(--ink-3)]">Avg. settlement</div>
                 </div>
@@ -93,7 +93,7 @@ export default async function Home() {
             <h2 className="font-display text-4xl md:text-5xl uppercase">
               How it <em className="font-serif-italic text-[var(--green-deep)]" style={{ fontStyle: "italic" }}>works.</em>
             </h2>
-            <span className="hidden md:inline-block font-mono text-xs uppercase tracking-[0.12em] text-[var(--ink-3)]">
+            <span className="hidden md:inline-block font-mono text-xs uppercase tracking-[0.12em] text-[var(--ink)] font-bold">
               List → Verify → Bid → Settle
             </span>
           </div>

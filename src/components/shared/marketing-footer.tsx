@@ -30,7 +30,7 @@ export function MarketingFooter() {
             </ul>
           </div>
           <div>
-            <h4 className="font-display text-xs uppercase tracking-[0.16em] text-[var(--green)] mb-4">Sister site</h4>
+            <h4 className="font-display text-xs uppercase tracking-[0.16em] text-[var(--green)] mb-4">More from ScrapKart</h4>
             <ul className="space-y-3 text-sm">
               <li><a href="https://b2c.scrapkart.app" className="hover:text-[var(--green)]" target="_blank" rel="noopener">B2C — pickup scrap</a></li>
             </ul>
