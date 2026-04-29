@@ -57,21 +57,12 @@ async function getDashboardData() {
   };
 }
 
-const categoryColors: Record<string, { bg: string; text: string }> = {
-  Metal: { bg: "bg-blue-500/10", text: "text-blue-400" },
-  "E-waste": { bg: "bg-purple-500/10", text: "text-purple-400" },
-  Plastic: { bg: "bg-yellow-500/10", text: "text-yellow-400" },
-  Paper: { bg: "bg-green-500/10", text: "text-green-400" },
-  Glass: { bg: "bg-cyan-500/10", text: "text-cyan-400" },
-  "Mixed Scrap": { bg: "bg-gray-500/10", text: "text-gray-400" },
-};
-
 const listingStatusConfig: Record<string, { text: string; dot: string }> = {
-  live: { text: "text-green-400", dot: "bg-green-400" },
-  matched: { text: "text-blue-400", dot: "bg-blue-400" },
-  picked: { text: "text-purple-400", dot: "bg-purple-400" },
-  completed: { text: "text-[#525252]", dot: "bg-[#525252]" },
-  cancelled: { text: "text-red-400", dot: "bg-red-400" },
+  live: { text: "text-[var(--forest)]", dot: "bg-[var(--forest)]" },
+  matched: { text: "text-[var(--info)]", dot: "bg-[var(--info)]" },
+  picked: { text: "text-[var(--info)]", dot: "bg-[var(--info)]" },
+  completed: { text: "text-[var(--ink-4)]", dot: "bg-[var(--ink-4)]" },
+  cancelled: { text: "text-[var(--danger)]", dot: "bg-[var(--danger)]" },
 };
 
 export default async function SellerDashboard() {
@@ -85,34 +76,34 @@ export default async function SellerDashboard() {
       label: "Total Listings",
       value: totalListings,
       icon: Package,
-      iconColor: "text-[#10B981]",
-      iconBg: "bg-[#10B981]/10",
-      border: "border-[#10B981]/10",
+      iconColor: "text-[var(--forest)]",
+      iconBg: "bg-[var(--forest-tint)]",
+      border: "border-[var(--forest)]/20",
     },
     {
       label: "Live Listings",
       value: liveListings,
       icon: Sparkles,
-      iconColor: "text-green-400",
-      iconBg: "bg-green-400/10",
-      border: "border-green-400/10",
+      iconColor: "text-[var(--forest)]",
+      iconBg: "bg-[var(--forest-tint)]",
+      border: "border-[var(--forest)]/20",
     },
     {
       label: "Pending Bids",
       value: pendingBids,
       icon: Gavel,
-      iconColor: pendingBids > 0 ? "text-yellow-400" : "text-[#525252]",
-      iconBg: pendingBids > 0 ? "bg-yellow-400/10" : "bg-[#1A1A1A]",
-      border: pendingBids > 0 ? "border-yellow-400/20" : "border-[#262626]",
+      iconColor: pendingBids > 0 ? "text-[var(--warning)]" : "text-[var(--ink-4)]",
+      iconBg: pendingBids > 0 ? "bg-[var(--warning)]/10" : "bg-[var(--paper-2)]",
+      border: pendingBids > 0 ? "border-[var(--warning)]/30" : "border-[var(--line)]",
       highlight: pendingBids > 0,
     },
     {
       label: "Total Earned",
       value: `₹${totalEarned.toLocaleString("en-IN")}`,
       icon: TrendingUp,
-      iconColor: "text-[#10B981]",
-      iconBg: "bg-[#10B981]/10",
-      border: "border-[#10B981]/10",
+      iconColor: "text-[var(--forest)]",
+      iconBg: "bg-[var(--forest-tint)]",
+      border: "border-[var(--forest)]/20",
       isPrice: true,
     },
   ];
@@ -122,15 +113,15 @@ export default async function SellerDashboard() {
       {/* Page header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">
+          <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">
             Producer Dashboard
           </h1>
-          <p className="mt-1 text-sm text-[#737373] sm:text-base">
+          <p className="mt-1 text-sm text-[var(--ink-3)] sm:text-base">
             Manage your scrap listings and track bids
           </p>
         </div>
         <Link href="/scraps/new" className="shrink-0">
-          <Button className="bg-[#10B981] text-black hover:bg-[#059669] font-semibold h-10 px-4 sm:px-5 transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+          <Button className="h-10 px-4 sm:px-5">
             <Plus className="mr-2 h-4 w-4" />
             New Listing
           </Button>
@@ -139,40 +130,40 @@ export default async function SellerDashboard() {
 
       {/* Company card */}
       {company ? (
-        <div className="animate-slide-up delay-1 rounded-xl border border-[#262626] bg-[#141414] p-4 sm:p-5 transition-all hover:border-[#333]">
+        <div className="animate-slide-up delay-1 rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-4 sm:p-5 transition-all hover:border-[var(--line)] shadow-[var(--shadow-1)]">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#10B981]/10 border border-[#10B981]/20 sm:h-12 sm:w-12">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)] border border-[var(--forest)]/20 sm:h-12 sm:w-12">
                 {company.logo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={company.logo_url} alt="" className="h-full w-full rounded-xl object-cover" />
+                  <img src={company.logo_url} alt="" className="h-full w-full rounded-[var(--radius-md)] object-cover" />
                 ) : (
-                  <Building2 className="h-5 w-5 text-[#10B981] sm:h-6 sm:w-6" />
+                  <Building2 className="h-5 w-5 text-[var(--forest)] sm:h-6 sm:w-6" />
                 )}
               </div>
               <div className="min-w-0">
-                <h3 className="font-semibold text-white text-base sm:text-lg truncate">{company.name}</h3>
+                <h3 className="text-[15.5px] font-semibold tracking-[-0.015em] text-[var(--ink)] sm:text-lg truncate">{company.name}</h3>
                 <div className="flex flex-wrap items-center gap-2 mt-0.5">
                   {company.city && (
-                    <p className="text-sm text-[#737373] sm:text-base truncate">
+                    <p className="text-sm text-[var(--ink-3)] sm:text-base truncate">
                       {company.city}{company.state ? `, ${company.state}` : ""}
                     </p>
                   )}
                   <span
                     className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
                       company.verification_status === "verified"
-                        ? "bg-green-500/10 text-green-400"
+                        ? "bg-[var(--forest-tint)] text-[var(--forest)]"
                         : company.verification_status === "rejected"
-                        ? "bg-red-500/10 text-red-400"
-                        : "bg-yellow-500/10 text-yellow-400"
+                        ? "bg-[var(--danger)]/10 text-[var(--danger)]"
+                        : "bg-[var(--warning)]/10 text-[var(--warning)]"
                     }`}
                   >
                     <span className={`h-1.5 w-1.5 rounded-full ${
                       company.verification_status === "verified"
-                        ? "bg-green-400"
+                        ? "bg-[var(--forest)]"
                         : company.verification_status === "rejected"
-                        ? "bg-red-400"
-                        : "bg-yellow-400"
+                        ? "bg-[var(--danger)]"
+                        : "bg-[var(--warning)]"
                     }`} />
                     {company.verification_status === "verified"
                       ? "Verified"
@@ -184,11 +175,7 @@ export default async function SellerDashboard() {
               </div>
             </div>
             <Link href="/company/edit" className="shrink-0">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-[#262626] text-[#A3A3A3] hover:bg-[#1A1A1A] hover:text-white hover:border-[#333]"
-              >
+              <Button variant="outline" size="sm">
                 Edit Profile
                 <ChevronRight className="ml-1 h-3.5 w-3.5" />
               </Button>
@@ -196,19 +183,19 @@ export default async function SellerDashboard() {
           </div>
         </div>
       ) : (
-        <div className="animate-slide-up delay-1 rounded-xl border border-[#10B981]/30 bg-[#10B981]/[0.04] p-4 sm:p-5">
+        <div className="animate-slide-up delay-1 rounded-[var(--radius-lg)] border border-[var(--forest)]/30 bg-[var(--forest-tint)] p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#10B981]/10 border border-[#10B981]/20 sm:h-12 sm:w-12">
-                <Building2 className="h-5 w-5 text-[#10B981] sm:h-6 sm:w-6" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)] border border-[var(--forest)]/20 sm:h-12 sm:w-12">
+                <Building2 className="h-5 w-5 text-[var(--forest)] sm:h-6 sm:w-6" />
               </div>
               <div className="min-w-0">
-                <h3 className="font-semibold text-white text-base sm:text-lg">Set up your company profile</h3>
-                <p className="text-sm text-[#737373] mt-0.5 sm:text-base">Required before posting listings.</p>
+                <h3 className="text-[15.5px] font-semibold tracking-[-0.015em] text-[var(--ink)] sm:text-lg">Set up your company profile</h3>
+                <p className="text-sm text-[var(--ink-3)] mt-0.5 sm:text-base">Required before posting listings.</p>
               </div>
             </div>
             <Link href="/company/setup" className="shrink-0">
-              <Button className="bg-[#10B981] text-black hover:bg-[#059669] font-semibold">
+              <Button>
                 Setup
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -224,17 +211,17 @@ export default async function SellerDashboard() {
           return (
             <div
               key={stat.label}
-              className={`animate-scale-in delay-${i + 2} rounded-xl border bg-[#141414] p-3 sm:p-5 transition-all hover:border-[#333] ${
-                stat.highlight ? "border-yellow-500/20 bg-yellow-500/[0.03]" : stat.border
+              className={`animate-scale-in delay-${i + 2} rounded-[var(--radius-lg)] border bg-[var(--paper)] p-3 sm:p-5 transition-all shadow-[var(--shadow-1)] ${
+                stat.highlight ? "border-[var(--warning)]/30 bg-[var(--warning)]/5" : stat.border
               }`}
             >
               <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <p className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-[#737373]">{stat.label}</p>
-                <div className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg ${stat.iconBg}`}>
+                <p className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium">{stat.label}</p>
+                <div className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-[var(--radius-sm)] ${stat.iconBg}`}>
                   <Icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${stat.iconColor}`} />
                 </div>
               </div>
-              <p className={`text-xl sm:text-3xl font-bold truncate ${stat.highlight ? "text-yellow-400" : stat.isPrice ? "text-[#10B981]" : "text-white"}`}>
+              <p className={`text-xl sm:text-3xl font-semibold tabular-nums truncate ${stat.highlight ? "text-[var(--warning)]" : "text-[var(--ink)]"}`}>
                 {stat.value}
               </p>
             </div>
@@ -245,19 +232,19 @@ export default async function SellerDashboard() {
       {/* Pending bids alert */}
       {pendingBids > 0 && (
         <Link href="/seller-bookings" className="block animate-slide-up">
-          <div className="group flex items-center justify-between gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/[0.04] p-3 sm:p-4 transition-all hover:border-yellow-500/30 hover:bg-yellow-500/[0.06] cursor-pointer">
+          <div className="group flex items-center justify-between gap-3 rounded-[var(--radius-lg)] border border-[var(--warning)]/30 bg-[var(--warning)]/5 p-3 sm:p-4 transition-all hover:border-[var(--warning)]/50 cursor-pointer">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-yellow-500/10">
-                <AlertCircle className="h-5 w-5 text-yellow-400" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--warning)]/10">
+                <AlertCircle className="h-5 w-5 text-[var(--warning)]" />
               </div>
               <div className="min-w-0">
-                <p className="font-semibold text-white text-sm sm:text-base">
+                <p className="text-[15.5px] font-semibold tracking-[-0.015em] text-[var(--ink)] sm:text-base">
                   {pendingBids} pending bid{pendingBids !== 1 ? "s" : ""} awaiting your response
                 </p>
-                <p className="text-sm text-[#737373] sm:text-base">Review and accept or decline</p>
+                <p className="text-sm text-[var(--ink-3)] sm:text-base">Review and accept or decline</p>
               </div>
             </div>
-            <ArrowRight className="h-5 w-5 shrink-0 text-yellow-400/60 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="h-5 w-5 shrink-0 text-[var(--warning)] transition-transform group-hover:translate-x-1" />
           </div>
         </Link>
       )}
@@ -266,28 +253,27 @@ export default async function SellerDashboard() {
       {recentListings.length > 0 && (
         <div className="animate-slide-up delay-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xs font-medium uppercase tracking-widest text-[#525252]">Recent Listings</h2>
-            <Link href="/scraps" className="text-sm text-[#10B981] hover:text-[#34D399] transition-colors flex items-center gap-1">
+            <h2 className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium">Recent Listings</h2>
+            <Link href="/scraps" className="text-sm text-[var(--forest)] hover:text-[var(--forest-2)] transition-colors flex items-center gap-1">
               View all
               <ChevronRight className="h-3 w-3" />
             </Link>
           </div>
-          <div className="rounded-xl border border-[#262626] bg-[#141414] divide-y divide-[#262626] overflow-hidden">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] divide-y divide-[var(--line-2)] overflow-hidden shadow-[var(--shadow-1)]">
             {recentListings.map((listing) => {
-              const cat = categoryColors[listing.category] ?? { bg: "bg-[#1A1A1A]", text: "text-[#737373]" };
-              const status = listingStatusConfig[listing.status] ?? { text: "text-[#525252]", dot: "bg-[#525252]" };
+              const status = listingStatusConfig[listing.status] ?? { text: "text-[var(--ink-4)]", dot: "bg-[var(--ink-4)]" };
               return (
                 <Link
                   key={listing.id}
                   href={`/marketplace/${listing.id}`}
-                  className="group flex items-center justify-between gap-2 px-3 py-3 sm:px-5 sm:py-3.5 transition-colors hover:bg-[#1A1A1A]"
+                  className="group flex items-center justify-between gap-2 px-3 py-3 sm:px-5 sm:py-3.5 transition-colors hover:bg-[var(--paper-2)]"
                 >
                   <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <span className={`shrink-0 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium ${cat.bg} ${cat.text}`}>
-                      <span className={`h-1.5 w-1.5 rounded-full ${cat.text.replace("text-", "bg-")}`} />
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] px-2 py-1 text-xs font-medium bg-[var(--forest-tint)] text-[var(--forest)]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--forest)]" />
                       {listing.category}
                     </span>
-                    <p className="text-sm sm:text-base font-medium text-[#D4D4D4] truncate group-hover:text-white transition-colors">
+                    <p className="text-sm sm:text-base font-medium text-[var(--ink-2)] truncate group-hover:text-[var(--ink)] transition-colors">
                       {listing.title}
                     </p>
                   </div>
@@ -297,7 +283,7 @@ export default async function SellerDashboard() {
                       {listing.status}
                     </span>
                     <span className={`flex sm:hidden h-2 w-2 rounded-full ${status.dot}`} />
-                    <ChevronRight className="h-4 w-4 text-[#525252] group-hover:text-[#10B981] transition-colors" />
+                    <ChevronRight className="h-4 w-4 text-[var(--ink-4)] group-hover:text-[var(--forest)] transition-colors" />
                   </div>
                 </Link>
               );
@@ -308,16 +294,16 @@ export default async function SellerDashboard() {
 
       {/* Empty state */}
       {totalListings === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#262626] bg-[#141414]/50 py-16 animate-fade-in">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1A1A1A] border border-[#262626] mb-4">
-            <ArrowLeftRight className="h-7 w-7 text-[#525252]" />
+        <div className="flex flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] bg-[var(--paper)]/50 py-16 animate-fade-in">
+          <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--paper-2)] border border-[var(--line)] mb-4">
+            <ArrowLeftRight className="h-7 w-7 text-[var(--ink-4)]" />
           </div>
-          <p className="text-[#D4D4D4] font-semibold text-xl">No listings yet</p>
-          <p className="text-base text-[#525252] mt-1 mb-6 max-w-xs text-center">
+          <p className="text-[var(--ink)] font-semibold text-xl">No listings yet</p>
+          <p className="text-base text-[var(--ink-3)] mt-1 mb-6 max-w-xs text-center">
             Post your first scrap listing to start receiving bids from verified recyclers.
           </p>
           <Link href="/scraps/new">
-            <Button className="bg-[#10B981] text-black hover:bg-[#059669] font-semibold h-10 px-6 transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+            <Button className="h-10 px-6">
               <Plus className="mr-2 h-4 w-4" />
               Post a Listing
             </Button>

@@ -3,10 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Gavel, IndianRupee, CalendarDays, User, ChevronRight, Plus, MessageSquare } from "lucide-react";
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; border: string }> = {
-  pending: { bg: "bg-yellow-500/10", text: "text-yellow-400", dot: "bg-yellow-400", border: "border-yellow-500/20" },
-  accepted: { bg: "bg-green-500/10", text: "text-green-400", dot: "bg-green-400", border: "border-green-500/20" },
-  rejected: { bg: "bg-red-500/10", text: "text-red-400", dot: "bg-red-400", border: "border-red-500/20" },
-  withdrawn: { bg: "bg-[#1A1A1A]", text: "text-[#525252]", dot: "bg-[#525252]", border: "border-[#262626]" },
+  pending: { bg: "bg-[var(--warning)]/10", text: "text-[var(--warning)]", dot: "bg-[var(--warning)]", border: "border-[var(--warning)]/30" },
+  accepted: { bg: "bg-[var(--forest-tint)]", text: "text-[var(--forest)]", dot: "bg-[var(--forest)]", border: "border-[var(--forest)]/30" },
+  rejected: { bg: "bg-[var(--danger)]/10", text: "text-[var(--danger)]", dot: "bg-[var(--danger)]", border: "border-[var(--danger)]/30" },
+  withdrawn: { bg: "bg-[var(--paper-2)]", text: "text-[var(--ink-4)]", dot: "bg-[var(--ink-4)]", border: "border-[var(--line)]" },
 };
 
 async function getIncomingBids() {
@@ -32,31 +32,31 @@ export default async function SellerBidsPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">Incoming Bids</h1>
-          <p className="mt-1 text-sm text-[#737373] sm:text-base">
+          <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Incoming Bids</h1>
+          <p className="mt-1 text-sm text-[var(--ink-3)] sm:text-base">
             Review and respond to bids from recyclers
           </p>
         </div>
         {pendingCount > 0 && (
-          <span className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 px-3 py-1.5 text-sm font-semibold text-[#10B981]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#10B981] animate-pulse" />
+          <span className="shrink-0 inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] bg-[var(--forest-tint)] border border-[var(--forest)]/20 px-3 py-1.5 text-sm font-semibold text-[var(--forest)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--forest)] animate-pulse" />
             {pendingCount} pending
           </span>
         )}
       </div>
 
       {bids.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#262626] bg-[#141414]/50 py-16">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1A1A1A] border border-[#262626] mb-4">
-            <Gavel className="h-7 w-7 text-[#525252]" />
+        <div className="flex flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] bg-[var(--paper)]/50 py-16">
+          <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--paper-2)] border border-[var(--line)] mb-4">
+            <Gavel className="h-7 w-7 text-[var(--ink-4)]" />
           </div>
-          <p className="text-xl font-semibold text-[#D4D4D4]">No bids yet</p>
-          <p className="mt-1 text-base text-[#525252] max-w-xs text-center">
+          <p className="text-xl font-semibold text-[var(--ink)]">No bids yet</p>
+          <p className="mt-1 text-base text-[var(--ink-3)] max-w-xs text-center">
             Bids will appear here when recyclers submit offers on your listings.
           </p>
           <Link
             href="/scraps/new"
-            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#10B981] px-5 py-2.5 text-base font-semibold text-black transition-all hover:bg-[#059669] hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+            className="mt-6 inline-flex items-center gap-2 rounded-[var(--radius-md)] bg-[var(--forest)] px-5 py-2.5 text-base font-semibold text-white transition-all hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)]"
           >
             <Plus className="h-4 w-4" />
             Post a Listing
@@ -77,23 +77,23 @@ export default async function SellerBidsPage() {
 
             return (
               <Link key={bid.id} href={`/marketplace/${scrap?.id ?? ""}`}>
-                <div className={`animate-slide-up delay-${Math.min(i + 1, 6)} group rounded-xl border border-[#262626] bg-[#141414] p-3 sm:p-5 transition-all hover:border-[#333] hover:bg-[#1A1A1A] cursor-pointer`}>
+                <div className={`animate-slide-up delay-${Math.min(i + 1, 6)} group rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-3 sm:p-5 transition-all hover:border-[var(--forest)]/30 hover:bg-[var(--paper-2)] cursor-pointer shadow-[var(--shadow-1)]`}>
                   <div className="flex items-start justify-between gap-2 sm:gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5">
-                        <span className="inline-flex items-center gap-1.5 rounded-md bg-[#10B981]/10 px-2.5 py-0.5 text-xs font-medium text-[#10B981]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                        <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] bg-[var(--forest-tint)] px-2.5 py-0.5 text-xs font-medium text-[var(--forest)]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[var(--forest)]" />
                           {scrap?.category}
                         </span>
                       </div>
-                      <p className="font-semibold text-white truncate group-hover:text-[#10B981] transition-colors text-sm sm:text-base">
+                      <p className="text-[15.5px] font-semibold tracking-[-0.015em] text-[var(--ink)] truncate group-hover:text-[var(--forest)] transition-colors sm:text-base">
                         {scrap?.title}
                       </p>
-                      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#525252] mt-1 min-w-0">
+                      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[var(--ink-4)] mt-1 min-w-0">
                         <User className="h-3 w-3 shrink-0" />
-                        <span className="text-[#A3A3A3] truncate">{recycler?.name ?? "Recycler"}</span>
+                        <span className="text-[var(--ink-3)] truncate">{recycler?.name ?? "Recycler"}</span>
                         {recycler?.email && (
-                          <span className="text-[#3F3F3F] truncate hidden sm:inline">— {recycler.email}</span>
+                          <span className="text-[var(--ink-4)] truncate hidden sm:inline">— {recycler.email}</span>
                         )}
                       </div>
                     </div>
@@ -102,20 +102,20 @@ export default async function SellerBidsPage() {
                         <span className={`h-1.5 w-1.5 rounded-full ${sc.dot} mr-1`} />
                         {bid.status}
                       </Badge>
-                      <ChevronRight className="h-4 w-4 text-[#525252] group-hover:text-[#10B981] transition-colors" />
+                      <ChevronRight className="h-4 w-4 text-[var(--ink-4)] group-hover:text-[var(--forest)] transition-colors" />
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 pt-3 border-t border-[#1A1A1A]">
-                    <div className="flex items-center gap-1.5 text-[#10B981]">
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 pt-3 border-t border-[var(--line-2)]">
+                    <div className="flex items-center gap-1.5 text-[var(--ink)]">
                       <IndianRupee className="h-3.5 w-3.5" />
-                      <span className="font-bold text-sm sm:text-base">
+                      <span className="text-[20px] font-semibold tabular-nums text-[var(--ink)]">
                         ₹{bid.offered_price.toLocaleString("en-IN")}
                       </span>
-                      <span className="text-xs sm:text-sm text-[#525252] font-normal">offered</span>
+                      <span className="text-xs sm:text-sm text-[var(--ink-4)] font-normal">offered</span>
                     </div>
                     {bid.estimated_pickup_date && (
-                      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#525252]">
+                      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[var(--ink-4)]">
                         <CalendarDays className="h-3.5 w-3.5" />
                         {new Date(bid.estimated_pickup_date).toLocaleDateString("en-IN", {
                           day: "numeric",
@@ -123,7 +123,7 @@ export default async function SellerBidsPage() {
                         })}
                       </div>
                     )}
-                    <span className="text-xs sm:text-sm text-[#3F3F3F] ml-auto">
+                    <span className="text-xs sm:text-sm text-[var(--ink-4)] ml-auto">
                       {new Date(bid.created_at).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
@@ -133,9 +133,9 @@ export default async function SellerBidsPage() {
                   </div>
 
                   {bid.message && (
-                    <div className="flex items-start gap-2 mt-3 pt-3 border-t border-[#1A1A1A]">
-                      <MessageSquare className="h-3.5 w-3.5 text-[#3F3F3F] shrink-0 mt-0.5" />
-                      <p className="text-sm text-[#525252] italic truncate">
+                    <div className="flex items-start gap-2 mt-3 pt-3 border-t border-[var(--line-2)]">
+                      <MessageSquare className="h-3.5 w-3.5 text-[var(--ink-4)] shrink-0 mt-0.5" />
+                      <p className="text-sm text-[var(--ink-3)] italic truncate">
                         &ldquo;{bid.message}&rdquo;
                       </p>
                     </div>

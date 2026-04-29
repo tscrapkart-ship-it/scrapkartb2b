@@ -5,10 +5,10 @@ export default function ScrapsLoading() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <div className="h-8 w-36 rounded-md bg-[#1A1A1A] animate-pulse" />
-          <div className="mt-2 h-4 w-48 rounded-md bg-[#1A1A1A] animate-pulse" />
+          <div className="h-8 w-36 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
+          <div className="mt-2 h-4 w-48 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
         </div>
-        <div className="h-10 w-32 rounded-lg bg-[#1A1A1A] animate-pulse" />
+        <div className="h-10 w-32 rounded-[var(--radius-md)] bg-[var(--paper-2)] animate-pulse" />
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
