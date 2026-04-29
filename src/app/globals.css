@@ -115,6 +115,16 @@
   --section-y-tight:  clamp(40px, 6vw, 80px);
 
   /* === Type scale === */
+  --text-xs:      11px;
+  --text-sm:      12.5px;
+  --text-base:    14.5px;
+  --text-md:      16px;
+  --text-lg:      19px;
+  --text-h3:      clamp(22px, 2.4vw, 28px);
+  --text-h2:      clamp(28px, 3.6vw, 40px);
+  --text-h1:      clamp(36px, 5.2vw, 56px);
+  --text-display: clamp(48px, 7.4vw, 84px);
+
   --tracking-tight:    -0.025em;
   --tracking-display:  -0.038em;
   --tracking-mono:      0.04em;
@@ -146,7 +156,7 @@
   --shadow-sm:    var(--shadow-1);
   --shadow:       var(--shadow-2);
   --shadow-lg:    var(--shadow-3);
-  --shadow-green: 0 0 0 3px rgba(15, 77, 42, 0.18);
+  --shadow-green: var(--ring-forest);
   --radius:       var(--radius-md);
 }
 
