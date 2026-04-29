@@ -29,10 +29,10 @@ interface Bid {
 }
 
 const statusConfig: Record<string, string> = {
-  pending: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-  accepted: "bg-green-500/10 text-green-400 border border-green-500/20",
-  rejected: "bg-red-500/10 text-red-400 border border-red-500/20",
-  withdrawn: "bg-[#1A1A1A] text-white/40 border border-[#262626]",
+  pending: "bg-[var(--warning)]/10 text-[var(--warning)] border border-[var(--warning)]/20",
+  accepted: "bg-[var(--forest-tint)] text-[var(--forest)] border border-[var(--forest)]/20",
+  rejected: "bg-[var(--danger)]/10 text-[var(--danger)] border border-[var(--danger)]/20",
+  withdrawn: "bg-[var(--paper-2)] text-[var(--ink-3)] border border-[var(--line)]",
 };
 
 export function BidsList({
@@ -154,32 +154,32 @@ export function BidsList({
   const pendingCount = bids.filter((b) => b.status === "pending").length;
 
   return (
-    <Card className="border-[#262626] bg-card">
+    <Card>
       <CardContent className="pt-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Gavel className="h-4 w-4 text-brand-accent" />
-            <h3 className="font-semibold text-white">Bids Received</h3>
+            <Gavel className="h-4 w-4 text-[var(--forest)]" />
+            <h3 className="font-semibold text-[var(--ink)]">Bids Received</h3>
           </div>
           {pendingCount > 0 && (
-            <span className="rounded-full bg-brand-accent/20 px-2.5 py-0.5 text-xs font-semibold text-brand-accent">
+            <span className="rounded-full bg-[var(--forest-tint)] px-2.5 py-0.5 text-xs font-semibold text-[var(--forest)]">
               {pendingCount} pending
             </span>
           )}
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-10 text-white/40">
+          <div className="flex items-center justify-center py-10 text-[var(--ink-3)]">
             <Loader2 className="h-5 w-5 animate-spin mr-2" />
             Loading bids...
           </div>
         ) : bids.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1A1A] mb-3">
-              <Gavel className="h-6 w-6 text-white/20" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--paper-2)] mb-3">
+              <Gavel className="h-6 w-6 text-[var(--ink-4)]" />
             </div>
-            <p className="text-base text-white/40">No bids yet</p>
-            <p className="text-sm text-white/25 mt-1">
+            <p className="text-base text-[var(--ink-3)]">No bids yet</p>
+            <p className="text-sm text-[var(--ink-4)] mt-1">
               Recyclers will see your listing and submit bids.
             </p>
           </div>
@@ -188,37 +188,37 @@ export function BidsList({
             {bids.map((bid) => (
               <div
                 key={bid.id}
-                className="rounded-xl border border-[#262626] bg-[#141414] p-4 space-y-3"
+                className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-4 space-y-3"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-secondary/20 text-xs font-bold text-brand-accent">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--forest-tint)] text-xs font-bold text-[var(--forest)]">
                       {bid.users?.name?.charAt(0) ?? "R"}
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <User className="h-3 w-3 text-white/30" />
-                        <span className="text-base font-medium text-white">
+                        <User className="h-3 w-3 text-[var(--ink-3)]" />
+                        <span className="text-base font-medium text-[var(--ink)]">
                           {bid.users?.name ?? "Recycler"}
                         </span>
                       </div>
-                      <p className="text-sm text-white/30 truncate max-w-[180px] sm:max-w-none">{bid.users?.email}</p>
+                      <p className="text-sm text-[var(--ink-3)] truncate max-w-[180px] sm:max-w-none">{bid.users?.email}</p>
                     </div>
                   </div>
-                  <Badge className={statusConfig[bid.status] ?? "bg-[#1A1A1A] text-white/40"}>
+                  <Badge className={statusConfig[bid.status] ?? "bg-[var(--paper-2)] text-[var(--ink-3)]"}>
                     {bid.status}
                   </Badge>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
                   <div className="flex items-center gap-1.5">
-                    <IndianRupee className="h-3.5 w-3.5 text-brand-accent" />
-                    <span className="text-xl sm:text-2xl font-bold text-brand-accent">
+                    <IndianRupee className="h-3.5 w-3.5 text-[var(--ink)]" />
+                    <span className="text-[20px] sm:text-[22px] font-semibold tabular-nums text-[var(--ink)]">
                       ₹{bid.offered_price.toLocaleString("en-IN")}
                     </span>
                   </div>
                   {bid.estimated_pickup_date && (
-                    <div className="flex items-center gap-1.5 text-white/50">
+                    <div className="flex items-center gap-1.5 text-[var(--ink-3)]">
                       <CalendarDays className="h-3.5 w-3.5" />
                       <span>
                         {new Date(bid.estimated_pickup_date).toLocaleDateString("en-IN", {
@@ -232,9 +232,9 @@ export function BidsList({
                 </div>
 
                 {bid.message && (
-                  <div className="flex items-start gap-2 rounded-lg bg-[#141414] px-3 py-2">
-                    <MessageSquare className="h-3.5 w-3.5 text-white/30 shrink-0 mt-0.5" />
-                    <p className="text-sm text-white/50 leading-relaxed">{bid.message}</p>
+                  <div className="flex items-start gap-2 rounded-[var(--radius-sm)] bg-[var(--paper-2)] px-3 py-2">
+                    <MessageSquare className="h-3.5 w-3.5 text-[var(--ink-3)] shrink-0 mt-0.5" />
+                    <p className="text-sm text-[var(--ink-2)] leading-relaxed">{bid.message}</p>
                   </div>
                 )}
 
@@ -245,7 +245,7 @@ export function BidsList({
                       size="sm"
                       onClick={() => handleAccept(bid)}
                       disabled={actionLoading === bid.id}
-                      className="flex-1 bg-green-500/15 text-green-400 border border-green-500/25 hover:bg-green-500/25"
+                      className="flex-1 bg-[var(--forest-tint)] text-[var(--forest)] border border-[var(--forest)]/25 hover:bg-[var(--forest)]/15 hover:border-[var(--forest)]/40 hover:translate-y-0 shadow-none"
                     >
                       {actionLoading === bid.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -261,7 +261,7 @@ export function BidsList({
                       variant="outline"
                       onClick={() => handleReject(bid.id)}
                       disabled={actionLoading === bid.id}
-                      className="flex-1 border-red-500/25 text-red-400 hover:bg-red-500/10"
+                      className="flex-1 border-[var(--danger)]/30 text-[var(--danger)] hover:bg-[var(--danger)]/10"
                     >
                       {actionLoading === bid.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
