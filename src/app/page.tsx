@@ -4,6 +4,7 @@ import { MarketingNav } from "@/components/shared/marketing-nav";
 import { MarketingFooter } from "@/components/shared/marketing-footer";
 import { LiveMarketplacePanel } from "@/components/shared/live-marketplace-panel";
 import { HeroStatCounter } from "@/components/landing/hero-stat-counter";
+import { HowItWorks } from "@/components/landing/how-it-works";
 import { HeroEntrance, HeroEntranceItem } from "@/components/shared/reveal";
 import { getLiveListings } from "@/lib/queries/live-listings";
 
@@ -72,7 +73,9 @@ export default async function Home() {
       {/* STAT STRIP */}
       <HeroStatCounter />
 
-      {/* (How it works, Categories, Why, CTA — added in Tasks 14–17) */}
+      <HowItWorks />
+
+      {/* (Categories, Why, CTA — added in Tasks 15–16) */}
 
       <MarketingFooter />
     </div>
