@@ -4,21 +4,21 @@ export default function MarketplaceLoading() {
   return (
     <div className="space-y-6">
       <div>
-        <div className="h-8 w-40 rounded-md bg-[#1A1A1A] animate-pulse" />
-        <div className="mt-2 h-4 w-full max-w-72 rounded-md bg-[#1A1A1A] animate-pulse" />
+        <div className="h-8 w-40 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
+        <div className="mt-2 h-4 w-full max-w-72 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
       </div>
 
       {/* Filter skeleton */}
       <div className="space-y-4">
-        <div className="h-10 max-w-md rounded-md bg-[#1A1A1A] animate-pulse" />
+        <div className="h-10 max-w-md rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
         <div className="flex flex-wrap gap-2">
           {Array.from({ length: 7 }).map((_, i) => (
-            <div key={i} className="h-8 w-20 rounded-full bg-[#1A1A1A] animate-pulse" />
+            <div key={i} className="h-8 w-20 rounded-full bg-[var(--paper-2)] animate-pulse" />
           ))}
         </div>
         <div className="flex flex-wrap gap-2">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-8 w-24 sm:w-32 rounded-md bg-[#1A1A1A] animate-pulse" />
+            <div key={i} className="h-8 w-24 sm:w-32 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
           ))}
         </div>
       </div>

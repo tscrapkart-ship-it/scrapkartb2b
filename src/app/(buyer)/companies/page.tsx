@@ -19,32 +19,32 @@ export default async function CompaniesPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#10B981]/10 border border-[#10B981]/20">
-            <Building2 className="h-5 w-5 text-[#10B981]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)] border border-[var(--forest)]/20">
+            <Building2 className="h-5 w-5 text-[var(--forest)]" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">Companies</h1>
-            <p className="text-sm sm:text-base text-[#737373]">
+            <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Companies</h1>
+            <p className="text-sm sm:text-base text-[var(--ink-3)]">
               Explore verified waste producers and their listings
             </p>
           </div>
         </div>
         {companies.length > 0 && (
-          <span className="shrink-0 rounded-lg bg-[#1A1A1A] border border-[#262626] px-3 py-1.5 text-xs font-medium text-[#737373]">
+          <span className="shrink-0 rounded-[var(--radius-sm)] bg-[var(--paper-2)] border border-[var(--line)] px-3 py-1.5 text-xs font-medium text-[var(--ink-3)]">
             {companies.length} compan{companies.length !== 1 ? "ies" : "y"}
           </span>
         )}
       </div>
 
       {companies.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#262626] bg-[#141414]/50 py-16">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1A1A1A] border border-[#262626]">
-            <Building2 className="h-7 w-7 text-[#525252]" />
+        <div className="flex flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] bg-[var(--paper)]/50 py-16">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--paper-2)] border border-[var(--line)]">
+            <Building2 className="h-7 w-7 text-[var(--ink-4)]" />
           </div>
-          <p className="text-xl font-semibold text-[#D4D4D4]">
+          <p className="text-xl font-semibold text-[var(--ink-2)]">
             No companies listed yet
           </p>
-          <p className="mt-1 text-base text-[#525252]">
+          <p className="mt-1 text-base text-[var(--ink-4)]">
             Check back soon for new sellers.
           </p>
         </div>

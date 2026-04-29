@@ -65,18 +65,18 @@ export default async function MarketplacePage({
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#10B981]/10 border border-[#10B981]/20">
-            <Store className="h-5 w-5 text-[#10B981]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)] border border-[var(--forest)]/20">
+            <Store className="h-5 w-5 text-[var(--forest)]" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">Marketplace</h1>
-            <p className="text-sm sm:text-base text-[#737373]">
+            <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Marketplace</h1>
+            <p className="text-sm sm:text-base text-[var(--ink-3)]">
               Browse available scrap materials from verified sellers
             </p>
           </div>
         </div>
         {scraps.length > 0 && (
-          <span className="shrink-0 rounded-lg bg-[#1A1A1A] border border-[#262626] px-3 py-1.5 text-xs font-medium text-[#737373]">
+          <span className="shrink-0 rounded-[var(--radius-sm)] bg-[var(--paper-2)] border border-[var(--line)] px-3 py-1.5 text-xs font-medium text-[var(--ink-3)]">
             {scraps.length} listing{scraps.length !== 1 ? "s" : ""}
           </span>
         )}
