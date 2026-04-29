@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { MarketingNav } from "@/components/shared/marketing-nav";
 import { MarketingFooter } from "@/components/shared/marketing-footer";
 
@@ -7,29 +8,27 @@ export default function NotFound() {
     <div className="min-h-screen bg-[var(--paper)] flex flex-col">
       <MarketingNav />
       <main className="flex-1 flex items-center justify-center py-24">
-        <div className="text-center max-w-md px-6">
-          <div className="font-display text-[120px] leading-none text-[var(--ink-4)]">404</div>
-          <h1 className="font-display text-3xl uppercase mt-4">Page not found</h1>
-          <p className="text-[var(--ink-2)] mt-3">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+        <div className="text-center max-w-md container-page">
+          <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-[var(--ink-3)]">Error 404</p>
+          <h1 className="mt-3 text-[clamp(48px,7vw,84px)] font-semibold tracking-[var(--tracking-display)] leading-[0.98]">
+            Page <span className="italic-accent">not found.</span>
+          </h1>
+          <p className="text-[16px] text-[var(--ink-2)] mt-5 leading-relaxed max-w-[420px] mx-auto">
+            The page you were looking for doesn&apos;t exist or has been moved.
           </p>
-          <Link
-            href="/"
-            className="inline-block mt-8 border-2 border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)] px-6 py-3 font-display text-sm uppercase tracking-[0.06em] shadow-green press-in-green"
-          >
-            Back home →
-          </Link>
-          <div className="mt-8">
-            <div className="h-px w-16 mx-auto bg-[var(--border-soft)] mb-4" />
-            <p className="font-mono text-xs text-[var(--ink-3)]">
-              Need help?{" "}
-              <Link
-                href="/contact"
-                className="text-[var(--green-deep)] hover:underline"
-              >
-                Contact support
-              </Link>
-            </p>
+          <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center gap-1.5 bg-[var(--forest)] hover:bg-[var(--forest-2)] text-white px-5 py-3 rounded-[var(--radius-md)] text-[14.5px] font-medium shadow-[var(--shadow-1)] transition-colors"
+            >
+              <ArrowLeft className="size-4" /> Back home
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-5 py-3 rounded-[var(--radius-md)] border border-[var(--line)] bg-[var(--paper)] text-[var(--ink)] text-[14.5px] font-medium hover:bg-[var(--paper-2)] transition-colors"
+            >
+              Contact support
+            </Link>
           </div>
         </div>
       </main>
