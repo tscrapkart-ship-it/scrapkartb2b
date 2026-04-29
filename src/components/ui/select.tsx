@@ -33,24 +33,20 @@ function SelectTrigger({
   size = "default",
   children,
   ...props
-}: SelectPrimitive.Trigger.Props & {
-  size?: "sm" | "default"
-}) {
+}: SelectPrimitive.Trigger.Props & { size?: "sm" | "default" }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex h-11 w-full items-center justify-between border-2 border-[var(--ink)] bg-[var(--paper)] px-4 py-2 text-sm font-sans text-[var(--ink)] focus:outline-none focus:shadow-green disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-11 w-full items-center justify-between rounded-[var(--radius-md)] border border-[var(--line)] bg-[var(--paper)] px-4 py-2 text-[14.5px] text-[var(--ink)] transition-[border-color,box-shadow] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] focus:outline-none focus:border-[var(--forest)] focus:shadow-[var(--ring-forest)] disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon
-        render={
-          <ChevronDownIcon className="pointer-events-none size-4 text-[var(--ink-3)]" />
-        }
+        render={<ChevronDownIcon className="pointer-events-none size-4 text-[var(--ink-3)]" />}
       />
     </SelectPrimitive.Trigger>
   )
@@ -60,16 +56,13 @@ function SelectContent({
   className,
   children,
   side = "bottom",
-  sideOffset = 4,
+  sideOffset = 6,
   align = "center",
   alignOffset = 0,
   alignItemWithTrigger = true,
   ...props
 }: SelectPrimitive.Popup.Props &
-  Pick<
-    SelectPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
-  >) {
+  Pick<SelectPrimitive.Positioner.Props, "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger">) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Positioner
@@ -84,7 +77,7 @@ function SelectContent({
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "z-50 min-w-[8rem] overflow-hidden border-2 border-[var(--ink)] bg-[var(--paper)] shadow-hard text-[var(--ink)]",
+            "z-50 min-w-[8rem] overflow-hidden rounded-[var(--radius-md)] border border-[var(--line)] bg-[var(--paper)] shadow-[var(--shadow-2)] text-[var(--ink)]",
             className
           )}
           {...props}
@@ -98,29 +91,22 @@ function SelectContent({
   )
 }
 
-function SelectLabel({
-  className,
-  ...props
-}: SelectPrimitive.GroupLabel.Props) {
+function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) {
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
-      className={cn("px-1.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--ink-3)]", className)}
+      className={cn("px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--ink-3)]", className)}
       {...props}
     />
   )
 }
 
-function SelectItem({
-  className,
-  children,
-  ...props
-}: SelectPrimitive.Item.Props) {
+function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Props) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-default select-none items-center px-3 py-2 text-sm font-sans outline-none focus:bg-[var(--bg-soft)] data-[state=checked]:bg-[var(--green-tint)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex w-full cursor-default select-none items-center rounded-[var(--radius-sm)] mx-1 px-3 py-2 text-[14px] outline-none focus:bg-[var(--paper-2)] data-[state=checked]:bg-[var(--forest-tint)] data-[state=checked]:text-[var(--forest)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-colors",
         className
       )}
       {...props}
@@ -129,63 +115,44 @@ function SelectItem({
         {children}
       </SelectPrimitive.ItemText>
       <SelectPrimitive.ItemIndicator
-        render={
-          <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
-        }
+        render={<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />}
       >
-        <CheckIcon className="pointer-events-none" />
+        <CheckIcon className="pointer-events-none size-3.5" />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
   )
 }
 
-function SelectSeparator({
-  className,
-  ...props
-}: SelectPrimitive.Separator.Props) {
+function SelectSeparator({ className, ...props }: SelectPrimitive.Separator.Props) {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("pointer-events-none -mx-1 my-1 h-[2px] bg-[var(--ink)]", className)}
+      className={cn("pointer-events-none -mx-1 my-1 h-px bg-[var(--line-2)]", className)}
       {...props}
     />
   )
 }
 
-function SelectScrollUpButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>) {
+function SelectScrollUpButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>) {
   return (
     <SelectPrimitive.ScrollUpArrow
       data-slot="select-scroll-up-button"
-      className={cn(
-        "top-0 z-10 flex w-full cursor-default items-center justify-center bg-[var(--paper)] py-1 [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
+      className={cn("top-0 z-10 flex w-full cursor-default items-center justify-center bg-[var(--paper)] py-1 [&_svg:not([class*='size-'])]:size-4", className)}
       {...props}
     >
-      <ChevronUpIcon
-      />
+      <ChevronUpIcon />
     </SelectPrimitive.ScrollUpArrow>
   )
 }
 
-function SelectScrollDownButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>) {
+function SelectScrollDownButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>) {
   return (
     <SelectPrimitive.ScrollDownArrow
       data-slot="select-scroll-down-button"
-      className={cn(
-        "bottom-0 z-10 flex w-full cursor-default items-center justify-center bg-[var(--paper)] py-1 [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
+      className={cn("bottom-0 z-10 flex w-full cursor-default items-center justify-center bg-[var(--paper)] py-1 [&_svg:not([class*='size-'])]:size-4", className)}
       {...props}
     >
-      <ChevronDownIcon
-      />
+      <ChevronDownIcon />
     </SelectPrimitive.ScrollDownArrow>
   )
 }

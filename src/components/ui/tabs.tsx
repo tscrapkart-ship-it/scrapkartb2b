@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -14,27 +15,22 @@ function Tabs({
     <TabsPrimitive.Root
       data-slot="tabs"
       data-orientation={orientation}
-      className={cn(
-        "group/tabs flex gap-2 data-horizontal:flex-col",
-        className
-      )}
+      className={cn("group/tabs flex flex-col gap-3", className)}
       {...props}
     />
   )
 }
 
 const tabsListVariants = cva(
-  "group/tabs-list inline-flex items-center border-2 border-[var(--ink)] bg-[var(--paper)] p-1 gap-1",
+  "group/tabs-list inline-flex items-center gap-6 border-b border-[var(--line)]",
   {
     variants: {
       variant: {
         default: "",
-        line: "gap-1 bg-transparent",
+        line: "",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: { variant: "default" },
   }
 )
 
@@ -47,7 +43,7 @@ function TabsList({
     <TabsPrimitive.List
       data-slot="tabs-list"
       data-variant={variant}
-      className={cn(tabsListVariants({ variant }), "h-11", className)}
+      className={cn(tabsListVariants({ variant }), className)}
       {...props}
     />
   )
@@ -58,8 +54,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        "inline-flex items-center justify-center px-4 py-1.5 text-sm font-display uppercase tracking-[0.06em] data-[state=active]:bg-[var(--ink)] data-[state=active]:text-[var(--paper)] disabled:pointer-events-none disabled:opacity-50",
-        "data-active:bg-[var(--ink)] data-active:text-[var(--paper)]",
+        "relative inline-flex items-center justify-center pb-3 pt-1 text-[14px] font-medium text-[var(--ink-3)] transition-colors hover:text-[var(--ink)] data-[state=active]:text-[var(--ink)] data-active:text-[var(--ink)] disabled:pointer-events-none disabled:opacity-50 after:content-[''] after:absolute after:left-0 after:right-0 after:bottom-[-1px] after:h-[2px] after:bg-transparent data-[state=active]:after:bg-[var(--forest)] data-active:after:bg-[var(--forest)] after:transition-colors after:duration-200",
         className
       )}
       {...props}
@@ -69,11 +64,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
 
 function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
   return (
-    <TabsPrimitive.Panel
-      data-slot="tabs-content"
-      className={cn("mt-4 outline-none", className)}
-      {...props}
-    />
+    <TabsPrimitive.Panel data-slot="tabs-content" className={cn("mt-3 outline-none", className)} {...props} />
   )
 }
 
