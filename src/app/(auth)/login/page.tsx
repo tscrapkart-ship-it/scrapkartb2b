@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
+import { LogIn, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GoogleAuthButton } from "@/components/auth/google-auth-button";
+
+const EASE = [0.32, 0.72, 0, 1] as const;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,106 +37,97 @@ export default function LoginPage() {
       return;
     }
 
-    // Middleware will handle the correct redirect based on role
     router.push("/");
     router.refresh();
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.45, ease: EASE }}
     >
-      <div className="rounded-2xl border border-[#262626] bg-[#141414] p-8 shadow-2xl">
-        {/* Header */}
-        <div className="mb-8 text-center space-y-2">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#10B981]/10 border border-[#10B981]/20">
-            <LogIn className="h-6 w-6 text-[#10B981]" />
-          </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">
-            Welcome back
-          </h1>
-          <p className="text-base text-white/40">
-            Sign in to your ScrapKart account
-          </p>
+      <div className="mb-9">
+        <div className="inline-flex size-10 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)] mb-5">
+          <LogIn className="size-[18px] text-[var(--forest)]" />
         </div>
-
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-white/60 text-base">
-              Email
-            </Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="pl-10 h-11 bg-[#1A1A1A] border-[#262626] text-white placeholder:text-white/25 rounded-xl focus:border-[#10B981]/50 focus:ring-1 focus:ring-[#10B981]/30 focus-visible:ring-[#10B981]/30 transition-all"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-white/60 text-base">
-              Password
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
-              <Input
-                id="password"
-                type="password"
-                placeholder="Your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="pl-10 h-11 bg-[#1A1A1A] border-[#262626] text-white placeholder:text-white/25 rounded-xl focus:border-[#10B981]/50 focus:ring-1 focus:ring-[#10B981]/30 focus-visible:ring-[#10B981]/30 transition-all"
-              />
-            </div>
-          </div>
-
-          {error && (
-            <motion.p
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-base text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2"
-            >
-              {error}
-            </motion.p>
-          )}
-
-          <Button
-            type="submit"
-            className="w-full h-11 rounded-xl bg-[#10B981] hover:bg-[#059669] text-black font-semibold transition-all duration-300"
-            disabled={loading}
-          >
-            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Signing in...</> : "Sign In"}
-          </Button>
-        </form>
-
-        <div className="mt-6 space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-[#1A1A1A]" />
-            <span className="text-xs text-white/25">or</span>
-            <div className="h-px flex-1 bg-[#1A1A1A]" />
-          </div>
-          <GoogleAuthButton label="Sign in with Google" />
-        </div>
-
-        <p className="mt-6 text-center text-base text-white/40">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="font-medium text-[#10B981] hover:text-[#34D399] transition-colors"
-          >
-            Sign Up
-          </Link>
+        <h1 className="text-[28px] font-semibold tracking-[-0.025em] leading-tight text-[var(--ink)]">
+          Welcome back.
+        </h1>
+        <p className="mt-2 text-[14.5px] text-[var(--ink-3)] leading-relaxed">
+          Sign in to your ScrapKart account.
         </p>
       </div>
+
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@company.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="Your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+          />
+        </div>
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: EASE }}
+            className="text-[13px] text-[var(--danger)] bg-[var(--danger)]/10 border border-[var(--danger)]/30 rounded-[var(--radius-md)] px-3 py-2"
+            role="alert"
+          >
+            {error}
+          </motion.p>
+        )}
+
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              Signing in...
+            </>
+          ) : (
+            "Sign in"
+          )}
+        </Button>
+      </form>
+
+      <div className="mt-6 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="h-px flex-1 bg-[var(--line)]" />
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)]">or</span>
+          <div className="h-px flex-1 bg-[var(--line)]" />
+        </div>
+        <GoogleAuthButton label="Sign in with Google" />
+      </div>
+
+      <p className="mt-7 text-center text-[14px] text-[var(--ink-3)]">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/signup"
+          className="font-medium text-[var(--forest)] hover:text-[var(--forest-2)] transition-colors"
+        >
+          Sign up
+        </Link>
+      </p>
     </motion.div>
   );
 }
