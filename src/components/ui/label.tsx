@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
@@ -9,7 +8,7 @@ function Label({ className, ...props }: React.ComponentProps<"label">) {
     <label
       data-slot="label"
       className={cn(
-        "font-display text-[11px] uppercase tracking-[0.14em] text-[var(--ink-3)] mb-2 inline-block",
+        "inline-block text-[13px] font-medium text-[var(--ink-2)] mb-2",
         className
       )}
       {...props}
