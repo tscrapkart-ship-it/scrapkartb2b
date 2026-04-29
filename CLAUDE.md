@@ -41,6 +41,8 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 ### GitHub & Deployment
 - **GitHub:** `https://github.com/tscrapkart-ship-it/scrapkartrehaul.git` (branch: `master`)
 - **Deployed:** Vercel (connected to GitHub repo — auto-deploys on push to `master`)
+- **Production domain:** `https://scrapkart.app` (custom domain pointed at the Vercel deployment). The `*.vercel.app` URL still resolves but is not the canonical surface — all Supabase Auth URL config, Google OAuth, and PWA scope target `scrapkart.app`.
+- **Future B2B subdomain:** `https://b2b.scrapkart.app` (planned — not yet split). Treat OAuth allow-lists, cookie scope, and any environment-specific config as if both `scrapkart.app` and `b2b.scrapkart.app` will be live.
 - **Build command:** `next build --webpack` (required for `next-pwa` service worker generation — Turbopack is incompatible with PWA webpack plugins)
 
 ### What's next
@@ -99,7 +101,7 @@ The Supabase MCP server is authenticated and operational when using Claude Code 
 - **Schema:** All 5 tables live with RLS enabled: `users`, `companies`, `scraps`, `bookings`, `messages`
 - **Storage:** `company-logos` and `scrap-images` buckets created (public)
 - **Realtime:** Enabled on `messages` table
-- **Auth:** Email + password. Signup sends confirmation email. Confirmation links point to `https://scrapkartrehaul.vercel.app` — updated in Supabase dashboard → Auth → URL Configuration.
+- **Auth:** Email + password. Signup sends confirmation email. Confirmation links and OAuth redirects point to `https://scrapkart.app` (the canonical Site URL in Supabase Auth → URL Configuration). The Redirect URLs allow-list also includes `https://*.scrapkart.app/auth/callback` (covers `b2b.` and any future subdomains), the vercel preview pattern `https://*-tscrapkart-ship-it.vercel.app/auth/callback`, and `http://localhost:3000/auth/callback` for local dev.
 - **Auth bug fixed (2026-03-26):** Signup now shows "check your email" screen instead of prematurely redirecting to `/role-select` before email is confirmed.
 - **Google OAuth (2026-03-29):** Enabled in Supabase. Google Cloud project: `scrapkart-491711`. OAuth client credentials stored in Supabase Auth → Providers → Google. `public.users.role` is nullable to support new OAuth users who haven't picked a role yet. DB trigger `handle_new_user()` auto-inserts into `public.users` on every new auth signup (email or OAuth).
 - **Auth callback (`src/app/auth/callback/route.ts`):** After OAuth, checks user's role and routes to `/admin`, `/dashboard`, `/marketplace`, or `/role-select` as appropriate.
