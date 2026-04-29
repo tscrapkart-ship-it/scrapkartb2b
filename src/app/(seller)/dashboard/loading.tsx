@@ -4,7 +4,7 @@ export default function DashboardLoading() {
       <div className="flex items-center justify-between">
         <div>
           <div className="h-8 w-48 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
-          <div className="mt-2 h-4 w-64 rounded-[var(--radius-sm)] bg-[var(--paper)] animate-pulse" />
+          <div className="mt-2 h-4 w-64 rounded-[var(--radius-sm)] bg-[var(--paper-2)] animate-pulse" />
         </div>
         <div className="h-10 w-32 rounded-[var(--radius-md)] bg-[var(--paper-2)] animate-pulse" />
       </div>

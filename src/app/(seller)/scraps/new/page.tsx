@@ -175,7 +175,7 @@ export default function NewScrapPage() {
                     onClick={() => handleCategoryChange(cat)}
                     className={`rounded-[var(--radius-sm)] px-4 py-2 text-base font-medium transition-all ${
                       selectedCategory === cat
-                        ? "bg-[var(--forest)] text-white"
+                        ? "bg-[var(--forest-tint)] text-[var(--forest)] border border-[var(--forest)]/30"
                         : "border border-[var(--line)] bg-[var(--paper-2)] text-[var(--ink-2)] hover:bg-[var(--paper-3)] hover:text-[var(--ink)]"
                     }`}
                   >
