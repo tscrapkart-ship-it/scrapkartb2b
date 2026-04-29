@@ -125,13 +125,13 @@ export function ImageUpload({
               src={url}
               alt={`Upload ${i + 1}`}
               fill
-              className="rounded-xl object-cover"
+              className="rounded-[var(--radius-md)] object-cover"
               sizes="96px"
             />
             <button
               type="button"
               onClick={() => removeImage(i)}
-              className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity group-hover:opacity-100"
+              className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--danger)] text-white opacity-0 transition-opacity group-hover:opacity-100"
             >
               <X className="h-3 w-3" />
             </button>
@@ -154,21 +154,21 @@ export function ImageUpload({
             onDragOver={handleDragOver}
             onDrop={handleDrop}
             disabled={uploading}
-            className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-white/10 bg-brand-dark px-6 py-8 transition-colors hover:border-brand-accent/30 hover:bg-brand-dark/80 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] bg-[var(--paper-2)] px-6 py-8 transition-colors hover:border-[var(--forest)]/30 hover:bg-[var(--paper-3)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {uploading ? (
-              <Loader2 className="h-6 w-6 text-brand-accent animate-spin" />
+              <Loader2 className="h-6 w-6 text-[var(--forest)] animate-spin" />
             ) : (
-              <Upload className="h-6 w-6 text-white/30" />
+              <Upload className="h-6 w-6 text-[var(--ink-3)]" />
             )}
-            <span className="text-sm text-white/40">
+            <span className="text-sm text-[var(--ink-3)]">
               {uploading ? "Uploading..." : "Click or drag images here"}
             </span>
-            <span className="text-xs text-white/25">
+            <span className="text-xs text-[var(--ink-4)]">
               JPEG, PNG, WebP, GIF — max 5MB each
             </span>
           </button>
-          <p className="mt-2 text-xs text-white/30">
+          <p className="mt-2 text-xs text-[var(--ink-4)]">
             {value.length}/{maxImages} images
           </p>
         </div>

@@ -10,11 +10,11 @@ export function ImageGallery({ images }: { images: string[] }) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-2xl border border-[#262626] bg-[#141414]">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1A1A1A] border border-[#262626] mb-3">
-          <ImageIcon className="h-8 w-8 text-[#525252]" />
+      <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)]">
+        <div className="flex h-16 w-16 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--paper-2)] border border-[var(--line)] mb-3">
+          <ImageIcon className="h-8 w-8 text-[var(--ink-4)]" />
         </div>
-        <p className="text-base text-[#525252] font-medium">No images available</p>
+        <p className="text-base text-[var(--ink-4)] font-medium">No images available</p>
       </div>
     );
   }
@@ -22,10 +22,10 @@ export function ImageGallery({ images }: { images: string[] }) {
   return (
     <div className="space-y-3">
       {/* Main image */}
-      <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#262626] bg-[#0A0A0A]">
+      <div className="group relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper-2)]">
         {/* Loading pulse */}
         {!loaded && (
-          <div className="absolute inset-0 z-10 animate-pulse bg-[#1A1A1A]" />
+          <div className="absolute inset-0 z-10 animate-pulse bg-[var(--paper-2)]" />
         )}
 
         <Image
@@ -44,14 +44,14 @@ export function ImageGallery({ images }: { images: string[] }) {
           <>
             <button
               onClick={() => { setLoaded(false); setSelected((s) => (s - 1 + images.length) % images.length); }}
-              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-black/70"
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(10,10,10,0.5)] text-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-[rgba(10,10,10,0.7)]"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={() => { setLoaded(false); setSelected((s) => (s + 1) % images.length); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-black/70"
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(10,10,10,0.5)] text-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-[rgba(10,10,10,0.7)]"
               aria-label="Next image"
             >
               <ChevronRight className="h-5 w-5" />
@@ -61,7 +61,7 @@ export function ImageGallery({ images }: { images: string[] }) {
 
         {/* Image counter */}
         {images.length > 1 && (
-          <div className="absolute bottom-3 right-3 rounded-md bg-black/50 px-2.5 py-1 text-sm font-medium text-white/80 backdrop-blur-sm">
+          <div className="absolute bottom-3 right-3 rounded-[var(--radius-xs)] bg-[rgba(10,10,10,0.5)] px-2.5 py-1 text-sm font-medium text-white/90 backdrop-blur-sm">
             {selected + 1} / {images.length}
           </div>
         )}
@@ -74,9 +74,9 @@ export function ImageGallery({ images }: { images: string[] }) {
             <button
               key={url}
               onClick={() => { setLoaded(false); setSelected(i); }}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
+              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-[var(--radius-md)] border-2 transition-all ${
                 i === selected
-                  ? "border-[#10B981] shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                  ? "border-[var(--forest)] shadow-[var(--shadow-1)]"
                   : "border-transparent opacity-50 hover:opacity-80"
               }`}
             >
