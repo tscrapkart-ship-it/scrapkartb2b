@@ -179,7 +179,7 @@ export default async function AdminOverviewPage() {
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium">{card.label}</p>
                   <div className={`flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] ${card.iconBg} transition-transform group-hover:scale-110`}>
-                    <Icon className={`h-4.5 w-4.5 ${card.iconColor}`} />
+                    <Icon className={`h-[18px] w-[18px] ${card.iconColor}`} />
                   </div>
                 </div>
                 <p className="text-4xl font-semibold tabular-nums text-[var(--ink)]">{card.value}</p>
