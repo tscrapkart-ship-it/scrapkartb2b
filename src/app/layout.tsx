@@ -15,7 +15,7 @@ const interTight = Inter_Tight({
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
-  weight: ["400", "500"],
+  weight: "variable",
   style: ["italic"],
   axes: ["opsz"],
   display: "swap",
