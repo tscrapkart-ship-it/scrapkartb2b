@@ -5,6 +5,7 @@ import { MarketingFooter } from "@/components/shared/marketing-footer";
 import { LiveMarketplacePanel } from "@/components/shared/live-marketplace-panel";
 import { HeroStatCounter } from "@/components/landing/hero-stat-counter";
 import { HowItWorks } from "@/components/landing/how-it-works";
+import { CategoriesGrid } from "@/components/landing/categories-grid";
 import { HeroEntrance, HeroEntranceItem } from "@/components/shared/reveal";
 import { getLiveListings } from "@/lib/queries/live-listings";
 
@@ -75,7 +76,9 @@ export default async function Home() {
 
       <HowItWorks />
 
-      {/* (Categories, Why, CTA — added in Tasks 15–16) */}
+      <CategoriesGrid />
+
+      {/* (Why, CTA — added in Task 16) */}
 
       <MarketingFooter />
     </div>
