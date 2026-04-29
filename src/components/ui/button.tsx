@@ -6,33 +6,34 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-display uppercase tracking-[0.06em] border-2 border-[var(--ink)] transition-[transform,box-shadow] duration-100 ease-[cubic-bezier(0.2,0.8,0.2,1)] focus-visible:outline-none focus-visible:shadow-[var(--shadow-green)] disabled:opacity-50 disabled:cursor-not-allowed",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium tracking-[-0.005em] transition-[transform,box-shadow,background-color,color,border-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] focus-visible:outline-none focus-visible:shadow-[var(--ring-forest)] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
   {
     variants: {
       variant: {
         primary:
-          "bg-[var(--ink)] text-[var(--paper)] shadow-green hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--green)]",
+          "bg-[var(--forest)] text-white border border-[var(--forest)] hover:bg-[var(--forest-2)] hover:border-[var(--forest-2)] hover:-translate-y-px shadow-[var(--shadow-1)]",
         secondary:
-          "bg-[var(--paper)] text-[var(--ink)] shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--ink)]",
+          "bg-[var(--paper)] text-[var(--ink)] border border-[var(--line)] hover:bg-[var(--paper-2)] hover:-translate-y-px",
         ghost:
-          "border-transparent bg-transparent text-[var(--ink)] font-sans normal-case tracking-normal underline-offset-4 hover:underline",
+          "bg-transparent text-[var(--ink)] border border-transparent hover:bg-[var(--paper-2)]",
+        link:
+          "bg-transparent text-[var(--ink)] border-0 h-auto p-0 underline-offset-4 hover:underline hover:text-[var(--forest)]",
         destructive:
-          "bg-[var(--danger)] text-[var(--paper)] shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--ink)]",
-        // Back-compat aliases (callsites haven't been updated yet)
+          "bg-[var(--danger)] text-white border border-[var(--danger)] hover:opacity-90 hover:-translate-y-px shadow-[var(--shadow-1)]",
+        // back-compat aliases (existing callsites in (buyer)/(seller)/admin still pass these)
         default:
-          "bg-[var(--ink)] text-[var(--paper)] shadow-green hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--green)]",
+          "bg-[var(--forest)] text-white border border-[var(--forest)] hover:bg-[var(--forest-2)] hover:border-[var(--forest-2)] hover:-translate-y-px shadow-[var(--shadow-1)]",
         outline:
-          "bg-[var(--paper)] text-[var(--ink)] shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--ink)]",
-        link: "border-transparent bg-transparent text-[var(--ink)] font-sans normal-case tracking-normal underline-offset-4 underline hover:no-underline p-0 h-auto",
+          "bg-[var(--paper)] text-[var(--ink)] border border-[var(--line)] hover:bg-[var(--paper-2)] hover:-translate-y-px",
       },
       size: {
-        sm: "h-9 px-3 text-xs",
-        md: "h-11 px-5 text-sm",
-        lg: "h-12 px-6 text-sm",
-        icon: "h-11 w-11 px-0",
-        // Back-compat aliases
-        default: "h-11 px-5 text-sm",
-        "icon-sm": "h-9 w-9 px-0",
+        sm:    "h-9 px-3 text-[13px] rounded-[var(--radius-sm)]",
+        md:    "h-11 px-5 text-[14.5px] rounded-[var(--radius-md)]",
+        lg:    "h-12 px-6 text-[15px] rounded-[var(--radius-md)]",
+        icon:  "h-11 w-11 px-0 rounded-[var(--radius-md)]",
+        // back-compat
+        default:    "h-11 px-5 text-[14.5px] rounded-[var(--radius-md)]",
+        "icon-sm":  "h-9 w-9 px-0 rounded-[var(--radius-sm)]",
       },
     },
     defaultVariants: {
