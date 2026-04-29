@@ -6,18 +6,17 @@ import Lenis from "lenis";
 export function LenisProvider() {
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    // Respect user motion preference — bail out if reduced-motion is on.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.2,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.4,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+      syncTouch: false,
     });
 
     let rafId = 0;
