@@ -69,9 +69,7 @@ export function BookScrapDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        render={
-          <Button className="w-full bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)]" size="lg" />
-        }
+        render={<Button className="w-full" size="lg" />}
       >
         <ShoppingBag className="mr-2 h-4 w-4" />
         Book Now
@@ -89,14 +87,8 @@ export function BookScrapDialog({
           Payment integration coming soon. This is a booking confirmation only.
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel className="border-[var(--line)] bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)]">
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleBook}
-            disabled={loading}
-            className="bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)]"
-          >
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleBook} disabled={loading}>
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

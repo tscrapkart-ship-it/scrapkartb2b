@@ -152,10 +152,7 @@ export function SubmitBidDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button
-            className="w-full bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)] font-semibold"
-            size="lg"
-          />
+          <Button className="w-full" size="lg" />
         }
       >
         <Gavel className="mr-2 h-4 w-4" />
@@ -183,7 +180,6 @@ export function SubmitBidDialog({
             </p>
             <Button
               onClick={() => { setOpen(false); setSuccess(false); router.refresh(); }}
-              className="bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)]"
             >
               Done
             </Button>
@@ -247,7 +243,7 @@ export function SubmitBidDialog({
                   variant="outline"
                   onClick={handleWithdraw}
                   disabled={loading || withdrawing}
-                  className="border-[var(--danger)]/30 text-[var(--danger)] hover:bg-[var(--danger)]/10 hover:border-[var(--danger)]/30"
+                  className="border-[var(--danger)]/30 text-[var(--danger)] hover:bg-[var(--danger)]/10"
                 >
                   {withdrawing ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -259,7 +255,7 @@ export function SubmitBidDialog({
               <Button
                 type="submit"
                 disabled={loading || withdrawing || !offeredPrice}
-                className="flex-1 bg-[var(--forest)] text-white font-semibold hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)] disabled:opacity-40"
+                className="flex-1"
               >
                 {loading ? (
                   <>
