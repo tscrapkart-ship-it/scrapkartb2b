@@ -43,18 +43,18 @@ export function MessageBubble({
         <div
           className={`relative px-4 py-2.5 ${
             isOwn
-              ? "rounded-2xl rounded-tr-md bg-[#10B981] text-black"
-              : "rounded-2xl rounded-tl-md bg-[#1A1A1A] text-[#E5E5E5] border border-[#262626]"
+              ? "rounded-[var(--radius-lg)] rounded-tr-[var(--radius-sm)] bg-[var(--forest)] text-white"
+              : "rounded-[var(--radius-lg)] rounded-tl-[var(--radius-sm)] bg-[var(--paper-2)] text-[var(--ink)] border border-[var(--line)]"
           }`}
         >
-          <p className={`text-base leading-relaxed ${isOwn ? "font-medium" : ""}`}>
+          <p className="text-base leading-relaxed">
             {message.content}
           </p>
         </div>
         {showTimestamp && (
           <p
             className={`mt-1 px-1 text-xs ${
-              isOwn ? "text-right text-[#525252]" : "text-left text-[#525252]"
+              isOwn ? "text-right text-[var(--ink-4)]" : "text-left text-[var(--ink-4)]"
             }`}
           >
             {formatTime(message.created_at)}

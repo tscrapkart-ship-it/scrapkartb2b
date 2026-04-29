@@ -73,30 +73,30 @@ export function ChatInterface({
   }
 
   return (
-    <div className="flex h-[calc(100vh-12rem)] flex-col rounded-2xl border border-[#262626] bg-[#141414] overflow-hidden">
+    <div className="flex h-[calc(100vh-12rem)] flex-col rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] overflow-hidden">
       {/* Messages area */}
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto overscroll-contain px-4 py-4"
-        style={{ scrollbarWidth: "thin", scrollbarColor: "#262626 transparent" }}
+        style={{ scrollbarWidth: "thin", scrollbarColor: "var(--line) transparent" }}
       >
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1A1A1A] border border-[#262626]">
-              <Loader2 className="h-5 w-5 animate-spin text-[#10B981]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--paper-2)] border border-[var(--line)]">
+              <Loader2 className="h-5 w-5 animate-spin text-[var(--forest)]" />
             </div>
-            <p className="mt-3 text-base text-[#525252]">Loading messages...</p>
+            <p className="mt-3 text-base text-[var(--ink-4)]">Loading messages...</p>
           </div>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#10B981]/10 border border-[#10B981]/20">
-              <MessageSquare className="h-6 w-6 text-[#10B981]" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--forest-tint)] border border-[var(--forest)]/20">
+              <MessageSquare className="h-6 w-6 text-[var(--forest)]" />
             </div>
-            <p className="mt-4 text-base font-medium text-[#A3A3A3]">
+            <p className="mt-4 text-base font-medium text-[var(--ink-2)]">
               Start the conversation
             </p>
-            <p className="mt-1 text-sm text-[#525252]">
+            <p className="mt-1 text-sm text-[var(--ink-4)]">
               Send a message to begin discussing this deal.
             </p>
           </div>
@@ -106,11 +106,11 @@ export function ChatInterface({
               <div key={group.date}>
                 {/* Date separator */}
                 <div className="flex items-center justify-center py-4">
-                  <div className="h-px flex-1 bg-[#262626]" />
-                  <span className="mx-3 text-xs font-medium uppercase tracking-widest text-[#525252]">
+                  <div className="h-px flex-1 bg-[var(--line)]" />
+                  <span className="mx-3 text-xs font-medium uppercase tracking-widest text-[var(--ink-4)]">
                     {group.date}
                   </span>
-                  <div className="h-px flex-1 bg-[#262626]" />
+                  <div className="h-px flex-1 bg-[var(--line)]" />
                 </div>
                 {/* Messages for this date */}
                 <div className="space-y-3">
@@ -134,7 +134,7 @@ export function ChatInterface({
         <div className="relative">
           <button
             onClick={scrollToBottom}
-            className="absolute -top-12 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#1A1A1A] border border-[#262626] text-[#A3A3A3] hover:bg-[#262626] hover:text-white transition-all shadow-lg"
+            className="absolute -top-12 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--paper)] border border-[var(--line)] text-[var(--ink-3)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)] transition-all shadow-[var(--shadow-1)]"
           >
             <ArrowDown className="h-4 w-4" />
           </button>
@@ -142,7 +142,7 @@ export function ChatInterface({
       )}
 
       {/* Input area */}
-      <div className="border-t border-[#262626] bg-[#141414] px-4 py-3">
+      <div className="border-t border-[var(--line)] bg-[var(--paper)] px-4 py-3">
         <ChatInput onSend={handleSend} />
       </div>
     </div>

@@ -39,16 +39,16 @@ export function ChatInput({
           onChange={(e) => setText(e.target.value)}
           placeholder="Type a message..."
           disabled={disabled}
-          className="h-11 w-full rounded-xl border border-[#262626] bg-[#0A0A0A] px-4 text-base text-white placeholder:text-[#525252] outline-none transition-colors focus:border-[#10B981]/50 focus:ring-1 focus:ring-[#10B981]/20 disabled:cursor-not-allowed disabled:opacity-40"
+          className="h-11 w-full rounded-[var(--radius-md)] border border-[var(--line)] bg-[var(--paper)] px-4 text-base text-[var(--ink)] placeholder:text-[var(--ink-4)] outline-none transition-colors focus:border-[var(--forest)] focus:ring-1 focus:ring-[var(--forest)]/20 disabled:cursor-not-allowed disabled:opacity-40"
         />
       </div>
       <button
         type="submit"
         disabled={!canSend}
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius-md)] transition-all duration-200 ${
           canSend
-            ? "bg-[#10B981] text-black hover:bg-[#059669] active:scale-95 shadow-lg shadow-[#10B981]/20"
-            : "bg-[#1A1A1A] text-[#525252] border border-[#262626] cursor-not-allowed"
+            ? "bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] active:scale-95 shadow-[var(--shadow-1)]"
+            : "bg-[var(--paper-2)] text-[var(--ink-4)] border border-[var(--line)] cursor-not-allowed"
         }`}
       >
         {sending ? (
