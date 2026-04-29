@@ -70,32 +70,32 @@ export function BookScrapDialog({
     <AlertDialog>
       <AlertDialogTrigger
         render={
-          <Button className="w-full bg-brand-accent text-brand-dark hover:bg-brand-accent/80" size="lg" />
+          <Button className="w-full bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)]" size="lg" />
         }
       >
         <ShoppingBag className="mr-2 h-4 w-4" />
         Book Now
       </AlertDialogTrigger>
-      <AlertDialogContent className="border-[#262626] bg-brand-dark text-white">
+      <AlertDialogContent className="border-[var(--line)] bg-[var(--paper)] text-[var(--ink)]">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-white">Confirm Booking</AlertDialogTitle>
-          <AlertDialogDescription className="text-white/50">
+          <AlertDialogTitle className="text-[var(--ink)]">Confirm Booking</AlertDialogTitle>
+          <AlertDialogDescription className="text-[var(--ink-3)]">
             You are about to book &quot;{scrapTitle}&quot;. The seller will be
             notified and you can communicate via chat.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="flex items-start gap-2 rounded-xl bg-brand-accent/5 p-3 text-base text-white/40">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand-accent/60" />
+        <div className="flex items-start gap-2 rounded-[var(--radius-md)] bg-[var(--forest-tint)] p-3 text-base text-[var(--ink-2)]">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-[var(--forest)]" />
           Payment integration coming soon. This is a booking confirmation only.
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel className="border-white/10 bg-transparent text-white/60 hover:bg-[#1A1A1A] hover:text-white">
+          <AlertDialogCancel className="border-[var(--line)] bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)]">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleBook}
             disabled={loading}
-            className="bg-brand-accent text-brand-dark hover:bg-brand-accent/80"
+            className="bg-[var(--forest)] text-white hover:bg-[var(--forest-2)] shadow-[var(--shadow-1)]"
           >
             {loading ? (
               <>

@@ -63,12 +63,12 @@ export function MarketplaceFilters({
     >
       {/* Search */}
       <div className="relative max-w-lg">
-        <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#525252]" />
+        <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ink-4)]" />
         <Input
           placeholder="Search by title, material, or location..."
           defaultValue={currentSearch}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="h-11 rounded-xl border-[#262626] bg-[#141414] pl-10 text-[#F5F5F5] placeholder:text-[#525252] focus-visible:border-[#10B981]/40 focus-visible:ring-1 focus-visible:ring-[#10B981]/20"
+          className="h-11 rounded-[var(--radius-md)] border-[var(--line)] bg-[var(--paper)] pl-10 text-[var(--ink)] placeholder:text-[var(--ink-4)] focus-visible:border-[var(--forest)]/40 focus-visible:ring-1 focus-visible:ring-[var(--forest)]/20"
         />
       </div>
 
@@ -81,10 +81,10 @@ export function MarketplaceFilters({
               <button
                 key={cat}
                 disabled={isPending}
-                className={`rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-200 ${
+                className={`rounded-[var(--radius-sm)] px-3.5 py-1.5 text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-[#10B981] text-black shadow-sm"
-                    : "bg-[#141414] border border-[#262626] text-[#A3A3A3] hover:border-[#404040] hover:text-white"
+                    ? "bg-[var(--forest-tint)] border border-[var(--forest)]/30 text-[var(--forest)] shadow-[var(--shadow-1)]"
+                    : "bg-[var(--paper)] border border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--line)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)]"
                 }`}
                 onClick={() => updateParams("category", cat)}
               >
@@ -102,10 +102,10 @@ export function MarketplaceFilters({
               <button
                 key={opt.value}
                 disabled={isPending}
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+                className={`flex items-center gap-1.5 rounded-[var(--radius-sm)] px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-[#10B981]/10 text-[#10B981]"
-                    : "text-[#737373] hover:bg-[#1A1A1A] hover:text-white"
+                    ? "bg-[var(--forest-tint)] text-[var(--forest)]"
+                    : "text-[var(--ink-3)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)]"
                 }`}
                 onClick={() => updateParams("sort", opt.value)}
               >

@@ -12,14 +12,14 @@ interface ScrapWithCompany extends Scrap {
 export function ScrapGrid({ scraps }: { scraps: ScrapWithCompany[] }) {
   if (scraps.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#262626] bg-[#141414] py-20">
-        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#10B981]/10">
-          <Package className="h-7 w-7 text-[#10B981]" />
+      <div className="flex flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] bg-[var(--paper)] py-20">
+        <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)]">
+          <Package className="h-7 w-7 text-[var(--forest)]" />
         </div>
-        <p className="mt-5 text-lg font-semibold text-[#D4D4D4]">
+        <p className="mt-5 text-lg font-semibold text-[var(--ink)]">
           No listings found
         </p>
-        <p className="mt-1 text-sm text-[#737373]">
+        <p className="mt-1 text-sm text-[var(--ink-3)]">
           Try adjusting your filters or check back later.
         </p>
       </div>
