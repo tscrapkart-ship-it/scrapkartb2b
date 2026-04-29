@@ -59,7 +59,7 @@ export default async function ScrapDetailPage({
     userBid = data;
   }
 
-  const statusInfo = statusConfig[scrap.status] ?? { label: scrap.status, class: "bg-[var(--paper-2)] text-[var(--ink-4)]" };
+  const statusInfo = statusConfig[scrap.status] ?? { label: scrap.status, class: "bg-[var(--paper-2)] text-[var(--ink-4)] border border-[var(--line)]" };
   const images = [...(scrap.photos ?? []), ...(scrap.images ?? [])].filter(Boolean);
 
   return (

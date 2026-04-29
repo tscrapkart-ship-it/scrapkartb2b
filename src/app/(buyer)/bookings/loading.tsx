@@ -9,7 +9,7 @@ export default function BookingsLoading() {
       {/* Stats skeleton */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-card p-4 animate-pulse">
+          <div key={i} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-4 animate-pulse">
             <div className="h-4 w-20 rounded bg-[var(--paper-2)] mb-2" />
             <div className="h-8 w-12 rounded bg-[var(--paper-2)]" />
           </div>
@@ -19,7 +19,7 @@ export default function BookingsLoading() {
       {/* Bids list skeleton */}
       <div className="space-y-3">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-card p-4 animate-pulse">
+          <div key={i} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-4 animate-pulse">
             <div className="flex justify-between mb-3">
               <div className="h-5 w-full max-w-48 rounded bg-[var(--paper-2)]" />
               <div className="h-5 w-20 rounded-full bg-[var(--paper-2)]" />

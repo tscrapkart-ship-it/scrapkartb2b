@@ -8,7 +8,7 @@ export default function CompaniesLoading() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-card p-5 space-y-3 animate-pulse">
+          <div key={i} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-5 space-y-3 animate-pulse">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-[var(--paper-2)]" />
               <div className="space-y-1.5">
