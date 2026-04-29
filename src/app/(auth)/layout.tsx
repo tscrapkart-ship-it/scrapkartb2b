@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AuthLayout({
   children,
@@ -6,45 +7,58 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      {/* Left decorative panel - hidden on mobile */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#0A0A0A] border-r border-[#262626] flex-col items-center justify-center px-12">
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center text-center space-y-8">
+    <div className="flex min-h-screen bg-[var(--paper)]">
+      {/* Left narrative panel — desktop only */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[var(--paper-2)] flex-col justify-between p-12 xl:p-16 border-r border-[var(--line)]">
+        <Link href="/" className="inline-flex items-center gap-2.5 w-fit">
           <Image
-            src="/logos/ScrapKart White Logo.png"
+            src="/logos/ScrapKart Black Logo.png"
             alt="ScrapKart"
-            width={220}
-            height={62}
+            width={140}
+            height={40}
             priority
           />
-          <div className="space-y-4 max-w-md">
-            <h2 className="text-3xl font-bold text-white tracking-tight">
-              Industrial Scrap,{" "}
-              <span className="text-[#10B981]">Reimagined.</span>
-            </h2>
-            <p className="text-[#A3A3A3] text-base leading-relaxed">
-              The B2B marketplace connecting waste producers with recyclers.
-              Turn your industrial scrap into opportunity.
-            </p>
-          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--ink-3)] border border-[var(--line)] rounded-[var(--radius-xs)] px-1.5 py-0.5">
+            B2B
+          </span>
+        </Link>
+
+        <div className="max-w-[440px]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium">
+            India&apos;s industrial scrap exchange
+          </p>
+          <h2 className="mt-3 text-[clamp(28px,3.4vw,40px)] font-semibold tracking-[-0.025em] leading-[1.05] text-[var(--ink)]">
+            List, verify, bid, <span className="italic-accent">settle.</span>
+          </h2>
+          <p className="mt-5 text-[15.5px] text-[var(--ink-2)] leading-[1.6]">
+            120+ verified yards already trading on ScrapKart. Open bids, weighbridge-reconciled settlement in 72 hours.
+          </p>
+        </div>
+
+        <div className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)]">
+          &copy; {new Date().getFullYear()} ScrapKart
         </div>
       </div>
 
-      {/* Right side - form area */}
-      <div className="flex w-full lg:w-1/2 flex-col items-center justify-center bg-[#0A0A0A] px-4 py-12 relative">
-        {/* Mobile logo - shown only on small screens */}
-        <div className="mb-8 lg:hidden relative z-10">
+      {/* Right form panel */}
+      <div className="flex w-full lg:w-1/2 flex-col px-5 sm:px-8 py-10 lg:py-12">
+        {/* Mobile / tablet wordmark */}
+        <Link href="/" className="lg:hidden inline-flex items-center gap-2.5 mb-8 w-fit">
           <Image
-            src="/logos/ScrapKart White Logo.png"
+            src="/logos/ScrapKart Black Logo.png"
             alt="ScrapKart"
-            width={180}
-            height={50}
+            width={132}
+            height={36}
             priority
           />
-        </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--ink-3)] border border-[var(--line)] rounded-[var(--radius-xs)] px-1.5 py-0.5">
+            B2B
+          </span>
+        </Link>
 
-        <div className="w-full max-w-md relative z-10">{children}</div>
+        <div className="flex-1 flex items-center justify-center w-full">
+          <div className="w-full max-w-[420px]">{children}</div>
+        </div>
       </div>
     </div>
   );
