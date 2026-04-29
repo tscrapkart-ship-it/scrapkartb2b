@@ -29,7 +29,7 @@ export default async function BuyerLayout({
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-brand-dark text-white">
+    <div className="min-h-screen overflow-x-hidden bg-[var(--paper)] text-[var(--ink)]">
       <BuyerNav userName={userName} />
       <main className="mx-auto max-w-7xl px-4 py-6 pb-20 sm:px-6 md:pb-6 lg:px-8">
         {children}
