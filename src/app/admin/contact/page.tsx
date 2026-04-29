@@ -21,10 +21,10 @@ async function getSubmissions(status?: string) {
 }
 
 const statusColor: Record<string, string> = {
-  new: "bg-brand-accent/10 text-brand-accent",
-  read: "bg-[#1A1A1A] text-white/40",
-  replied: "bg-green-500/10 text-green-400",
-  archived: "bg-[#1A1A1A] text-white/25",
+  new: "bg-[var(--forest-tint)] text-[var(--forest)]",
+  read: "bg-[var(--paper-2)] text-[var(--ink-3)]",
+  replied: "bg-[var(--forest-tint)] text-[var(--forest)]",
+  archived: "bg-[var(--paper-2)] text-[var(--ink-4)]",
 };
 
 export default async function AdminContactPage({
@@ -39,8 +39,8 @@ export default async function AdminContactPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Contact Submissions</h1>
-        <p className="mt-1 text-base text-white/40">Messages from the public contact form</p>
+        <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Contact Submissions</h1>
+        <p className="mt-1 text-base text-[var(--ink-3)]">Messages from the public contact form</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -54,8 +54,8 @@ export default async function AdminContactPage({
             href={tab.value === "all" ? "/admin/contact" : `/admin/contact?status=${tab.value}`}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               activeStatus === tab.value
-                ? "bg-brand-accent text-brand-dark"
-                : "border border-white/10 text-white/60 hover:border-brand-accent/30 hover:text-white"
+                ? "bg-[var(--forest)] text-white"
+                : "border border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--forest)]/30 hover:text-[var(--ink)]"
             }`}
           >
             {tab.label}
@@ -64,29 +64,29 @@ export default async function AdminContactPage({
       </div>
 
       {submissions.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-[#262626] py-16 text-center">
-          <MessageSquare className="h-8 w-8 text-white/20" />
-          <p className="text-base text-white/40">No submissions yet</p>
+        <div className="flex flex-col items-center gap-2 rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] py-16 text-center">
+          <MessageSquare className="h-8 w-8 text-[var(--ink-4)]" />
+          <p className="text-base text-[var(--ink-3)]">No submissions yet</p>
         </div>
       ) : (
         <div className="space-y-3">
           {submissions.map((sub: any) => (
             <div
               key={sub.id}
-              className={`rounded-xl border bg-card p-5 space-y-3 ${sub.status === "new" ? "border-brand-accent/20" : "border-[#262626]"}`}
+              className={`rounded-[var(--radius-lg)] border bg-[var(--paper)] p-5 space-y-3 ${sub.status === "new" ? "border-[var(--forest)]/30" : "border-[var(--line)]"}`}
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-white">{sub.name}</p>
+                    <p className="font-semibold text-[var(--ink)]">{sub.name}</p>
                     <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-sm font-medium ${statusColor[sub.status]}`}>
                       {sub.status}
                     </span>
                   </div>
-                  <p className="truncate text-base text-white/50">{sub.email}{sub.phone ? ` · ${sub.phone}` : ""}</p>
+                  <p className="truncate text-base text-[var(--ink-3)]">{sub.email}{sub.phone ? ` · ${sub.phone}` : ""}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <p className="whitespace-nowrap text-sm text-white/30">
+                  <p className="whitespace-nowrap text-sm text-[var(--ink-3)] tabular-nums">
                     {new Date(sub.created_at).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",
@@ -98,14 +98,14 @@ export default async function AdminContactPage({
               </div>
 
               {sub.subject && (
-                <p className="text-base font-medium text-white/70">{sub.subject}</p>
+                <p className="text-base font-medium text-[var(--ink-2)]">{sub.subject}</p>
               )}
 
-              <p className="text-base text-white/60 leading-relaxed">{sub.message}</p>
+              <p className="text-base text-[var(--ink-2)] leading-relaxed">{sub.message}</p>
 
               <a
                 href={`mailto:${sub.email}?subject=Re: ${sub.subject ?? "Your message to ScrapKart"}`}
-                className="inline-block text-sm text-brand-accent hover:text-brand-accent/80 transition-colors"
+                className="inline-block text-sm text-[var(--forest)] hover:opacity-80 transition-opacity"
               >
                 Reply via email →
               </a>

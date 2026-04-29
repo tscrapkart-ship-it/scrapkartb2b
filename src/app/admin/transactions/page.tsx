@@ -1,10 +1,10 @@
 import { ArrowLeftRight } from "lucide-react";
 
 const statusColor: Record<string, string> = {
-  scheduled: "bg-blue-500/10 text-blue-400",
-  in_progress: "bg-purple-500/10 text-purple-400",
-  completed: "bg-green-500/10 text-green-400",
-  cancelled: "bg-red-500/10 text-red-400",
+  scheduled: "bg-[var(--info)]/10 text-[var(--info)]",
+  in_progress: "bg-[var(--info)]/10 text-[var(--info)]",
+  completed: "bg-[var(--forest-tint)] text-[var(--forest)]",
+  cancelled: "bg-[var(--danger)]/10 text-[var(--danger)]",
 };
 
 async function getTransactions() {
@@ -30,48 +30,48 @@ export default async function AdminTransactionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Deals / Transactions</h1>
-        <p className="mt-1 text-sm text-white/40">All confirmed deals created from accepted bids</p>
+        <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Deals / Transactions</h1>
+        <p className="mt-1 text-sm text-[var(--ink-3)]">All confirmed deals created from accepted bids</p>
       </div>
 
-      <div className="rounded-xl border border-[#262626] bg-card overflow-hidden">
+      <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] overflow-hidden">
         {transactions.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16 text-center">
-            <ArrowLeftRight className="h-8 w-8 text-white/20" />
-            <p className="text-sm text-white/40">No transactions yet</p>
+            <ArrowLeftRight className="h-8 w-8 text-[var(--ink-4)]" />
+            <p className="text-sm text-[var(--ink-3)]">No transactions yet</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[650px] text-sm">
               <thead>
-                <tr className="border-b border-[#262626]">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Listing</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Producer</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Recycler</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Price</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Pickup</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Status</th>
+                <tr className="border-b border-[var(--line)]">
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Listing</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Producer</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Recycler</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Price</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Pickup</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-[var(--line-2)]">
                 {transactions.map((tx: any) => (
-                  <tr key={tx.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={tx.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[160px] truncate font-medium text-white">{tx.scraps?.title ?? "—"}</p>
-                      <p className="text-xs text-white/40">{tx.scraps?.category}</p>
+                      <p className="max-w-[160px] truncate font-medium text-[var(--ink)]">{tx.scraps?.title ?? "—"}</p>
+                      <p className="text-xs text-[var(--ink-3)]">{tx.scraps?.category}</p>
                     </td>
-                    <td className="max-w-[120px] truncate px-4 py-4 text-white/70 sm:px-5">{tx.producer?.name ?? "—"}</td>
-                    <td className="max-w-[120px] truncate px-4 py-4 text-white/70 sm:px-5">{tx.recycler?.name ?? "—"}</td>
-                    <td className="whitespace-nowrap px-4 py-4 font-semibold text-brand-accent sm:px-5">
+                    <td className="max-w-[120px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">{tx.producer?.name ?? "—"}</td>
+                    <td className="max-w-[120px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">{tx.recycler?.name ?? "—"}</td>
+                    <td className="whitespace-nowrap px-4 py-4 font-semibold text-[var(--ink)] tabular-nums sm:px-5">
                       ₹{tx.final_price?.toLocaleString("en-IN")}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-white/40 sm:px-5">
+                    <td className="whitespace-nowrap px-4 py-4 text-[var(--ink-3)] tabular-nums sm:px-5">
                       {tx.pickup_date
                         ? new Date(tx.pickup_date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
                         : "—"}
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 sm:px-5">
-                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusColor[tx.status] ?? "bg-white/10 text-white/50"}`}>
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusColor[tx.status] ?? "bg-[var(--paper-2)] text-[var(--ink-3)]"}`}>
                         {tx.status?.replace("_", " ")}
                       </span>
                     </td>
@@ -82,7 +82,7 @@ export default async function AdminTransactionsPage() {
           </div>
         )}
       </div>
-      <p className="text-xs text-white/20">{transactions.length} transaction{transactions.length !== 1 ? "s" : ""}</p>
+      <p className="text-xs text-[var(--ink-4)]">{transactions.length} transaction{transactions.length !== 1 ? "s" : ""}</p>
     </div>
   );
 }

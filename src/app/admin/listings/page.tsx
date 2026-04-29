@@ -19,18 +19,9 @@ async function getListings(status?: string) {
 }
 
 const statusColor: Record<string, string> = {
-  available: "bg-green-500/10 text-green-400",
-  booked: "bg-yellow-500/10 text-yellow-400",
-  collected: "bg-brand-accent/10 text-brand-accent",
-};
-
-const categoryColor: Record<string, string> = {
-  Metal: "bg-blue-500/10 text-blue-400",
-  "E-waste": "bg-purple-500/10 text-purple-400",
-  Plastic: "bg-pink-500/10 text-pink-400",
-  Paper: "bg-orange-500/10 text-orange-400",
-  Glass: "bg-cyan-500/10 text-cyan-400",
-  "Mixed Scrap": "bg-gray-500/10 text-gray-400",
+  available: "bg-[var(--forest-tint)] text-[var(--forest)]",
+  booked: "bg-[var(--warning)]/10 text-[var(--warning)]",
+  collected: "bg-[var(--forest-tint)] text-[var(--forest)]",
 };
 
 export default async function AdminListingsPage({
@@ -53,8 +44,8 @@ export default async function AdminListingsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Listings</h1>
-        <p className="mt-1 text-sm text-white/40">All scrap listings on the platform</p>
+        <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Listings</h1>
+        <p className="mt-1 text-sm text-[var(--ink-3)]">All scrap listings on the platform</p>
       </div>
 
       {/* Status filter tabs */}
@@ -65,8 +56,8 @@ export default async function AdminListingsPage({
             href={tab.value === "all" ? "/admin/listings" : `/admin/listings?status=${tab.value}`}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               activeTab === tab.value
-                ? "bg-brand-accent text-brand-dark"
-                : "border border-white/10 text-white/60 hover:border-brand-accent/30 hover:text-white"
+                ? "bg-[var(--forest)] text-white"
+                : "border border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--forest)]/30 hover:text-[var(--ink)]"
             }`}
           >
             {tab.label}
@@ -74,49 +65,49 @@ export default async function AdminListingsPage({
         ))}
       </div>
 
-      <div className="rounded-xl border border-[#262626] bg-card overflow-hidden">
+      <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] overflow-hidden">
         {listings.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16 text-center">
-            <Package className="h-8 w-8 text-white/20" />
-            <p className="text-sm text-white/40">No listings found</p>
+            <Package className="h-8 w-8 text-[var(--ink-4)]" />
+            <p className="text-sm text-[var(--ink-3)]">No listings found</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[700px] text-sm">
               <thead>
-                <tr className="border-b border-[#262626]">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Title</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Category</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Seller</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Price/kg</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Location</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-white/40 sm:px-5">Action</th>
+                <tr className="border-b border-[var(--line)]">
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Title</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Category</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Seller</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Price/kg</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Location</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Status</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-[var(--line-2)]">
                 {listings.map((listing: any) => (
-                  <tr key={listing.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={listing.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[180px] truncate font-medium text-white">{listing.title}</p>
-                      <p className="text-xs text-white/40">{listing.quantity} {listing.unit}</p>
+                      <p className="max-w-[180px] truncate font-medium text-[var(--ink)]">{listing.title}</p>
+                      <p className="text-xs text-[var(--ink-3)] tabular-nums">{listing.quantity} {listing.unit}</p>
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 sm:px-5">
-                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${categoryColor[listing.category] ?? "bg-white/10 text-white/60"}`}>
+                      <span className="rounded-full bg-[var(--forest-tint)] px-2.5 py-1 text-xs font-medium text-[var(--forest)]">
                         {listing.category}
                       </span>
                     </td>
-                    <td className="max-w-[140px] truncate px-4 py-4 text-white/60 sm:px-5">
+                    <td className="max-w-[140px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">
                       {(listing.companies as any)?.name ?? "—"}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-white sm:px-5">
+                    <td className="whitespace-nowrap px-4 py-4 text-[var(--ink)] tabular-nums sm:px-5">
                       ₹{listing.price.toLocaleString("en-IN")}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-white/60 sm:px-5">
+                    <td className="whitespace-nowrap px-4 py-4 text-[var(--ink-2)] sm:px-5">
                       {listing.city}, {listing.state}
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 sm:px-5">
-                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusColor[listing.status] ?? "bg-white/10 text-white/60"}`}>
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusColor[listing.status] ?? "bg-[var(--paper-2)] text-[var(--ink-2)]"}`}>
                         {listing.status}
                       </span>
                     </td>
@@ -131,7 +122,7 @@ export default async function AdminListingsPage({
         )}
       </div>
 
-      <p className="text-xs text-white/20">{listings.length} listing{listings.length !== 1 ? "s" : ""} shown</p>
+      <p className="text-xs text-[var(--ink-4)]">{listings.length} listing{listings.length !== 1 ? "s" : ""} shown</p>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export function ApproveUserButton({ userId }: { userId: string }) {
 
   if (done) {
     return (
-      <span className="flex items-center gap-1 text-xs text-green-400">
+      <span className="flex items-center gap-1 text-xs text-[var(--forest)]">
         <CheckCircle className="h-3.5 w-3.5" />
         Approved
       </span>
@@ -41,7 +41,6 @@ export function ApproveUserButton({ userId }: { userId: string }) {
       size="sm"
       onClick={handleApprove}
       disabled={loading}
-      className="bg-brand-accent/15 text-brand-accent border border-brand-accent/25 hover:bg-brand-accent/25 h-7 px-3 text-xs"
     >
       {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Approve"}
     </Button>

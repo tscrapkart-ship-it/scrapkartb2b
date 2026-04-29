@@ -23,13 +23,13 @@ export function DeleteListingButton({ id }: { id: string }) {
         <button
           onClick={handleDelete}
           disabled={loading}
-          className="text-xs text-red-400 hover:text-red-300 disabled:opacity-50"
+          className="text-xs text-[var(--danger)] hover:opacity-80 disabled:opacity-50"
         >
           {loading ? "Deleting..." : "Confirm"}
         </button>
         <button
           onClick={() => setConfirming(false)}
-          className="text-xs text-white/40 hover:text-white"
+          className="text-xs text-[var(--ink-3)] hover:text-[var(--ink)]"
         >
           Cancel
         </button>
@@ -40,7 +40,7 @@ export function DeleteListingButton({ id }: { id: string }) {
   return (
     <button
       onClick={() => setConfirming(true)}
-      className="flex items-center gap-1 text-xs text-white/30 hover:text-red-400 transition-colors"
+      className="flex items-center gap-1 text-xs text-[var(--ink-3)] hover:text-[var(--danger)] transition-colors"
     >
       <Trash2 className="h-3.5 w-3.5" />
       Remove

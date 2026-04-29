@@ -19,9 +19,9 @@ async function getRecyclerProfiles(status?: string) {
 }
 
 const statusColor: Record<string, string> = {
-  pending: "bg-yellow-500/10 text-yellow-400",
-  verified: "bg-green-500/10 text-green-400",
-  rejected: "bg-red-500/10 text-red-400",
+  pending: "bg-[var(--warning)]/10 text-[var(--warning)]",
+  verified: "bg-[var(--forest-tint)] text-[var(--forest)]",
+  rejected: "bg-[var(--danger)]/10 text-[var(--danger)]",
 };
 
 export default async function AdminRecyclersPage({
@@ -43,8 +43,8 @@ export default async function AdminRecyclersPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Recycler Verification</h1>
-        <p className="mt-1 text-sm text-white/40">
+        <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Recycler Verification</h1>
+        <p className="mt-1 text-sm text-[var(--ink-3)]">
           Review recycler profiles and compliance documents
         </p>
       </div>
@@ -56,8 +56,8 @@ export default async function AdminRecyclersPage({
             href={tab.value === "all" ? "/admin/recyclers" : `/admin/recyclers?status=${tab.value}`}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               activeStatus === tab.value
-                ? "bg-brand-accent text-brand-dark"
-                : "border border-white/10 text-white/60 hover:border-brand-accent/30 hover:text-white"
+                ? "bg-[var(--forest)] text-white"
+                : "border border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--forest)]/30 hover:text-[var(--ink)]"
             }`}
           >
             {tab.label}
@@ -66,23 +66,23 @@ export default async function AdminRecyclersPage({
       </div>
 
       {profiles.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-[#262626] py-16 text-center">
-          <Recycle className="h-8 w-8 text-white/20" />
-          <p className="text-sm text-white/40">No recycler profiles found</p>
+        <div className="flex flex-col items-center gap-2 rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] py-16 text-center">
+          <Recycle className="h-8 w-8 text-[var(--ink-4)]" />
+          <p className="text-sm text-[var(--ink-3)]">No recycler profiles found</p>
         </div>
       ) : (
         <div className="space-y-4">
           {profiles.map((profile: any) => (
-            <div key={profile.id} className="rounded-xl border border-[#262626] bg-card p-5 space-y-4">
+            <div key={profile.id} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-5 space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-white">{profile.users?.name ?? "Unknown"}</p>
+                    <p className="font-semibold text-[var(--ink)]">{profile.users?.name ?? "Unknown"}</p>
                     <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColor[profile.verification_status]}`}>
                       {profile.verification_status}
                     </span>
                   </div>
-                  <p className="truncate text-sm text-white/40">{profile.users?.email}</p>
+                  <p className="truncate text-sm text-[var(--ink-3)]">{profile.users?.email}</p>
                 </div>
                 {profile.verification_status === "pending" && (
                   <VerifyRecyclerButton profileId={profile.id} userId={profile.user_id} />
@@ -91,10 +91,10 @@ export default async function AdminRecyclersPage({
 
               {profile.waste_types_accepted?.length > 0 && (
                 <div>
-                  <p className="text-xs text-white/40 mb-2">Waste Types Accepted</p>
+                  <p className="text-xs text-[var(--ink-3)] mb-2">Waste Types Accepted</p>
                   <div className="flex flex-wrap gap-1.5">
                     {profile.waste_types_accepted.map((t: string) => (
-                      <span key={t} className="rounded-full bg-brand-accent/10 px-2.5 py-0.5 text-xs text-brand-accent">
+                      <span key={t} className="rounded-full bg-[var(--forest-tint)] px-2.5 py-0.5 text-xs text-[var(--forest)]">
                         {t}
                       </span>
                     ))}
@@ -105,14 +105,14 @@ export default async function AdminRecyclersPage({
               <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
                 {profile.service_radius_km && (
                   <div>
-                    <p className="text-xs text-white/30">Service Radius</p>
-                    <p className="text-white/70">{profile.service_radius_km} km</p>
+                    <p className="text-xs text-[var(--ink-3)]">Service Radius</p>
+                    <p className="text-[var(--ink-2)]">{profile.service_radius_km} km</p>
                   </div>
                 )}
                 {profile.pricing_model && (
                   <div>
-                    <p className="text-xs text-white/30">Pricing Model</p>
-                    <p className="text-white/70 capitalize">{profile.pricing_model}</p>
+                    <p className="text-xs text-[var(--ink-3)]">Pricing Model</p>
+                    <p className="text-[var(--ink-2)] capitalize">{profile.pricing_model}</p>
                   </div>
                 )}
               </div>
@@ -124,19 +124,19 @@ export default async function AdminRecyclersPage({
                   { label: "EPR Authorization", url: profile.epr_authorization_url },
                   { label: "ISO Certificate", url: profile.iso_certificate_url },
                 ].map((doc) => (
-                  <div key={doc.label} className="rounded-lg border border-[#262626] bg-[#141414] px-3 py-2">
-                    <p className="text-xs text-white/40">{doc.label}</p>
+                  <div key={doc.label} className="rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--paper-2)] px-3 py-2">
+                    <p className="text-xs text-[var(--ink-3)]">{doc.label}</p>
                     {doc.url ? (
                       <a
                         href={doc.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-brand-accent hover:underline truncate block mt-0.5"
+                        className="text-xs text-[var(--forest)] hover:underline truncate block mt-0.5"
                       >
                         View Document →
                       </a>
                     ) : (
-                      <p className="text-xs text-white/25 mt-0.5">Not provided</p>
+                      <p className="text-xs text-[var(--ink-4)] mt-0.5">Not provided</p>
                     )}
                   </div>
                 ))}

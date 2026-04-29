@@ -45,7 +45,7 @@ export function VerifyRecyclerButton({
 
   if (done) {
     return (
-      <span className={`flex items-center gap-1 text-xs ${done === "verified" ? "text-green-400" : "text-red-400"}`}>
+      <span className={`flex items-center gap-1 text-xs ${done === "verified" ? "text-[var(--forest)]" : "text-[var(--danger)]"}`}>
         {done === "verified" ? <CheckCircle className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
         {done}
       </span>
@@ -58,16 +58,14 @@ export function VerifyRecyclerButton({
         size="sm"
         onClick={() => handle("verify")}
         disabled={loading !== null}
-        className="bg-green-500/15 text-green-400 border border-green-500/25 hover:bg-green-500/25 h-7 px-3 text-xs"
       >
         {loading === "verify" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><CheckCircle className="h-3.5 w-3.5 mr-1" />Verify</>}
       </Button>
       <Button
         size="sm"
-        variant="outline"
+        variant="destructive"
         onClick={() => handle("reject")}
         disabled={loading !== null}
-        className="border-red-500/25 text-red-400 hover:bg-red-500/10 h-7 px-3 text-xs"
       >
         {loading === "reject" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><XCircle className="h-3.5 w-3.5 mr-1" />Reject</>}
       </Button>

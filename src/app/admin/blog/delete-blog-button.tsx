@@ -29,10 +29,9 @@ export function DeleteBlogButton({ blogId }: { blogId: string }) {
   return (
     <Button
       size="sm"
-      variant="outline"
+      variant="destructive"
       onClick={handleDelete}
       disabled={loading}
-      className="border-red-500/25 text-red-400 hover:bg-red-500/10 h-7 px-3 text-xs"
     >
       {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
     </Button>

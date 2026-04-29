@@ -1,10 +1,10 @@
 import { Gavel } from "lucide-react";
 
 const statusColor: Record<string, string> = {
-  pending: "bg-yellow-500/10 text-yellow-400",
-  accepted: "bg-green-500/10 text-green-400",
-  rejected: "bg-red-500/10 text-red-400",
-  withdrawn: "bg-[#1A1A1A] text-white/40",
+  pending: "bg-[var(--warning)]/10 text-[var(--warning)]",
+  accepted: "bg-[var(--forest-tint)] text-[var(--forest)]",
+  rejected: "bg-[var(--danger)]/10 text-[var(--danger)]",
+  withdrawn: "bg-[var(--paper-2)] text-[var(--ink-3)]",
 };
 
 async function getBids(status?: string) {
@@ -45,8 +45,8 @@ export default async function AdminBidsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Bids</h1>
-        <p className="mt-1 text-base text-white/40">All bids submitted by recyclers</p>
+        <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ink)]">Bids</h1>
+        <p className="mt-1 text-base text-[var(--ink-3)]">All bids submitted by recyclers</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -56,8 +56,8 @@ export default async function AdminBidsPage({
             href={tab.value === "all" ? "/admin/bids" : `/admin/bids?status=${tab.value}`}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               activeStatus === tab.value
-                ? "bg-brand-accent text-brand-dark"
-                : "border border-white/10 text-white/60 hover:border-brand-accent/30 hover:text-white"
+                ? "bg-[var(--forest)] text-white"
+                : "border border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--forest)]/30 hover:text-[var(--ink)]"
             }`}
           >
             {tab.label}
@@ -65,50 +65,50 @@ export default async function AdminBidsPage({
         ))}
       </div>
 
-      <div className="rounded-xl border border-[#262626] bg-card overflow-hidden">
+      <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] overflow-hidden">
         {bids.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16 text-center">
-            <Gavel className="h-8 w-8 text-white/20" />
-            <p className="text-base text-white/40">No bids found</p>
+            <Gavel className="h-8 w-8 text-[var(--ink-4)]" />
+            <p className="text-base text-[var(--ink-3)]">No bids found</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[700px] text-base">
               <thead>
-                <tr className="border-b border-[#262626]">
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/40 sm:px-5">Listing</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/40 sm:px-5">Recycler</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/40 sm:px-5">Offered Price</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/40 sm:px-5">Pickup Date</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/40 sm:px-5">Status</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/40 sm:px-5">Date</th>
+                <tr className="border-b border-[var(--line)]">
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Listing</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Recycler</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Offered Price</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Pickup Date</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Status</th>
+                  <th className="px-4 py-3 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] font-medium text-[var(--ink-3)] sm:px-5">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-[var(--line-2)]">
                 {bids.map((bid: any) => (
-                  <tr key={bid.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={bid.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[180px] truncate font-medium text-white">{bid.scraps?.title ?? "—"}</p>
-                      <p className="text-sm text-white/40">{bid.scraps?.category}</p>
+                      <p className="max-w-[180px] truncate font-medium text-[var(--ink)]">{bid.scraps?.title ?? "—"}</p>
+                      <p className="text-sm text-[var(--ink-3)]">{bid.scraps?.category}</p>
                     </td>
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[140px] truncate text-white">{bid.users?.name ?? "—"}</p>
-                      <p className="max-w-[140px] truncate text-sm text-white/40">{bid.users?.email}</p>
+                      <p className="max-w-[140px] truncate text-[var(--ink)]">{bid.users?.name ?? "—"}</p>
+                      <p className="max-w-[140px] truncate text-sm text-[var(--ink-3)]">{bid.users?.email}</p>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 font-semibold text-brand-accent sm:px-5">
+                    <td className="whitespace-nowrap px-4 py-4 font-semibold text-[var(--ink)] tabular-nums sm:px-5">
                       ₹{bid.offered_price?.toLocaleString("en-IN")}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-white/60 sm:px-5">
+                    <td className="whitespace-nowrap px-4 py-4 text-[var(--ink-2)] tabular-nums sm:px-5">
                       {bid.estimated_pickup_date
                         ? new Date(bid.estimated_pickup_date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
                         : "—"}
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 sm:px-5">
-                      <span className={`rounded-full px-2.5 py-1 text-sm font-medium ${statusColor[bid.status] ?? "bg-white/10 text-white/60"}`}>
+                      <span className={`rounded-full px-2.5 py-1 text-sm font-medium ${statusColor[bid.status] ?? "bg-[var(--paper-2)] text-[var(--ink-2)]"}`}>
                         {bid.status}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-white/40 sm:px-5">
+                    <td className="whitespace-nowrap px-4 py-4 text-[var(--ink-3)] tabular-nums sm:px-5">
                       {new Date(bid.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                     </td>
                   </tr>
@@ -118,7 +118,7 @@ export default async function AdminBidsPage({
           </div>
         )}
       </div>
-      <p className="text-sm text-white/20">{bids.length} bid{bids.length !== 1 ? "s" : ""} shown</p>
+      <p className="text-sm text-[var(--ink-4)]">{bids.length} bid{bids.length !== 1 ? "s" : ""} shown</p>
     </div>
   );
 }
