@@ -53,8 +53,8 @@ export function MessageBubble({
         </div>
         {showTimestamp && (
           <p
-            className={`mt-1 px-1 text-xs ${
-              isOwn ? "text-right text-[var(--ink-4)]" : "text-left text-[var(--ink-4)]"
+            className={`mt-1 px-1 text-xs text-[var(--ink-4)] ${
+              isOwn ? "text-right" : "text-left"
             }`}
           >
             {formatTime(message.created_at)}
