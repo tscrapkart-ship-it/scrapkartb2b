@@ -1,44 +1,41 @@
 import type { Metadata } from "next";
-import { Archivo, Archivo_Black, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, Fraunces, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
 import { LenisProvider } from "@/components/shared/lenis-provider";
 import "./globals.css";
 
-const archivo = Archivo({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-archivo",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter-tight",
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
-const archivoBlack = Archivo_Black({
+
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-archivo-black",
-  weight: "400",
-  display: "swap",
-});
-const dmSerif = DM_Serif_Display({
-  subsets: ["latin"],
-  variable: "--font-dm-serif",
-  weight: "400",
+  variable: "--font-fraunces",
+  weight: ["400", "500"],
   style: ["italic"],
+  axes: ["opsz"],
   display: "swap",
 });
-const mono = JetBrains_Mono({
+
+const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
-  weight: ["400", "500", "700"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "ScrapKart — B2B Industrial Scrap Marketplace",
   description:
-    "Connect waste producers with recyclers. Buy and sell industrial scrap materials efficiently.",
+    "List your lot. Verified buyers bid. Settle in 72 hours. India's B2B exchange for industrial scrap.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "ScrapKart",
   },
   other: {
@@ -54,11 +51,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#FFFFFF" />
+        <meta name="theme-color" content="#FAFAF7" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
-      <body className={`${archivo.variable} ${archivoBlack.variable} ${dmSerif.variable} ${mono.variable} antialiased overflow-x-hidden`}>
-        <NextTopLoader color="#0A0A0A" height={3} showSpinner={false} shadow="none" />
+      <body className={`${interTight.variable} ${fraunces.variable} ${jetBrainsMono.variable} antialiased overflow-x-hidden`}>
+        <NextTopLoader color="#0F4D2A" height={2} showSpinner={false} shadow="none" />
         <LenisProvider />
         {children}
         <Toaster />
