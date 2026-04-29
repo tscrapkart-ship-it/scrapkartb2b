@@ -6,56 +6,32 @@ import { cn } from "@/lib/utils"
 import { MoreHorizontalIcon } from "lucide-react"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
-  return (
-    <nav
-      aria-label="breadcrumb"
-      data-slot="breadcrumb"
-      className={cn(className)}
-      {...props}
-    />
-  )
+  return <nav aria-label="breadcrumb" data-slot="breadcrumb" className={cn(className)} {...props} />
 }
 
 function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
   return (
     <ol
       data-slot="breadcrumb-list"
-      className={cn(
-        "flex flex-wrap items-center gap-1.5 break-words font-mono text-xs uppercase tracking-[0.1em] text-[var(--ink-3)]",
-        className
-      )}
+      className={cn("flex flex-wrap items-center gap-2 text-[13px] text-[var(--ink-3)]", className)}
       {...props}
     />
   )
 }
 
 function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
-  return (
-    <li
-      data-slot="breadcrumb-item"
-      className={cn("inline-flex items-center gap-1.5", className)}
-      {...props}
-    />
-  )
+  return <li data-slot="breadcrumb-item" className={cn("inline-flex items-center gap-2", className)} {...props} />
 }
 
-function BreadcrumbLink({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"a">) {
+function BreadcrumbLink({ className, render, ...props }: useRender.ComponentProps<"a">) {
   return useRender({
     defaultTagName: "a",
     props: mergeProps<"a">(
-      {
-        className: cn("hover:text-[var(--ink)] transition-colors", className),
-      },
+      { className: cn("hover:text-[var(--ink)] transition-colors", className) },
       props
     ),
     render,
-    state: {
-      slot: "breadcrumb-link",
-    },
+    state: { slot: "breadcrumb-link" },
   })
 }
 
@@ -66,46 +42,30 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("text-[var(--ink)]", className)}
+      className={cn("text-[var(--ink)] font-medium", className)}
       {...props}
     />
   )
 }
 
-function BreadcrumbSeparator({
-  children,
-  className,
-  ...props
-}: React.ComponentProps<"li">) {
+function BreadcrumbSeparator({ children, className, ...props }: React.ComponentProps<"li">) {
   return (
-    <li
-      role="presentation"
-      aria-hidden="true"
-      className={cn("text-[var(--ink-4)]", className)}
-      {...props}
-    >
+    <li role="presentation" aria-hidden="true" className={cn("text-[var(--ink-4)]", className)} {...props}>
       {children ?? "/"}
     </li>
   )
 }
 
-function BreadcrumbEllipsis({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="breadcrumb-ellipsis"
       role="presentation"
       aria-hidden="true"
-      className={cn(
-        "flex h-9 w-9 items-center justify-center",
-        className
-      )}
+      className={cn("flex h-9 w-9 items-center justify-center", className)}
       {...props}
     >
-      <MoreHorizontalIcon
-      />
+      <MoreHorizontalIcon className="size-4" />
       <span className="sr-only">More</span>
     </span>
   )
