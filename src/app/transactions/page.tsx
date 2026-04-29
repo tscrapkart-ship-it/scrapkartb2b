@@ -9,31 +9,31 @@ import {
 
 const statusConfig: Record<string, { dot: string; text: string; bg: string }> = {
   scheduled: {
-    dot: "bg-blue-400",
-    text: "text-blue-400",
-    bg: "bg-blue-400/10 border border-blue-400/20",
+    dot: "bg-[var(--info)]",
+    text: "text-[var(--info)]",
+    bg: "bg-[var(--info)]/10 border border-[var(--info)]/20",
   },
   in_progress: {
-    dot: "bg-purple-400",
-    text: "text-purple-400",
-    bg: "bg-purple-400/10 border border-purple-400/20",
+    dot: "bg-[var(--info)]",
+    text: "text-[var(--info)]",
+    bg: "bg-[var(--info)]/10 border border-[var(--info)]/20",
   },
   completed: {
-    dot: "bg-[#10B981]",
-    text: "text-[#10B981]",
-    bg: "bg-[#10B981]/10 border border-[#10B981]/20",
+    dot: "bg-[var(--forest)]",
+    text: "text-[var(--forest)]",
+    bg: "bg-[var(--forest-tint)] border border-[var(--forest)]/20",
   },
   cancelled: {
-    dot: "bg-red-400",
-    text: "text-red-400",
-    bg: "bg-red-400/10 border border-red-400/20",
+    dot: "bg-[var(--danger)]",
+    text: "text-[var(--danger)]",
+    bg: "bg-[var(--danger)]/10 border border-[var(--danger)]/30",
   },
 };
 
 const defaultStatus = {
-  dot: "bg-[#525252]",
-  text: "text-[#525252]",
-  bg: "bg-[#1A1A1A] border border-[#262626]",
+  dot: "bg-[var(--ink-4)]",
+  text: "text-[var(--ink-4)]",
+  bg: "bg-[var(--paper-2)] border border-[var(--line)]",
 };
 
 async function getTransactions() {
@@ -60,15 +60,15 @@ export default async function TransactionsPage() {
   const { transactions, userId } = await getTransactions();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
+    <div className="min-h-screen bg-[var(--paper)]">
       <div className="mx-auto max-w-4xl px-4 py-10 space-y-8">
         {/* Page Header */}
         <div className="animate-fade-in">
-          <p className="text-xs font-medium uppercase tracking-widest text-[#525252]">
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium">
             Transactions
           </p>
-          <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-white">My Deals</h1>
-          <p className="mt-2 text-base text-[#737373] max-w-md">
+          <h1 className="mt-2 text-[clamp(28px,3.6vw,40px)] font-semibold tracking-[-0.025em] text-[var(--ink)]">My Deals</h1>
+          <p className="mt-2 text-base text-[var(--ink-3)] max-w-md">
             All confirmed transactions from accepted bids. Track status, pickup dates, and payment details.
           </p>
         </div>
@@ -76,28 +76,28 @@ export default async function TransactionsPage() {
         {/* Summary bar */}
         {transactions.length > 0 && (
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 animate-slide-up delay-1">
-            <div className="flex items-center gap-2 text-base text-[#737373]">
-              <div className="h-2 w-2 rounded-full bg-[#10B981]" />
+            <div className="flex items-center gap-2 text-base text-[var(--ink-3)]">
+              <div className="h-2 w-2 rounded-full bg-[var(--forest)]" />
               <span>{transactions.filter((t) => t.status === "completed").length} completed</span>
             </div>
-            <div className="flex items-center gap-2 text-base text-[#737373]">
-              <div className="h-2 w-2 rounded-full bg-purple-400" />
+            <div className="flex items-center gap-2 text-base text-[var(--ink-3)]">
+              <div className="h-2 w-2 rounded-full bg-[var(--info)]" />
               <span>{transactions.filter((t) => t.status === "in_progress").length} in progress</span>
             </div>
-            <div className="flex items-center gap-2 text-base text-[#737373]">
-              <div className="h-2 w-2 rounded-full bg-blue-400" />
+            <div className="flex items-center gap-2 text-base text-[var(--ink-3)]">
+              <div className="h-2 w-2 rounded-full bg-[var(--info)]" />
               <span>{transactions.filter((t) => t.status === "scheduled").length} scheduled</span>
             </div>
           </div>
         )}
 
         {transactions.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#262626] bg-[#141414] py-20 animate-fade-in delay-2">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1A1A1A] border border-[#262626]">
-              <ArrowLeftRight className="h-6 w-6 text-[#525252]" />
+          <div className="flex flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--line)] bg-[var(--paper)] py-20 animate-fade-in delay-2">
+            <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--paper-2)] border border-[var(--line)]">
+              <ArrowLeftRight className="h-6 w-6 text-[var(--ink-4)]" />
             </div>
-            <p className="mt-4 text-lg font-medium text-[#A3A3A3]">No deals yet</p>
-            <p className="mt-1 text-base text-[#525252]">
+            <p className="mt-4 text-lg font-medium text-[var(--ink-3)]">No deals yet</p>
+            <p className="mt-1 text-base text-[var(--ink-4)]">
               Deals are created when a bid gets accepted.
             </p>
           </div>
@@ -123,27 +123,27 @@ export default async function TransactionsPage() {
                   className={`animate-slide-up delay-${Math.min(index + 1, 6)}`}
                   style={{ display: "block" }}
                 >
-                  <div className="group rounded-xl border border-[#262626] bg-[#141414] p-5 transition-all duration-200 hover:border-[#333] hover:bg-[#1A1A1A]">
+                  <div className="group rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-5 transition-all duration-200 hover:border-[var(--line)] hover:bg-[var(--paper-2)]">
                     <div className="flex items-start justify-between gap-4">
                       {/* Left: scrap info */}
                       <div className="flex items-start gap-3.5 min-w-0 flex-1">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#10B981]/10 border border-[#10B981]/20">
-                          <Package className="h-4.5 w-4.5 text-[#10B981]" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--forest-tint)] border border-[var(--forest)]/20">
+                          <Package className="h-4.5 w-4.5 text-[var(--forest)]" />
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="rounded-full bg-[#1A1A1A] border border-[#262626] px-2.5 py-0.5 text-xs font-medium text-[#A3A3A3]">
+                            <span className="rounded-full bg-[var(--paper-2)] border border-[var(--line)] px-2.5 py-0.5 text-xs font-medium text-[var(--ink-3)]">
                               {scrap?.category}
                             </span>
-                            <span className="text-sm text-[#525252]">
+                            <span className="text-sm text-[var(--ink-4)]">
                               {isProducer ? "sold to" : "bought from"}{" "}
-                              <span className="text-[#737373]">{counterpart}</span>
+                              <span className="text-[var(--ink-3)]">{counterpart}</span>
                             </span>
                           </div>
-                          <p className="font-semibold text-white truncate group-hover:text-[#10B981] transition-colors">
+                          <p className="font-semibold text-[var(--ink)] truncate group-hover:text-[var(--forest)] transition-colors">
                             {scrap?.title}
                           </p>
-                          <p className="text-sm text-[#525252] mt-0.5">
+                          <p className="text-sm text-[var(--ink-4)] mt-0.5">
                             {scrap?.quantity} {scrap?.unit}
                           </p>
                         </div>
@@ -155,20 +155,20 @@ export default async function TransactionsPage() {
                           <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} />
                           {tx.status.replace("_", " ")}
                         </span>
-                        <ChevronRight className="h-4 w-4 text-[#333] group-hover:text-[#525252] transition-colors" />
+                        <ChevronRight className="h-4 w-4 text-[var(--ink-4)] group-hover:text-[var(--ink-3)] transition-colors" />
                       </div>
                     </div>
 
                     {/* Bottom row: price + dates */}
-                    <div className="flex flex-wrap items-center gap-4 mt-4 pt-3.5 border-t border-[#1A1A1A]">
+                    <div className="flex flex-wrap items-center gap-4 mt-4 pt-3.5 border-t border-[var(--line-2)]">
                       <div className="flex items-center gap-1.5">
-                        <IndianRupee className="h-3.5 w-3.5 text-[#10B981]" />
-                        <span className="font-bold text-[#10B981]">
+                        <IndianRupee className="h-3.5 w-3.5 text-[var(--ink)]" />
+                        <span className="text-[20px] font-semibold tabular-nums text-[var(--ink)]">
                           {"\u20B9"}{tx.final_price.toLocaleString("en-IN")}
                         </span>
                       </div>
                       {tx.pickup_date && (
-                        <div className="flex items-center gap-1.5 text-xs text-[#525252]">
+                        <div className="flex items-center gap-1.5 text-xs text-[var(--ink-4)]">
                           <CalendarDays className="h-3.5 w-3.5" />
                           {new Date(tx.pickup_date).toLocaleDateString("en-IN", {
                             day: "numeric",
@@ -177,7 +177,7 @@ export default async function TransactionsPage() {
                           })}
                         </div>
                       )}
-                      <span className="text-xs text-[#333] ml-auto">
+                      <span className="text-xs text-[var(--ink-4)] ml-auto">
                         {new Date(tx.created_at).toLocaleDateString("en-IN", {
                           day: "numeric",
                           month: "short",

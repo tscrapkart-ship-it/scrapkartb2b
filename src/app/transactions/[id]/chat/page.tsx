@@ -35,23 +35,23 @@ export default async function TransactionChatPage({
   const scrapTitle = (tx.scraps as { title: string } | null)?.title;
 
   return (
-    <div className="min-h-screen bg-brand-dark">
+    <div className="min-h-screen bg-[var(--paper)]">
       <div className="mx-auto max-w-3xl px-4 py-6 space-y-4">
         {/* Header */}
         <div className="flex items-center gap-3">
           <Link
             href={`/transactions/${id}`}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#262626] text-white/40 hover:bg-[#1A1A1A] hover:text-white transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--line)] text-[var(--ink-3)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)] transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
           </Link>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-accent/10">
-              <MessageCircle className="h-4 w-4 text-brand-accent" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--forest-tint)]">
+              <MessageCircle className="h-4 w-4 text-[var(--forest)]" />
             </div>
             <div>
-              <p className="text-base font-semibold text-white">{otherName ?? "Counterpart"}</p>
-              <p className="text-sm text-white/40 truncate max-w-[200px]">{scrapTitle}</p>
+              <p className="text-base font-semibold text-[var(--ink)]">{otherName ?? "Counterpart"}</p>
+              <p className="text-sm text-[var(--ink-3)] truncate max-w-[200px]">{scrapTitle}</p>
             </div>
           </div>
         </div>

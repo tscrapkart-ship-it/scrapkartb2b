@@ -41,11 +41,11 @@ export default function PendingApprovalPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex flex-col">
+    <div className="min-h-screen bg-[var(--paper)] flex flex-col">
       {/* Header */}
-      <header className="border-b border-[#262626] px-4 sm:px-6 py-4 flex items-center justify-between">
+      <header className="border-b border-[var(--line)] px-4 sm:px-6 py-4 flex items-center justify-between">
         <Image
-          src="/logos/ScrapKart White Logo.png"
+          src="/logos/ScrapKart Black Logo.png"
           alt="ScrapKart"
           width={130}
           height={36}
@@ -55,7 +55,7 @@ export default function PendingApprovalPage() {
           variant="ghost"
           size="sm"
           onClick={handleLogout}
-          className="text-[#737373] hover:text-white hover:bg-[#1A1A1A] transition-colors"
+          className="text-[var(--ink-3)] hover:text-[var(--ink)] hover:bg-[var(--paper-2)] transition-colors"
         >
           <LogOut className="h-4 w-4 mr-2" />
           Sign out
@@ -70,27 +70,27 @@ export default function PendingApprovalPage() {
           <div className="flex justify-center mb-8 animate-scale-in delay-1">
             <div className="relative">
               {/* Outer pulsing ring */}
-              <div className="absolute inset-0 rounded-2xl bg-[#10B981]/10 animate-pulse" />
-              <div className="relative flex h-24 w-24 items-center justify-center rounded-2xl border border-[#262626] bg-[#141414]">
-                <Clock className="h-11 w-11 text-[#10B981]" />
+              <div className="absolute inset-0 rounded-[var(--radius-lg)] bg-[var(--forest-tint)] animate-pulse" />
+              <div className="relative flex h-24 w-24 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)]">
+                <Clock className="h-11 w-11 text-[var(--forest)]" />
               </div>
-              <div className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#0A0A0A] border-2 border-[#262626]">
-                <CheckCircle className="h-5 w-5 text-[#10B981]" />
+              <div className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--paper)] border-2 border-[var(--line)]">
+                <CheckCircle className="h-5 w-5 text-[var(--forest)]" />
               </div>
             </div>
           </div>
 
           {/* Greeting */}
           <div className="text-center space-y-3 mb-8 animate-slide-up delay-2">
-            <p className="text-xs font-medium uppercase tracking-widest text-[#525252]">
+            <p className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium">
               Account under review
             </p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">
+            <h1 className="text-[clamp(28px,3.6vw,40px)] font-semibold tracking-[-0.025em] text-[var(--ink)]">
               {userName ? `Thanks, ${userName.split(" ")[0]}!` : "We're on it"}
             </h1>
-            <p className="text-[#A3A3A3] leading-relaxed max-w-sm mx-auto">
+            <p className="text-[var(--ink-3)] leading-relaxed max-w-sm mx-auto">
               Your{" "}
-              <span className="text-[#10B981] font-medium">
+              <span className="text-[var(--forest)] font-medium">
                 {role === "waste_producer"
                   ? "producer"
                   : role === "recycler"
@@ -102,8 +102,8 @@ export default function PendingApprovalPage() {
           </div>
 
           {/* Status card */}
-          <div className="rounded-xl border border-[#262626] bg-[#141414] p-6 mb-6 animate-slide-up delay-3">
-            <h3 className="text-xs font-medium uppercase tracking-widest text-[#525252] mb-5">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-6 mb-6 animate-slide-up delay-3">
+            <h3 className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--ink-3)] font-medium mb-5">
               What happens next
             </h3>
             <div className="space-y-4">
@@ -114,20 +114,20 @@ export default function PendingApprovalPage() {
                 { text: "Full platform access is granted immediately", done: false },
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-4 group">
-                  <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold mt-0.5 transition-colors ${
+                  <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-xs font-bold mt-0.5 transition-colors ${
                     step.done
-                      ? "bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/20"
-                      : "bg-[#1A1A1A] text-[#525252] border border-[#262626]"
+                      ? "bg-[var(--forest-tint)] text-[var(--forest)] border border-[var(--forest)]/20"
+                      : "bg-[var(--paper-2)] text-[var(--ink-4)] border border-[var(--line)]"
                   }`}>
                     {step.done ? <CheckCircle className="h-3.5 w-3.5" /> : i + 1}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-base leading-relaxed ${step.done ? "text-white" : "text-[#737373]"}`}>
+                    <p className={`text-base leading-relaxed ${step.done ? "text-[var(--ink)]" : "text-[var(--ink-3)]"}`}>
                       {step.text}
                     </p>
                   </div>
                   {i === 0 && (
-                    <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded-full border border-[#10B981]/20">
+                    <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--forest)] bg-[var(--forest-tint)] px-2 py-0.5 rounded-full border border-[var(--forest)]/20">
                       In progress
                     </span>
                   )}
@@ -137,14 +137,14 @@ export default function PendingApprovalPage() {
           </div>
 
           {/* Timeline + ETA */}
-          <div className="rounded-xl border border-[#262626] bg-[#141414] p-5 mb-6 flex items-center gap-4 animate-slide-up delay-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#1A1A1A] border border-[#262626]">
-              <Clock className="h-5 w-5 text-[#737373]" />
+          <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-5 mb-6 flex items-center gap-4 animate-slide-up delay-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--paper-2)] border border-[var(--line)]">
+              <Clock className="h-5 w-5 text-[var(--ink-3)]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-base text-white font-medium">Estimated review time</p>
-              <p className="text-sm text-[#737373]">
-                Typically <span className="text-[#A3A3A3] font-medium">24-48 hours</span>. Faster for profiles with complete compliance documents.
+              <p className="text-base text-[var(--ink)] font-medium">Estimated review time</p>
+              <p className="text-sm text-[var(--ink-3)]">
+                Typically <span className="text-[var(--ink)] font-medium">24-48 hours</span>. Faster for profiles with complete compliance documents.
               </p>
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function PendingApprovalPage() {
           <div className="text-center space-y-4 animate-slide-up delay-5">
             <a
               href="mailto:support@scrapkart.in"
-              className="inline-flex items-center gap-2 text-base text-[#10B981] hover:text-[#34D399] transition-colors font-medium group"
+              className="inline-flex items-center gap-2 text-base text-[var(--forest)] hover:text-[var(--forest-2)] transition-colors font-medium group"
             >
               <Mail className="h-4 w-4" />
               support@scrapkart.in
@@ -166,7 +166,6 @@ export default function PendingApprovalPage() {
             <Button
               variant="outline"
               onClick={handleLogout}
-              className="border-[#262626] bg-transparent text-[#737373] hover:text-white hover:bg-[#1A1A1A] hover:border-[#333] transition-all"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign out of ScrapKart
