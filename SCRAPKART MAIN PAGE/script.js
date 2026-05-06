@@ -1,21 +1,25 @@
 /* ===================================================================
    ScrapKart Main Page — Interaction Layer
+   - Splash dismiss
    - Lenis smooth scroll
+   - Top scroll progress bar
    - Scroll-triggered reveals via IntersectionObserver
    - Stat counter animation
-   - Live-time updater (hero aside card)
-   - Sticky-nav hairline on scroll
-   - Scroll cue fade
+   - World-card cursor spotlight
+   - Watermark scroll drift
+   - Live-time updater + slow live-bid ticker
+   - Sticky-nav hairline on scroll, scroll cue fade
    ================================================================ */
 
 (function () {
   'use strict';
 
   // Mark JS-ready immediately so CSS can switch reveal targets to the hidden state.
-  // No-JS users keep content visible (CSS default).
   document.documentElement.classList.add('js-ready');
 
-  // Use the document load event so Lenis (loaded via defer) has parsed.
+  // Hand-off splash early — even before DOMContentLoaded, schedule dismissal.
+  scheduleSplashDismiss();
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
@@ -26,10 +30,33 @@
     setupLenis();
     setupRevealObserver();
     setupStatCounters();
+    setupScrollProgress();
     setupNavScroll();
     setupScrollCueFade();
     setupLiveTime();
+    setupLiveBidTicker();
     setupAnchorScroll();
+    setupCardSpotlight();
+    setupWatermarkDrift();
+  }
+
+  // ------------------------------------------------------------------
+  // Splash — first visit per session, dismiss after a beat
+  // ------------------------------------------------------------------
+  function scheduleSplashDismiss() {
+    // splash-skip is set by the inline script in <head> on repeat visits
+    if (document.documentElement.classList.contains('splash-skip')) return;
+
+    // Total splash duration ≈ bar-fill (1.05s) + a touch of dwell time
+    const totalMs = 1500;
+    setTimeout(function () {
+      document.documentElement.classList.add('splash-done');
+      // After the lift animation finishes, remove the splash node
+      setTimeout(function () {
+        const el = document.getElementById('splash');
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+      }, 800);
+    }, totalMs);
   }
 
   // ------------------------------------------------------------------
@@ -43,9 +70,9 @@
 
     lenisInstance = new window.Lenis({
       duration: 1.15,
-      easing: function (t) { return 1 - Math.pow(1 - t, 3); }, // ease-out-cubic
+      easing: function (t) { return 1 - Math.pow(1 - t, 3); },
       smoothWheel: true,
-      syncTouch: false,    // keep native touch behaviour on mobile
+      syncTouch: false,
       gestureOrientation: 'vertical',
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
@@ -82,6 +109,29 @@
         }
       });
     });
+  }
+
+  // ------------------------------------------------------------------
+  // Top scroll progress bar
+  // ------------------------------------------------------------------
+  function setupScrollProgress() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+        bar.style.width = progress.toFixed(2) + '%';
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 
   // ------------------------------------------------------------------
@@ -227,7 +277,6 @@
 
     function update() {
       const now = new Date();
-      // Force IST regardless of viewer timezone
       const ist = new Date(
         now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
       );
@@ -238,5 +287,81 @@
 
     update();
     setInterval(update, 30000);
+  }
+
+  // ------------------------------------------------------------------
+  // Live-bid ticker — slowly increment to feel "active"
+  // ------------------------------------------------------------------
+  function setupLiveBidTicker() {
+    const el = document.querySelector('[data-live-bid]');
+    if (!el) return;
+
+    let value = parseFloat(el.dataset.liveBid) || 47.2;
+
+    function bump() {
+      // Tiny realistic increments — 0.05 to 0.35 lakh per tick
+      value += 0.05 + Math.random() * 0.30;
+      el.textContent = '₹' + value.toFixed(1) + ' L';
+    }
+
+    // Random interval between 6-14 seconds, feels organic not metronomic
+    function schedule() {
+      const wait = 6000 + Math.random() * 8000;
+      setTimeout(function () { bump(); schedule(); }, wait);
+    }
+
+    schedule();
+  }
+
+  // ------------------------------------------------------------------
+  // World card spotlight — radial gradient that follows the cursor
+  // ------------------------------------------------------------------
+  function setupCardSpotlight() {
+    if (window.matchMedia('(hover: none)').matches) return; // skip on touch
+
+    const cards = document.querySelectorAll('.world-card');
+    cards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mx', x + '%');
+        card.style.setProperty('--my', y + '%');
+      });
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // Watermark drift — subtle vertical translate based on scroll position
+  // ------------------------------------------------------------------
+  function setupWatermarkDrift() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const watermarks = document.querySelectorAll(
+      '.world-decoration, .hero-aside-watermark'
+    );
+    if (!watermarks.length) return;
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        watermarks.forEach(function (el) {
+          const rect = el.getBoundingClientRect();
+          // Distance from center of viewport to center of element, normalized
+          const elCenter = rect.top + rect.height / 2;
+          const vpCenter = vh / 2;
+          const offset = (elCenter - vpCenter) / vh;     // -1 .. 1 ish
+          const drift = -offset * 28;                    // up to ~28px shift
+          el.style.setProperty('--drift', drift.toFixed(2) + 'px');
+        });
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 })();

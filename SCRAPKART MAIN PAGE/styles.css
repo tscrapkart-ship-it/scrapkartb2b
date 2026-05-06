@@ -955,6 +955,262 @@ html.js-ready .reveal.is-visible {
 }
 
 /* ===================================================================
+   Splash screen — first visit per session
+   ================================================================ */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  pointer-events: none;
+  transform: translateY(0);
+  transition: transform 0.7s var(--ease-signature);
+}
+
+html.splash-done .splash {
+  transform: translateY(-101%);
+}
+
+html.splash-done body { /* lock scroll while splash plays */ }
+
+.splash-mark {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: splash-mark-in 0.55s var(--ease-signature) 0.05s forwards;
+}
+
+.splash-mark img {
+  height: 96px;
+  width: auto;
+  display: block;
+}
+
+@keyframes splash-mark-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.splash-tagline {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-3);
+  opacity: 0;
+  animation: splash-tagline-in 0.45s var(--ease-signature) 0.35s forwards;
+}
+
+@keyframes splash-tagline-in {
+  to { opacity: 1; }
+}
+
+.splash-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--line);
+}
+
+.splash-bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--forest);
+  animation: splash-bar-fill 1.05s var(--ease-signature) 0.2s forwards;
+}
+
+@keyframes splash-bar-fill {
+  to { width: 100%; }
+}
+
+@media (max-width: 639px) {
+  .splash-mark img { height: 72px; }
+}
+
+/* ===================================================================
+   Top scroll progress bar
+   ================================================================ */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--forest);
+  z-index: 60;
+  pointer-events: none;
+  transition: width 80ms linear;
+}
+
+/* ===================================================================
+   Marquee ticker
+   ================================================================ */
+
+.marquee {
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  overflow: hidden;
+  padding: 18px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 500;
+}
+
+.marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 36px;
+  white-space: nowrap;
+  animation: marquee-slide 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee-item { color: var(--paper); }
+.marquee-dot {
+  color: var(--forest);
+  font-size: 9px;
+  opacity: 0.85;
+}
+
+@keyframes marquee-slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ===================================================================
+   Word-by-word reveal (closing heading)
+   ================================================================ */
+
+.word-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em; /* prevent descender clipping on serif italic */
+  line-height: 1;
+}
+
+/* Override the generic .reveal initial state on .word-reveal — the words handle
+   the entrance themselves; the heading container itself stays visible. */
+html.js-ready .word-reveal.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.word-reveal .word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition:
+    transform 0.7s var(--ease-signature),
+    opacity 0.4s var(--ease-signature);
+}
+
+.word-reveal.is-visible .word { transform: translateY(0); opacity: 1; }
+
+.word-reveal.is-visible .word:nth-child(1) { transition-delay: 0.05s; }
+.word-reveal.is-visible .word:nth-child(2) { transition-delay: 0.13s; }
+.word-reveal.is-visible .word:nth-child(3) { transition-delay: 0.21s; }
+.word-reveal .line:nth-child(2) .word:nth-child(1) { transition-delay: 0.32s; }
+.word-reveal .line:nth-child(2) .word:nth-child(2) { transition-delay: 0.40s; }
+
+/* ===================================================================
+   World card spotlight + magnetic CTA
+   ================================================================ */
+
+.world-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(15, 77, 42, 0.10),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 320ms ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.world-card:hover::after { opacity: 1; }
+
+.world-b2b::after {
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(250, 250, 247, 0.10),
+    transparent 45%
+  );
+}
+
+/* Make sure card content stays above the spotlight layer */
+.world-card > * { position: relative; z-index: 1; }
+
+/* Magnetic pull on the CTA inside the card */
+.world-cta {
+  transition:
+    transform var(--motion-fast) var(--ease-signature),
+    background-color var(--motion-fast) ease,
+    padding var(--motion-fast) ease;
+}
+
+.world-card:hover .world-cta {
+  transform: translateX(6px);
+}
+
+/* ===================================================================
+   Watermark scroll drift
+   ================================================================ */
+
+.world-decoration {
+  transform: translate3d(0, var(--drift, 0), 0);
+  transition: transform 200ms linear;
+}
+
+.hero-aside-watermark {
+  transform: translate3d(0, var(--drift, 0), 0);
+  transition: transform 200ms linear;
+}
+
+/* ===================================================================
+   Nav link hover — animated underline
+   ================================================================ */
+
+.nav-links a {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 280ms var(--ease-signature);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ===================================================================
    Reduced motion — respect user preference
    ================================================================ */
 
@@ -966,4 +1222,7 @@ html.js-ready .reveal.is-visible {
     transition-duration: 0.01ms !important;
   }
   html.js-ready .reveal { opacity: 1 !important; transform: none !important; }
+  .splash { display: none !important; }
+  .marquee-track { animation: none !important; }
+  .word-reveal .word { transform: none !important; opacity: 1 !important; }
 }

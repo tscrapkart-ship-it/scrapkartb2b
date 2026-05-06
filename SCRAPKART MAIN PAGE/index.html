@@ -20,8 +20,53 @@
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="assets/logos/scrapkart-black.png" type="image/png" />
+
+  <!-- Splash session check — runs before paint to avoid a flash of splash on repeat visits -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('skart-splash-seen') === '1') {
+          document.documentElement.classList.add('splash-skip');
+        } else {
+          sessionStorage.setItem('skart-splash-seen', '1');
+        }
+      } catch (e) {
+        // sessionStorage unavailable (private mode quirks) — show splash, no harm
+      }
+    })();
+  </script>
+
+  <!-- Critical splash CSS inlined so there's no FOUC before styles.css loads -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #FAFAF7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    html.splash-skip .splash { display: none !important; }
+  </style>
 </head>
 <body>
+  <!-- ============================================================ -->
+  <!-- 0 — SPLASH (first visit per session)                          -->
+  <!-- ============================================================ -->
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-mark">
+      <img src="assets/logos/scrapkart-black.png" alt="" />
+    </div>
+    <p class="splash-tagline">India's industrial scrap exchange</p>
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  </div>
+
+  <!-- Top scroll progress bar -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
   <!-- ============================================================ -->
   <!-- 1 — STICKY NAV                                                -->
   <!-- ============================================================ -->
@@ -79,7 +124,7 @@
           <div class="live-divider"></div>
 
           <div class="live-stat">
-            <span class="live-value">₹47.2 L</span>
+            <span class="live-value" data-live-bid="47.2">₹47.2 L</span>
             <span class="live-caption">in active bids</span>
           </div>
 
@@ -99,6 +144,39 @@
 
       <div class="scroll-cue" id="scroll-cue" aria-hidden="true">SCROLL</div>
     </section>
+
+    <!-- ============================================================ -->
+    <!-- 2.5 — MARQUEE TICKER (continuous motion, brutalist energy)   -->
+    <!-- ============================================================ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item">India's industrial scrap exchange</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">12 cities active</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">80+ verified recyclers</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">₹2.4 Cr+ traded</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">72-hour settlement</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">Built in India</span>
+        <span class="marquee-dot">●</span>
+        <!-- duplicate for seamless infinite loop -->
+        <span class="marquee-item">India's industrial scrap exchange</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">12 cities active</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">80+ verified recyclers</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">₹2.4 Cr+ traded</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">72-hour settlement</span>
+        <span class="marquee-dot">●</span>
+        <span class="marquee-item">Built in India</span>
+        <span class="marquee-dot">●</span>
+      </div>
+    </div>
 
     <!-- ============================================================ -->
     <!-- 3 — ABOUT                                                     -->
@@ -226,9 +304,9 @@
 
       <div class="container closing-inner">
         <p class="eyebrow closing-eyebrow reveal">2026 — PRESENT</p>
-        <h2 class="closing-title display reveal" id="closing-heading">
-          <span class="line">Built in India.</span>
-          <span class="line"><span class="italic-accent">For India.</span></span>
+        <h2 class="closing-title display reveal word-reveal" id="closing-heading">
+          <span class="line word-mask"><span class="word">Built</span> <span class="word">in</span> <span class="word">India.</span></span>
+          <span class="line word-mask"><span class="italic-accent word">For</span> <span class="italic-accent word">India.</span></span>
         </h2>
         <p class="closing-body reveal">
           Making the value chain visible — one truckload at a time.
