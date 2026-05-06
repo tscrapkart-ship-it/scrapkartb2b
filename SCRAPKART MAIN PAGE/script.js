@@ -74,7 +74,7 @@
         e.preventDefault();
 
         if (lenisInstance) {
-          lenisInstance.scrollTo(isTop ? 0 : target, { offset: -88 });
+          lenisInstance.scrollTo(isTop ? 0 : target, { offset: -120 });
         } else if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
