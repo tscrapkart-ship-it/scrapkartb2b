@@ -1,26 +1,87 @@
 /* ===================================================================
    ScrapKart Main Page — Interaction Layer
+   - Lenis smooth scroll
    - Scroll-triggered reveals via IntersectionObserver
    - Stat counter animation
-   - Subtle hero parallax
-   - Sticky-nav underline on scroll
+   - Live-time updater (hero aside card)
+   - Sticky-nav hairline on scroll
+   - Scroll cue fade
    ================================================================ */
 
 (function () {
   'use strict';
 
-  // Mark JS-ready immediately so CSS can switch reveal targets to hidden state.
-  // (No-JS users see content immediately — the CSS default is visible.)
+  // Mark JS-ready immediately so CSS can switch reveal targets to the hidden state.
+  // No-JS users keep content visible (CSS default).
   document.documentElement.classList.add('js-ready');
 
-  document.addEventListener('DOMContentLoaded', init);
+  // Use the document load event so Lenis (loaded via defer) has parsed.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 
   function init() {
+    setupLenis();
     setupRevealObserver();
     setupStatCounters();
     setupNavScroll();
-    setupHeroParallax();
     setupScrollCueFade();
+    setupLiveTime();
+    setupAnchorScroll();
+  }
+
+  // ------------------------------------------------------------------
+  // Lenis smooth scroll
+  // ------------------------------------------------------------------
+  let lenisInstance = null;
+
+  function setupLenis() {
+    if (typeof window.Lenis === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    lenisInstance = new window.Lenis({
+      duration: 1.15,
+      easing: function (t) { return 1 - Math.pow(1 - t, 3); }, // ease-out-cubic
+      smoothWheel: true,
+      syncTouch: false,    // keep native touch behaviour on mobile
+      gestureOrientation: 'vertical',
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    });
+
+    function raf(time) {
+      if (lenisInstance) lenisInstance.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+
+  // ------------------------------------------------------------------
+  // In-page anchor links — route through Lenis when available
+  // ------------------------------------------------------------------
+  function setupAnchorScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+
+        const isTop = href === '#top';
+        const target = isTop ? null : document.querySelector(href);
+        if (!isTop && !target) return;
+
+        e.preventDefault();
+
+        if (lenisInstance) {
+          lenisInstance.scrollTo(isTop ? 0 : target, { offset: -64 });
+        } else if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
   }
 
   // ------------------------------------------------------------------
@@ -29,7 +90,6 @@
   function setupRevealObserver() {
     const targets = document.querySelectorAll('.reveal');
     if (!targets.length || !('IntersectionObserver' in window)) {
-      // No IO support — show everything immediately
       targets.forEach(function (el) { el.classList.add('is-visible'); });
       return;
     }
@@ -37,7 +97,6 @@
     const observer = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (entry, i) {
         if (entry.isIntersecting) {
-          // Tiny stagger when multiple reveals enter at once (gives the section a rhythm)
           const delay = Math.min(i * 60, 240);
           setTimeout(function () { entry.target.classList.add('is-visible'); }, delay);
           obs.unobserve(entry.target);
@@ -61,19 +120,16 @@
     const formatINR = new Intl.NumberFormat('en-IN');
 
     function formatValue(value, target) {
-      // Money values (>= 1 crore): show as ₹X.X Cr+
       if (target >= 10000000) {
-        const cr = (value / 10000000);
+        const cr = value / 10000000;
         return cr >= 1
           ? cr.toFixed(cr >= 10 ? 0 : 1) + ' Cr'
           : formatINR.format(Math.round(value));
       }
-      // Lakh range
       if (target >= 100000) {
-        const l = (value / 100000);
+        const l = value / 100000;
         return l.toFixed(l >= 10 ? 0 : 1) + ' L';
       }
-      // Plain integer
       return formatINR.format(Math.round(value));
     }
 
@@ -142,40 +198,7 @@
   }
 
   // ------------------------------------------------------------------
-  // Hero parallax — translate hero-aside image as user scrolls past
-  // ------------------------------------------------------------------
-  function setupHeroParallax() {
-    const aside = document.getElementById('hero-aside');
-    if (!aside) return;
-
-    // Skip on touch devices / when reduced motion is preferred
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(max-width: 1023px)').matches) return;
-
-    const img = aside.querySelector('img');
-    if (!img) return;
-
-    let ticking = false;
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(function () {
-        const rect = aside.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        // Compute progress (0 to 1) as the aside passes through the viewport
-        const progress = Math.max(0, Math.min(1, 1 - rect.bottom / (vh + rect.height)));
-        const translateY = progress * -24; // pixels
-        img.style.transform = 'translateY(' + translateY.toFixed(2) + 'px) scale(1.04)';
-        ticking = false;
-      });
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  }
-
-  // ------------------------------------------------------------------
-  // Scroll-cue — fade out as user scrolls
+  // Scroll cue — fade out as user scrolls past the hero
   // ------------------------------------------------------------------
   function setupScrollCueFade() {
     const cue = document.getElementById('scroll-cue');
@@ -193,5 +216,27 @@
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  // ------------------------------------------------------------------
+  // Live-time updater — hero aside card "11:32 IST" timestamp
+  // ------------------------------------------------------------------
+  function setupLiveTime() {
+    const el = document.getElementById('live-time');
+    if (!el) return;
+
+    function update() {
+      const now = new Date();
+      // Force IST regardless of viewer timezone
+      const ist = new Date(
+        now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+      );
+      const hh = String(ist.getHours()).padStart(2, '0');
+      const mm = String(ist.getMinutes()).padStart(2, '0');
+      el.textContent = hh + ':' + mm + ' IST';
+    }
+
+    update();
+    setInterval(update, 30000);
   }
 })();

@@ -68,14 +68,39 @@
           </div>
         </div>
 
-        <div class="hero-aside reveal" id="hero-aside">
-          <img
-            src="https://images.unsplash.com/photo-1611174340681-bb35e3e92ddb?w=900&q=80"
-            alt="Industrial metal scrap"
-            loading="eager"
-          />
-          <div class="hero-aside-meta">Live · 10 listings open</div>
-        </div>
+        <aside class="hero-aside reveal" id="hero-aside" aria-label="Marketplace status">
+          <span class="hero-aside-watermark" aria-hidden="true">10</span>
+
+          <div class="live-row">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span>Live now</span>
+            <span class="live-time" id="live-time">11:32 IST</span>
+          </div>
+
+          <div class="live-stat">
+            <span class="live-value">10</span>
+            <span class="live-caption">listings open</span>
+          </div>
+
+          <div class="live-divider"></div>
+
+          <div class="live-stat">
+            <span class="live-value">₹47.2 L</span>
+            <span class="live-caption">in active bids</span>
+          </div>
+
+          <div class="live-meta">
+            <div><strong>12</strong> cities</div>
+            <div><strong>80+</strong> recyclers</div>
+          </div>
+
+          <a class="live-link" href="https://b2b.scrapkart.app">
+            View live marketplace
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 7h8m0 0L8 4m3 3L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </aside>
       </div>
 
       <div class="scroll-cue" id="scroll-cue" aria-hidden="true">SCROLL</div>
@@ -255,6 +280,8 @@
     </div>
   </footer>
 
+  <!-- Lenis smooth scroll (loaded before our script so window.Lenis is available) -->
+  <script src="https://unpkg.com/lenis@1.3.11/dist/lenis.min.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>
