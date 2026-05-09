@@ -50,3 +50,9 @@ next-env.d.ts
 
 # Superpowers brainstorm artifacts (mockups, server state)
 .superpowers/
+
+# Old prototype kept locally for reference, not pushed
+scrapkart-connect-3bff3333-main/
+
+# Local scratch / sandbox folder
+random folder/

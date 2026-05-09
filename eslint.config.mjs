@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Old prototype + scratch folder — kept locally for reference, not part of the app
+    "scrapkart-connect-3bff3333-main/**",
+    "random folder/**",
   ]),
 ]);
 

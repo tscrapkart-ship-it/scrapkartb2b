@@ -1,14 +1,9 @@
 # ScrapKart UI Overhaul — Design Spec
 
 **Date:** 2026-04-28
-**Author:** Developer (vibe-coded with Claude)
+**Author:** Founder (vibe-coded with Claude)
 **Status:** Approved direction; ready for implementation plan
-**Inputs:** `THE-STANDARD.md`, `CLAUDE.md`, `SCRAPKART.md`, B2C reference site at `b2c.scrapkart.app`
-
-**URL topology (for context):**
-- `b2c.scrapkart.app` — live B2C platform (the visual reference for this overhaul)
-- `scrapkart.app` — current B2B production URL (this project); will move to `b2b.scrapkart.app` later, and `scrapkart.app` will become an umbrella landing page (built by another developer) routing to both B2C and B2B via CTAs.
-- This spec covers only the B2B platform.
+**Inputs:** `THE-STANDARD.md`, `CLAUDE.md`, `SCRAPKART.md`, B2C reference site (`scrapkart.app`)
 
 ---
 
@@ -24,7 +19,7 @@ We are throwing out the entire current visual language. Backend stays as-is.
 
 **Direction: D-Evolved · Neo-Brutalist B2B Sibling**
 
-The B2C site at `scrapkart.app` is a strong, distinctive identity: hard offset black shadows, sharp-corner cards, vivid grass green (~#00C842), pastel category cards (blue/yellow/pink/mint), chunky display sans (Archivo Black) with a serif-italic green accent word ("*Instantly.*"), and a kawaii illustration on the hero. Voice is friendly and direct.
+The B2C site at `b2c.scrapkart.app` is a strong, distinctive identity: hard offset black shadows, sharp-corner cards, vivid grass green (~#00C842), pastel category cards (blue/yellow/pink/mint), chunky display sans (Archivo Black) with a serif-italic green accent word ("*Instantly.*"), and a kawaii illustration on the hero. Voice is friendly and direct.
 
 The B2B platform inherits the same DNA but elevates it for industrial trade:
 
@@ -449,7 +444,7 @@ Per phase, verify:
 
 ## 10 — Open questions
 
-These remain calls during implementation (developer judgment, with founder input where useful), not blockers:
+These remain decisions for the founder during implementation, not blockers:
 
 1. **Hero headline final wording.** Spec proposes "*Trade scrap. By the truckload.*" Alternatives if rejected: "*Industrial scrap. At trade speed.*" / "*The scrap market, scaled.*" / founder draft.
 2. **Devanagari accent on landing.** Subtle option: a small "कबाड़ का बाज़ार" eyebrow or footer caption. Default = off.
@@ -467,7 +462,7 @@ The redesign is complete when:
 - All quality gates from §8 pass on at least one representative page per archetype.
 - Build is green; deployment to Vercel succeeds; PWA still installable.
 - The founder can navigate the entire app from login to listing-purchase and never see a screen that visually contradicts the brand language.
-- A side-by-side viewing of `b2c.scrapkart.app` (B2C) and the new B2B at `scrapkart.app` reads as one product family.
+- A side-by-side viewing of `scrapkart.app` and the new B2B at `scrapkartrehaul.vercel.app` reads as one product family.
 
 ---
 
