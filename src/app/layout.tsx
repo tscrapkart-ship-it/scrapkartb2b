@@ -28,7 +28,14 @@ const jetBrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// Used to resolve relative URLs in openGraph.images / twitter.images below.
+// Currently the b2b app is deployed at scrapkart.app; once split, switch to
+// https://b2b.scrapkart.app. The card image itself is identical in both
+// deployments, so social previews stay correct either way.
+const SITE_URL = "https://scrapkart.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "ScrapKart — B2B Industrial Scrap Marketplace",
   description:
     "List your lot. Verified buyers bid. Settle in 72 hours. India's B2B exchange for industrial scrap.",
@@ -37,6 +44,37 @@ export const metadata: Metadata = {
     icon: "/logos/Scrapkart Full Logo White BG.png",
     shortcut: "/logos/Scrapkart Full Logo White BG.png",
     apple: "/logos/Scrapkart Full Logo White BG.png",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "ScrapKart",
+    title: "ScrapKart — B2B Industrial Scrap Marketplace",
+    description:
+      "List your lot. Verified buyers bid. Settle in 72 hours. India's B2B exchange for industrial scrap.",
+    url: SITE_URL,
+    locale: "en_IN",
+    images: [
+      {
+        url: "/og-card.png",
+        width: 1200,
+        height: 630,
+        alt: "ScrapKart — Trade. Recycle. Repeat.",
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@scrapkart",
+    title: "ScrapKart — B2B Industrial Scrap Marketplace",
+    description:
+      "List your lot. Verified buyers bid. Settle in 72 hours. India's B2B exchange for industrial scrap.",
+    images: [
+      {
+        url: "/og-card.png",
+        alt: "ScrapKart — Trade. Recycle. Repeat.",
+      },
+    ],
   },
   appleWebApp: {
     capable: true,
