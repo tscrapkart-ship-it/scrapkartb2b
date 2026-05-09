@@ -60,7 +60,7 @@ export function AdminNav() {
       <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--paper)]/85 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
-            <Link href="/admin" className="flex items-center gap-2.5">
+            <Link href="/" className="flex items-center gap-2.5" aria-label="ScrapKart B2B home">
               <Image
                 src="/logos/ScrapKart Black Logo.png"
                 alt="ScrapKart"

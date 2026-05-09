@@ -17,12 +17,11 @@ export async function GET(request: Request) {
       if (user) {
         const { data: profile } = await supabase
           .from("users")
-          .select("role, is_approved, onboarding_completed")
+          .select("role, onboarding_completed")
           .eq("id", user.id)
           .single();
 
         const role = profile?.role;
-        const isApproved = profile?.is_approved ?? false;
         const onboardingCompleted = profile?.onboarding_completed ?? false;
 
         if (role === "admin") return NextResponse.redirect(`${origin}/admin`);
@@ -30,10 +29,6 @@ export async function GET(request: Request) {
         if (role && !onboardingCompleted) {
           const dest = role === "recycler" ? "/onboarding/recycler" : "/onboarding/producer";
           return NextResponse.redirect(`${origin}${dest}`);
-        }
-
-        if (role && onboardingCompleted && !isApproved) {
-          return NextResponse.redirect(`${origin}/pending-approval`);
         }
 
         if (role === "waste_producer" || role === "both") {
@@ -44,7 +39,7 @@ export async function GET(request: Request) {
         }
       }
 
-      // New Google user — no role yet
+      // New user — no role yet
       return NextResponse.redirect(`${origin}/role-select`);
     }
   }

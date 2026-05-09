@@ -37,7 +37,25 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/");
+    // Route to the role-appropriate dashboard. Mirrors auth/callback/route.ts
+    // so email login lands the same place Google login does.
+    const { data: { user } } = await supabase.auth.getUser();
+    let dest = "/role-select";
+    if (user) {
+      const { data: profile } = await supabase
+        .from("users")
+        .select("role, onboarding_completed")
+        .eq("id", user.id)
+        .single();
+      const role = profile?.role;
+      const onboarded = profile?.onboarding_completed ?? false;
+      if (!role) dest = "/role-select";
+      else if (!onboarded) dest = role === "recycler" ? "/onboarding/recycler" : "/onboarding/producer";
+      else if (role === "admin") dest = "/admin";
+      else if (role === "recycler") dest = "/marketplace";
+      else dest = "/dashboard"; // waste_producer | both
+    }
+    router.push(dest);
     router.refresh();
   }
 
