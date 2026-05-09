@@ -1,7 +1,18 @@
 import { MessageSquare } from "lucide-react";
 import { MarkReadButton } from "./mark-read-button";
 
-async function getSubmissions(status?: string) {
+type SubmissionRow = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string | null;
+  message: string;
+  status: string;
+  created_at: string;
+};
+
+async function getSubmissions(status?: string): Promise<SubmissionRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -17,7 +28,7 @@ async function getSubmissions(status?: string) {
   }
 
   const { data } = await query;
-  return data ?? [];
+  return (data as SubmissionRow[] | null) ?? [];
 }
 
 const statusColor: Record<string, string> = {
@@ -70,7 +81,7 @@ export default async function AdminContactPage({
         </div>
       ) : (
         <div className="space-y-3">
-          {submissions.map((sub: any) => (
+          {submissions.map((sub) => (
             <div
               key={sub.id}
               className={`rounded-[var(--radius-lg)] border bg-[var(--paper)] p-5 space-y-3 ${sub.status === "new" ? "border-[var(--forest)]/30" : "border-[var(--line)]"}`}

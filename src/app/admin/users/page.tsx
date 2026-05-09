@@ -1,7 +1,17 @@
 import { Users } from "lucide-react";
 import { ApproveUserButton } from "./approve-user-button";
 
-async function getUsers(filter?: string) {
+type UserRow = {
+  id: string;
+  name: string | null;
+  email: string;
+  role: string | null;
+  is_approved: boolean;
+  onboarding_completed: boolean;
+  created_at: string;
+};
+
+async function getUsers(filter?: string): Promise<UserRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -16,7 +26,7 @@ async function getUsers(filter?: string) {
   }
 
   const { data } = await query;
-  return data ?? [];
+  return (data as UserRow[] | null) ?? [];
 }
 
 const roleLabel: Record<string, string> = {
@@ -90,7 +100,7 @@ export default async function AdminUsersPage({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--line-2)]">
-                {users.map((user: any) => (
+                {users.map((user) => (
                   <tr key={user.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
                       <div className="flex items-center gap-3">

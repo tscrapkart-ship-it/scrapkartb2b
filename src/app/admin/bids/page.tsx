@@ -1,5 +1,15 @@
 import { Gavel } from "lucide-react";
 
+type BidRow = {
+  id: string;
+  offered_price: number | null;
+  estimated_pickup_date: string | null;
+  status: string;
+  created_at: string;
+  scraps: { title: string; category: string } | { title: string; category: string }[] | null;
+  users: { name: string; email: string } | { name: string; email: string }[] | null;
+};
+
 const statusColor: Record<string, string> = {
   pending: "bg-[var(--warning)]/10 text-[var(--warning)]",
   accepted: "bg-[var(--forest-tint)] text-[var(--forest)]",
@@ -7,7 +17,7 @@ const statusColor: Record<string, string> = {
   withdrawn: "bg-[var(--paper-2)] text-[var(--ink-3)]",
 };
 
-async function getBids(status?: string) {
+async function getBids(status?: string): Promise<BidRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -22,7 +32,12 @@ async function getBids(status?: string) {
   }
 
   const { data } = await query;
-  return data ?? [];
+  return (data as BidRow[] | null) ?? [];
+}
+
+function pickOne<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
 }
 
 export default async function AdminBidsPage({
@@ -85,15 +100,18 @@ export default async function AdminBidsPage({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--line-2)]">
-                {bids.map((bid: any) => (
+                {bids.map((bid) => {
+                  const scrap = pickOne(bid.scraps);
+                  const recycler = pickOne(bid.users);
+                  return (
                   <tr key={bid.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[180px] truncate font-medium text-[var(--ink)]">{bid.scraps?.title ?? "—"}</p>
-                      <p className="text-sm text-[var(--ink-3)]">{bid.scraps?.category}</p>
+                      <p className="max-w-[180px] truncate font-medium text-[var(--ink)]">{scrap?.title ?? "—"}</p>
+                      <p className="text-sm text-[var(--ink-3)]">{scrap?.category}</p>
                     </td>
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[140px] truncate text-[var(--ink)]">{bid.users?.name ?? "—"}</p>
-                      <p className="max-w-[140px] truncate text-sm text-[var(--ink-3)]">{bid.users?.email}</p>
+                      <p className="max-w-[140px] truncate text-[var(--ink)]">{recycler?.name ?? "—"}</p>
+                      <p className="max-w-[140px] truncate text-sm text-[var(--ink-3)]">{recycler?.email}</p>
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 font-semibold text-[var(--ink)] tabular-nums sm:px-5">
                       ₹{bid.offered_price?.toLocaleString("en-IN")}
@@ -112,7 +130,8 @@ export default async function AdminBidsPage({
                       {new Date(bid.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -1,7 +1,26 @@
 import { Recycle } from "lucide-react";
 import { VerifyRecyclerButton } from "./verify-recycler-button";
 
-async function getRecyclerProfiles(status?: string) {
+type UserRef = { name: string | null; email: string | null };
+type RecyclerProfileRow = {
+  id: string;
+  user_id: string;
+  verification_status: string;
+  waste_types_accepted: string[] | null;
+  service_radius_km: number | null;
+  pricing_model: string | null;
+  cpcb_license_url: string | null;
+  epr_authorization_url: string | null;
+  iso_certificate_url: string | null;
+  users: UserRef | UserRef[] | null;
+};
+
+function pickOne<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
+}
+
+async function getRecyclerProfiles(status?: string): Promise<RecyclerProfileRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -15,7 +34,7 @@ async function getRecyclerProfiles(status?: string) {
   }
 
   const { data } = await query;
-  return data ?? [];
+  return (data as RecyclerProfileRow[] | null) ?? [];
 }
 
 const statusColor: Record<string, string> = {
@@ -72,28 +91,30 @@ export default async function AdminRecyclersPage({
         </div>
       ) : (
         <div className="space-y-4">
-          {profiles.map((profile: any) => (
+          {profiles.map((profile) => {
+            const user = pickOne(profile.users);
+            return (
             <div key={profile.id} className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-5 space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-[var(--ink)]">{profile.users?.name ?? "Unknown"}</p>
+                    <p className="font-semibold text-[var(--ink)]">{user?.name ?? "Unknown"}</p>
                     <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColor[profile.verification_status]}`}>
                       {profile.verification_status}
                     </span>
                   </div>
-                  <p className="truncate text-sm text-[var(--ink-3)]">{profile.users?.email}</p>
+                  <p className="truncate text-sm text-[var(--ink-3)]">{user?.email}</p>
                 </div>
                 {profile.verification_status === "pending" && (
                   <VerifyRecyclerButton profileId={profile.id} userId={profile.user_id} />
                 )}
               </div>
 
-              {profile.waste_types_accepted?.length > 0 && (
+              {profile.waste_types_accepted && profile.waste_types_accepted.length > 0 && (
                 <div>
                   <p className="text-xs text-[var(--ink-3)] mb-2">Waste Types Accepted</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {profile.waste_types_accepted.map((t: string) => (
+                    {profile.waste_types_accepted.map((t) => (
                       <span key={t} className="rounded-full bg-[var(--forest-tint)] px-2.5 py-0.5 text-xs text-[var(--forest)]">
                         {t}
                       </span>
@@ -142,7 +163,8 @@ export default async function AdminRecyclersPage({
                 ))}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

@@ -114,7 +114,7 @@ export async function getLiveListings(limit = 3): Promise<LiveListingsResult> {
   const ids = scrapData.map((d) => d.id as string);
 
   // Bid counts per scrap (all open bids across these listings)
-  let bidCountById: Record<string, number> = {};
+  const bidCountById: Record<string, number> = {};
   let totalBidsValueINR = 0;
 
   if (ids.length > 0) {

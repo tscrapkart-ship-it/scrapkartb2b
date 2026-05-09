@@ -3,14 +3,24 @@ import { BookOpen, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DeleteBlogButton } from "./delete-blog-button";
 
-async function getBlogs() {
+type BlogRow = {
+  id: string;
+  title: string;
+  slug: string;
+  is_published: boolean;
+  is_featured: boolean;
+  published_at: string | null;
+  created_at: string;
+};
+
+async function getBlogs(): Promise<BlogRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
   const { data } = await supabase
     .from("blogs")
     .select("id, title, slug, is_published, is_featured, published_at, created_at")
     .order("created_at", { ascending: false });
-  return data ?? [];
+  return (data as BlogRow[] | null) ?? [];
 }
 
 export default async function AdminBlogPage() {
@@ -53,7 +63,7 @@ export default async function AdminBlogPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--line-2)]">
-                {blogs.map((blog: any) => (
+                {blogs.map((blog) => (
                   <tr key={blog.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
                       <p className="max-w-[200px] truncate font-medium text-[var(--ink)]">{blog.title}</p>

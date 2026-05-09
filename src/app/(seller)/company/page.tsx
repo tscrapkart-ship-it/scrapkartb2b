@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { isMockMode, mockCompanies } from "@/lib/mock-data";
-import { Building2, MapPin, Pencil, Factory, CheckCircle, Clock, ChevronRight } from "lucide-react";
+import { MapPin, Pencil, Factory, CheckCircle, Clock } from "lucide-react";
 
 async function getCompany() {
   if (isMockMode()) return mockCompanies[0];

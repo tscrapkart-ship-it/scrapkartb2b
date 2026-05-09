@@ -1,7 +1,29 @@
 import { Package } from "lucide-react";
 import { DeleteListingButton } from "./delete-listing-button";
 
-async function getListings(status?: string) {
+type CompanyRef = { name: string };
+type UserRef = { name: string };
+type ListingRow = {
+  id: string;
+  title: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  price: number;
+  status: string;
+  city: string | null;
+  state: string | null;
+  created_at: string;
+  companies: CompanyRef | CompanyRef[] | null;
+  users: UserRef | UserRef[] | null;
+};
+
+function pickOne<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
+}
+
+async function getListings(status?: string): Promise<ListingRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -15,7 +37,7 @@ async function getListings(status?: string) {
   }
 
   const { data } = await query;
-  return data ?? [];
+  return (data as ListingRow[] | null) ?? [];
 }
 
 const statusColor: Record<string, string> = {
@@ -86,7 +108,9 @@ export default async function AdminListingsPage({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--line-2)]">
-                {listings.map((listing: any) => (
+                {listings.map((listing) => {
+                  const company = pickOne(listing.companies);
+                  return (
                   <tr key={listing.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
                       <p className="max-w-[180px] truncate font-medium text-[var(--ink)]">{listing.title}</p>
@@ -98,7 +122,7 @@ export default async function AdminListingsPage({
                       </span>
                     </td>
                     <td className="max-w-[140px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">
-                      {(listing.companies as any)?.name ?? "—"}
+                      {company?.name ?? "—"}
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 text-[var(--ink)] tabular-nums sm:px-5">
                       ₹{listing.price.toLocaleString("en-IN")}
@@ -115,7 +139,8 @@ export default async function AdminListingsPage({
                       <DeleteListingButton id={listing.id} />
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

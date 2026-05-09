@@ -52,7 +52,46 @@ async function getStats() {
   };
 }
 
-async function getRecentActivity() {
+type RecentUserRow = {
+  id: string;
+  name: string | null;
+  email: string;
+  role: string | null;
+  is_approved: boolean;
+  created_at: string;
+};
+
+type CompanyRef = { name: string };
+type RecentListingRow = {
+  id: string;
+  title: string;
+  category: string;
+  status: string;
+  created_at: string;
+  companies: CompanyRef | CompanyRef[] | null;
+};
+
+type ScrapTitleRef = { title: string };
+type UserNameRef = { name: string | null };
+type RecentBidRow = {
+  id: string;
+  offered_price: number | null;
+  status: string;
+  created_at: string;
+  scraps: ScrapTitleRef | ScrapTitleRef[] | null;
+  users: UserNameRef | UserNameRef[] | null;
+};
+
+function pickOne<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
+}
+
+async function getRecentActivity(): Promise<{
+  recentUsers: RecentUserRow[];
+  recentListings: RecentListingRow[];
+  recentBids: RecentBidRow[];
+}> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -77,9 +116,9 @@ async function getRecentActivity() {
     ]);
 
   return {
-    recentUsers: recentUsers ?? [],
-    recentListings: recentListings ?? [],
-    recentBids: recentBids ?? [],
+    recentUsers: (recentUsers as RecentUserRow[] | null) ?? [],
+    recentListings: (recentListings as RecentListingRow[] | null) ?? [],
+    recentBids: (recentBids as RecentBidRow[] | null) ?? [],
   };
 }
 
@@ -209,7 +248,7 @@ export default async function AdminOverviewPage() {
             {activity.recentUsers.length === 0 && (
               <p className="text-sm text-[var(--ink-4)] text-center py-4">No users yet</p>
             )}
-            {activity.recentUsers.map((u: any) => (
+            {activity.recentUsers.map((u) => (
               <div key={u.id} className="flex items-center justify-between py-1">
                 <div className="min-w-0 flex-1">
                   <p className="text-base text-[var(--ink)] truncate">{u.name}</p>
@@ -223,7 +262,7 @@ export default async function AdminOverviewPage() {
                     </span>
                   )}
                   <span className="rounded-[var(--radius-sm)] bg-[var(--paper-2)] px-1.5 py-0.5 text-xs font-medium text-[var(--ink-3)]">
-                    {roleLabel[u.role] ?? u.role ?? "—"}
+                    {(u.role ? roleLabel[u.role] : null) ?? u.role ?? "—"}
                   </span>
                 </div>
               </div>
@@ -248,11 +287,13 @@ export default async function AdminOverviewPage() {
             {activity.recentListings.length === 0 && (
               <p className="text-sm text-[var(--ink-4)] text-center py-4">No listings yet</p>
             )}
-            {activity.recentListings.map((s: any) => (
+            {activity.recentListings.map((s) => {
+              const company = pickOne(s.companies);
+              return (
               <div key={s.id} className="flex items-center justify-between gap-2 py-1">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-base text-[var(--ink)]">{s.title}</p>
-                  <p className="truncate text-sm text-[var(--ink-4)]">{(s.companies as any)?.name ?? "—"}</p>
+                  <p className="truncate text-sm text-[var(--ink-4)]">{company?.name ?? "—"}</p>
                 </div>
                 <div className="flex shrink-0 gap-1.5">
                   <span className="hidden rounded-[var(--radius-sm)] bg-[var(--paper-2)] px-1.5 py-0.5 text-xs font-medium text-[var(--ink-3)] sm:inline-block lg:hidden xl:inline-block">{s.category}</span>
@@ -264,7 +305,8 @@ export default async function AdminOverviewPage() {
                   </span>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -285,14 +327,16 @@ export default async function AdminOverviewPage() {
             {activity.recentBids.length === 0 && (
               <p className="text-sm text-[var(--ink-4)] text-center py-4">No bids yet</p>
             )}
-            {activity.recentBids.map((b: any) => {
+            {activity.recentBids.map((b) => {
               const bs = bidStatusConfig[b.status] ?? bidStatusConfig.withdrawn;
+              const scrap = pickOne(b.scraps);
+              const recycler = pickOne(b.users);
               return (
                 <div key={b.id} className="flex items-center justify-between py-1">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-base text-[var(--ink)]">{(b.scraps as any)?.title ?? "—"}</p>
+                    <p className="truncate text-base text-[var(--ink)]">{scrap?.title ?? "—"}</p>
                     <p className="text-sm text-[var(--ink-4)]">
-                      by {(b.users as any)?.name ?? "—"} · ₹{b.offered_price?.toLocaleString("en-IN")}
+                      by {recycler?.name ?? "—"} · ₹{b.offered_price?.toLocaleString("en-IN")}
                     </p>
                   </div>
                   <span className={`ml-2 shrink-0 inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-1.5 py-0.5 text-xs font-medium ${bs.bg} ${bs.text}`}>

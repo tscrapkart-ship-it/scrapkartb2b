@@ -1,6 +1,23 @@
 import { Building2 } from "lucide-react";
 
-async function getCompanies() {
+type CompanyOwner = { name: string | null; email: string | null };
+type CompanyRow = {
+  id: string;
+  name: string | null;
+  industry_type: string | null;
+  city: string | null;
+  state: string | null;
+  description: string | null;
+  created_at: string;
+  owner: CompanyOwner | CompanyOwner[] | null;
+};
+
+function pickOne<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
+}
+
+async function getCompanies(): Promise<CompanyRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -12,7 +29,7 @@ async function getCompanies() {
     `)
     .order("created_at", { ascending: false });
 
-  return data ?? [];
+  return (data as CompanyRow[] | null) ?? [];
 }
 
 export default async function AdminCompaniesPage() {
@@ -32,7 +49,9 @@ export default async function AdminCompaniesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {companies.map((company: any) => (
+          {companies.map((company) => {
+            const owner = pickOne(company.owner);
+            return (
             <div
               key={company.id}
               className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-5 space-y-3"
@@ -53,15 +72,16 @@ export default async function AdminCompaniesPage() {
 
               <div className="flex items-center justify-between gap-2 border-t border-[var(--line)] pt-3">
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-[var(--ink)]">{(company.owner as any)?.name ?? "—"}</p>
-                  <p className="truncate text-sm text-[var(--ink-3)]">{(company.owner as any)?.email ?? ""}</p>
+                  <p className="truncate text-sm font-medium text-[var(--ink)]">{owner?.name ?? "—"}</p>
+                  <p className="truncate text-sm text-[var(--ink-3)]">{owner?.email ?? ""}</p>
                 </div>
                 <span className="shrink-0 rounded-full bg-[var(--paper-2)] px-2.5 py-1 text-sm text-[var(--ink-3)]">
                   {company.city}, {company.state}
                 </span>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

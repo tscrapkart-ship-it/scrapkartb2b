@@ -1,5 +1,23 @@
 import { ArrowLeftRight } from "lucide-react";
 
+type ScrapRef = { title: string; category: string };
+type UserRef = { name: string };
+type TransactionRow = {
+  id: string;
+  final_price: number | null;
+  pickup_date: string | null;
+  status: string;
+  created_at: string;
+  scraps: ScrapRef | ScrapRef[] | null;
+  producer: UserRef | UserRef[] | null;
+  recycler: UserRef | UserRef[] | null;
+};
+
+function pickOne<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
+}
+
 const statusColor: Record<string, string> = {
   scheduled: "bg-[var(--info)]/10 text-[var(--info)]",
   in_progress: "bg-[var(--info)]/10 text-[var(--info)]",
@@ -7,7 +25,7 @@ const statusColor: Record<string, string> = {
   cancelled: "bg-[var(--danger)]/10 text-[var(--danger)]",
 };
 
-async function getTransactions() {
+async function getTransactions(): Promise<TransactionRow[]> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
 
@@ -21,7 +39,7 @@ async function getTransactions() {
     `)
     .order("created_at", { ascending: false });
 
-  return data ?? [];
+  return (data as TransactionRow[] | null) ?? [];
 }
 
 export default async function AdminTransactionsPage() {
@@ -54,14 +72,18 @@ export default async function AdminTransactionsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--line-2)]">
-                {transactions.map((tx: any) => (
+                {transactions.map((tx) => {
+                  const scrap = pickOne(tx.scraps);
+                  const producer = pickOne(tx.producer);
+                  const recycler = pickOne(tx.recycler);
+                  return (
                   <tr key={tx.id} className="hover:bg-[var(--paper-2)] transition-colors">
                     <td className="px-4 py-4 sm:px-5">
-                      <p className="max-w-[160px] truncate font-medium text-[var(--ink)]">{tx.scraps?.title ?? "—"}</p>
-                      <p className="text-xs text-[var(--ink-3)]">{tx.scraps?.category}</p>
+                      <p className="max-w-[160px] truncate font-medium text-[var(--ink)]">{scrap?.title ?? "—"}</p>
+                      <p className="text-xs text-[var(--ink-3)]">{scrap?.category}</p>
                     </td>
-                    <td className="max-w-[120px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">{tx.producer?.name ?? "—"}</td>
-                    <td className="max-w-[120px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">{tx.recycler?.name ?? "—"}</td>
+                    <td className="max-w-[120px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">{producer?.name ?? "—"}</td>
+                    <td className="max-w-[120px] truncate px-4 py-4 text-[var(--ink-2)] sm:px-5">{recycler?.name ?? "—"}</td>
                     <td className="whitespace-nowrap px-4 py-4 font-semibold text-[var(--ink)] tabular-nums sm:px-5">
                       ₹{tx.final_price?.toLocaleString("en-IN")}
                     </td>
@@ -76,7 +98,8 @@ export default async function AdminTransactionsPage() {
                       </span>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

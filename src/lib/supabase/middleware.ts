@@ -71,7 +71,6 @@ export async function updateSession(request: NextRequest) {
     }
 
     const role = profile?.role;
-    const isApproved = profile?.is_approved ?? false;
     const onboardingCompleted = profile?.onboarding_completed ?? false;
 
     // Already authenticated — redirect away from auth pages (but NOT landing page)

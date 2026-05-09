@@ -21,17 +21,16 @@ const mockProfile: User = {
 };
 
 export default function BuyerProfilePage() {
-  const [profile, setProfile] = useState<User | null>(null);
+  const mock = isMockMode();
+  // Lazy initial state for the mock branch — avoids synchronously calling
+  // setState inside useEffect (react-hooks/set-state-in-effect).
+  const [profile, setProfile] = useState<User | null>(() => (mock ? mockProfile : null));
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const mock = isMockMode();
 
   useEffect(() => {
-    if (mock) {
-      setProfile(mockProfile);
-      return;
-    }
+    if (mock) return;
 
     async function fetchProfile() {
       const supabase = createClient();
