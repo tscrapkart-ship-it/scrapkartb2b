@@ -33,6 +33,11 @@ export const metadata: Metadata = {
   description:
     "List your lot. Verified buyers bid. Settle in 72 hours. India's B2B exchange for industrial scrap.",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/logos/Scrapkart Full Logo White BG.png",
+    shortcut: "/logos/Scrapkart Full Logo White BG.png",
+    apple: "/logos/Scrapkart Full Logo White BG.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -52,7 +57,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="theme-color" content="#FAFAF7" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className={`${interTight.variable} ${fraunces.variable} ${jetBrainsMono.variable} antialiased overflow-x-hidden`}>
         <NextTopLoader color="#0F4D2A" height={2} showSpinner={false} shadow="none" />
