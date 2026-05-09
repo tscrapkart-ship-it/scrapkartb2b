@@ -29,10 +29,8 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 // Used to resolve relative URLs in openGraph.images / twitter.images below.
-// Currently the b2b app is deployed at scrapkart.app; once split, switch to
-// https://b2b.scrapkart.app. The card image itself is identical in both
-// deployments, so social previews stay correct either way.
-const SITE_URL = "https://scrapkart.app";
+// b2b lives at b2b.scrapkart.app; the umbrella landing page owns scrapkart.app.
+const SITE_URL = "https://b2b.scrapkart.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
