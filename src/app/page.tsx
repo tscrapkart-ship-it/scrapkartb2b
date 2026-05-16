@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { MarketingNav } from "@/components/shared/marketing-nav";
 import { MarketingFooter } from "@/components/shared/marketing-footer";
@@ -21,7 +22,37 @@ export default async function Home() {
       <MarketingNav />
 
       {/* HERO */}
-      <section className="pt-12 pb-16 md:pt-20 md:pb-24">
+      <section className="relative isolate overflow-hidden pt-12 pb-16 md:pt-20 md:pb-24">
+        {/* Background — aerial forest road, brand-aligned moody green */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/herobg.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+            aria-hidden
+          />
+          {/* Paper-to-transparent gradient: text-side stays readable on the left,
+              forest shows through on the right where the live-marketplace panel sits. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to right, var(--paper) 0%, rgba(250,250,247,0.94) 38%, rgba(250,250,247,0.55) 70%, rgba(250,250,247,0.30) 100%)",
+            }}
+          />
+          {/* Subtle top-to-bottom tint so the section blends into the rest of the page below. */}
+          <div
+            className="absolute inset-x-0 bottom-0 h-24"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(250,250,247,0) 0%, var(--paper) 100%)",
+            }}
+          />
+        </div>
+
         <div className="container-page grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-start">
           <HeroEntrance>
             <HeroEntranceItem>
