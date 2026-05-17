@@ -49,6 +49,9 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 | 14 | **Marketing nav redesign** — floating glass pill on scroll, edge-to-edge transparent at top, scroll progress bar, animated mint underlines, IntersectionObserver-driven active section highlighting, hover lift on logo | ✅ Done |
 | 15 | **Logo + brand refresh** — user re-cropped white/black logos to 6.5:1 banner aspect. All 4 navs (marketing/admin/buyer/seller), OG card generator, and PWA icon generator updated to match | ✅ Done |
 | 16 | **Two-repo split** — landing page (`scrapkart.app`) extracted to its own repo as plain HTML/CSS/JS. This Next.js app is now B2B-only and deploys to `b2b.scrapkart.app` | ✅ Done |
+| 17 | **Marketing nav live-ticker** — dark Bloomberg-style strip above the nav with realtime stats (live listings, today delta, trending categories, last bid time). 30s polling via `/api/live-stats`. Hides on scroll; small `● N LIVE` chip stays in the floating pill. See spec `docs/superpowers/specs/2026-05-17-marketing-nav-live-ticker-design.md` | ✅ Done |
+| 18 | **Bid accept/decline overhaul** — built `/seller-bookings/[id]` as a real seller bid-detail page (was a dead redirect). Confirmation dialog with optional 280-char response message. Buyer sees the producer's note on their bid view. Backed by new `listing_bids.seller_response_message` column | ✅ Done |
+| 19 | **Public marketplace** — `/marketplace` and `/companies` (including detail routes) moved out of `(buyer)/` into a new `(public-browse)/` route group with a role-aware layout. Anonymous visitors can browse; bid action still gated behind sign-in. Added two RLS policies: `"Public can view live scraps"` and `"Public can view companies"` | ✅ Done |
 
 ### GitHub & Deployment
 - **GitHub (B2B app, this repo):** `https://github.com/tscrapkart-ship-it/scrapkartb2b.git` (branch: `master`)
@@ -59,10 +62,25 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 - **Build command:** `next build --webpack` (required for `next-pwa` service worker generation — Turbopack is incompatible with PWA webpack plugins)
 
 ### What's next
-1. **Admin: suspend/activate users** — the users table has no `suspended` column yet; admin users page shows all users but the suspend action is not yet wired up
-2. **Google OAuth — publish consent screen** — currently in test mode (only added test users can sign in via Google). Before public launch, go to Google Cloud Console → OAuth consent screen → Publish App
-3. **Compress `whybg.jpg`** — currently ~14.5 MB on disk. Should down-sample to ~500 KB without visible quality loss
-4. **Final landing polish pass** — user mentioned "one final change to the landing page" but never specified what; ask before next session
+**Launch-blocking:**
+1. **OTP security hole on transactions** — `src/app/transactions/[id]/page.tsx:132` compares the recycler-supplied OTP to `tx.pickup_otp` which is returned in the same client query. A recycler can read the OTP from DevTools and bypass pickup verification entirely. Needs a server action that compares without leaking the value. **Must fix before public launch.**
+2. **Google OAuth — publish consent screen** — currently in test mode (only added test users can sign in via Google). Before public launch, go to Google Cloud Console → OAuth consent screen → Publish App.
+
+**Industry-grade polish (queued from 2026-05-17 launch-readiness audit):**
+3. **`is_approved` gate decision** — column exists on `users`, admin "Approve" button writes to it, but middleware never reads it. Either wire it into middleware to gate access for unapproved sellers, or remove the column + UI entirely. Currently purely cosmetic.
+4. **`/transactions/[id]` has no nav shell** — `src/app/transactions/layout.tsx` only renders auth checks and the page itself, no `BuyerNav`/`SellerNav`. Sellers get stuck there after accepting a bid with no way back to their dashboard except browser back button.
+5. **Transaction history polish** — the `/transactions` route already lists deals (linked as "Deals" in both buyer + seller navs). The user asked for proper "history/review" framing — may want better empty states, filters, or grouping.
+6. **Admin: suspend/activate users** — the users table has no `suspended` column yet; admin users page shows all users but the suspend action is not yet wired up.
+7. **Compress `whybg.jpg`** — currently ~14.5 MB on disk. Should down-sample to ~500 KB without visible quality loss.
+
+**Audit findings still pending (lower priority):**
+8. **`role === "both"` onboarding flow** is fragile — if a user navigates away mid-flow, middleware could loop them. Happy path works. (`src/app/onboarding/producer/page.tsx:125-129`)
+9. **No seller profile edit page** — buyer has `/profile`, seller has only `/company/edit`. Can't update name/phone of the auth account as a seller.
+10. **Admin approve button** doesn't `router.refresh()` after action — Status column stays stale until manual refresh. (`src/app/admin/users/approve-user-button.tsx`)
+11. **Contact form** silently swallows errors — no user feedback if Supabase insert fails. (`src/app/contact/contact-form.tsx:36-38`)
+12. **User-chip dropdowns** in BuyerNav/SellerNav show a ChevronDown but do nothing on click — implies a menu that doesn't exist.
+13. **Search** is `ilike` on title only — no full-text index, no search on description/company name.
+14. **Dead routes** — several `[id]/page.tsx` files are pure redirect stubs (`/bookings/[id]`, `/seller-bookings/[id]/chat`, `/bookings/[id]/chat`). Safe to delete.
 
 ### Installed Animation Libraries (current)
 - `framer-motion` — auth page transitions (login, signup, role-select) and various reveal components in `src/components/shared/reveal.tsx`, `motion.tsx`, `parallax-image.tsx`
@@ -86,18 +104,38 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 - **Why Section** — full-bleed `/whybg.jpg` with dark forest gradient overlay (`rgba(8,43,25,0.72) → rgba(15,77,42,0.78)`). White heading with `#34D399` mint italic accent. Three paper cards inside hold the actual copy (the image bg was too busy for direct text).
 - **CTA Band** — intentionally plain: white bg, centered, asymmetric padding (`pt-40 pb-16 md:pt-52 md:pb-20`) to vertically position the content. "Ready to _trade?_". The image bg version was tried and rejected.
 
-**Marketing nav (`src/components/shared/marketing-nav.tsx`):**
+**Marketing nav (`src/components/shared/marketing-nav.tsx` + `marketing-nav-client.tsx` + `live-ticker-strip.tsx`):**
+- **Structure (Phase 17):** `marketing-nav.tsx` is a server component that calls `getLiveStats()` and renders `<MarketingNavClient initialStats={…}/>`. The client component mounts the ticker strip + the existing pill behavior. This is why all 5 consumers (`page.tsx`, `contact/page.tsx`, `blogs/page.tsx`, `blogs/[slug]/page.tsx`, `not-found.tsx`) work without code changes: they all import `<MarketingNav />` (the server wrapper).
+- **Live ticker strip:** dark ink-colored strip above the nav row with `● LIVE`, `N LISTINGS · +M TODAY`, top trending categories with `▲`, and `LAST BID Xm AGO`. Polls `/api/live-stats` every 30s and pauses on tab hidden. Uses the `.ticker-pulse-dot` CSS class (NOT `.pulse-dot` — that's already used by `live-marketplace-panel.tsx`).
+- **Contact page exception (`src/app/contact/page.tsx` + `contact-form.tsx`):** the contact page must stay a server component to SSR the ticker stats; the form was extracted into a `"use client"` child component. Don't merge them back.
 - Sticky, edge-to-edge transparent at the very top
-- On scroll past 8px, animates into a **floating frosted pill**: `mt-3 px-5 rounded-full bg-[rgba(250,250,247,0.78)] backdrop-blur-xl shadow-[0_10px_30px_rgba(15,77,42,0.08)] border border-white/50`, 300ms transition
+- On scroll past 8px, animates into a **floating frosted pill**: `mt-3 px-5 rounded-full bg-[rgba(250,250,247,0.78)] backdrop-blur-xl shadow-[0_10px_30px_rgba(15,77,42,0.08)] border border-white/50`, 300ms transition. Dark ticker strip hides via `translateY(-100%)` when scrolled; a small `● N LIVE` mono chip appears inside the pill.
 - **Scroll progress bar** — `fixed top-0` 2px `bg-[var(--forest)]` bar with `transform: scaleX(progress)` based on `window.scrollY / (scrollHeight - innerHeight)`
 - **Animated mint underlines** on hover — `<span>` with `bg-[#34D399]` and `group-hover:scale-x-100`
 - **Active section highlighting** — IntersectionObserver on sections whose `id` matches `NAV_LINKS[i].sectionId`. When in view, link turns forest green and underline stays at `scale-x-100`. Currently wired for `#how-it-works`; extend by adding more sectionIds.
 - **Logo hover lift** — `hover:-translate-y-px`
 - B2B badge sits next to the logo
+- **Activity chip** beside Marketplace nav link: shows `+N` (mono, mint on forest-tint bg) when `listingsToday > 0`. Hidden when scrolled (the chip lives only in the top state).
 
 **Auth pages** (`src/app/(auth)/`): light paper surfaces, forest CTA, Framer Motion page transitions.
 
 **All buyer + seller + admin pages**: paper bg, forest accents, mint highlight on active nav items via `bg-[var(--forest-tint)]`.
+
+### Public-browse Route Group (Phase 19)
+`/marketplace`, `/marketplace/[id]`, `/companies`, `/companies/[id]` live in `src/app/(public-browse)/`, NOT in `(buyer)/`. The shared `(public-browse)/layout.tsx` picks the right nav based on auth + role:
+- **Anon** → `MarketingNav` (server wrapper with live ticker) + `MarketingFooter`
+- **Recycler / both** → `BuyerNav`
+- **Waste producer** → `SellerNav`
+- **Admin** is redirected to `/admin` by middleware before this layout runs
+
+Middleware (`src/lib/supabase/middleware.ts`) treats `/marketplace`, `/marketplace/*`, `/companies`, `/companies/*` as public routes (anon users not redirected to login).
+
+The bidding action on listing detail (`<SubmitBidDialog>`) already handles unauthenticated users via a "Sign Up to Submit a Bid" CTA, so anon users can browse freely but can't transact. Sellers viewing a listing in marketplace see no action UI (they can't bid on their own marketplace listings); this is acceptable for V1.
+
+### Bid Accept/Decline Flow (Phase 18)
+- **Seller path:** `/seller-bookings` → click any bid card → `/seller-bookings/[id]` (server page that fetches the bid + parent listing + recycler info, with explicit ownership guard since RLS already enforces it). Renders the listing context, the highlighted bid card, and `<BidsList listingId={…} highlightBidId={…} />`.
+- **Accept/decline:** `BidsList` opens a confirmation dialog with an optional 280-char message. Confirmed actions write the message to `listing_bids.seller_response_message` and (for Accept) auto-reject all other pending bids on the listing, mark the scrap as `matched`, and create a `transactions` row with a 6-digit `pickup_otp`.
+- **Buyer side:** `SubmitBidDialog` renders `existingBid.seller_response_message` in a "Producer's note" block below the accepted/rejected status panel. Same column readable by the bidder via the existing "Recyclers can view own bids" RLS policy.
 
 ### Supabase MCP
 **Status: Connected and working** (via terminal/CLI — as of 2026-03-26).
@@ -158,9 +196,12 @@ No test framework has been chosen yet.
 src/
   app/
     (auth)/             # login, signup, role-select + layout (route group, no URL segment)
-    (buyer)/            # marketplace, companies, bookings, chat, profile + layout
-    (seller)/           # dashboard, company, scraps, seller-bookings, chat + layout
+    (public-browse)/    # marketplace + companies (publicly accessible browse surfaces) + role-aware layout (Phase 19)
+    (buyer)/            # bookings, profile + layout (buyer-only authed pages; marketplace + companies moved out in Phase 19)
+    (seller)/           # dashboard, company, scraps, seller-bookings (incl. /seller-bookings/[id] from Phase 18), chat + layout
     admin/              # admin pages (real path /admin/*, NOT a route group — see Gotchas)
+    api/
+      live-stats/       # GET handler used by the marketing nav's live ticker (Phase 17)
     auth/callback/      # Supabase OAuth callback route
     blogs/              # /blogs and /blogs/[slug] — public marketing surface
     contact/            # /contact
@@ -258,12 +299,13 @@ Target aesthetic: monopo-saigon / Stripe Press / Mast Coffee — premium B2B, ha
 
 ### RLS Policy Intent
 These are the access rules to enforce when writing RLS policies:
-- **Waste Producer (seller):** can insert/update/delete only their own company and scrap listings (`ownerId = auth.uid()` / `sellerId = auth.uid()`)
-- **Recycler (buyer):** read-only access to all `available` scrap listings and company profiles; cannot modify seller data
-- **Bookings:** readable and writable only by the buyer or seller involved in that booking (`buyerId = auth.uid() OR sellerId = auth.uid()`)
-- **Messages:** readable and writable only by participants of the linked booking — enforce via join to bookings table, not just sender/receiver fields
-- **Users table:** users can read/update only their own row
-- **Admin:** full read/write on all 5 tables via `public.is_admin()` SECURITY DEFINER function — avoids infinite recursion that would occur if the policy queried `users` directly
+- **Public (anonymous):** can read `scraps` where `status='live'` and all rows in `companies`. Added in Phase 19 to support the public marketplace browse. Two policies on the live DB: `"Public can view live scraps"` and `"Public can view companies"`.
+- **Waste Producer (seller):** can insert/update/delete only their own company and scrap listings (`ownerId = auth.uid()` / `sellerId = auth.uid()`). Can read all bids on their listings and respond via UPDATE (including writing `seller_response_message`).
+- **Recycler (buyer):** read-only access to all `live` scrap listings and company profiles; can insert and update their own bids. Cannot see other recyclers' bids on the same listing.
+- **Transactions:** readable and writable only by the producer or recycler involved (`producer_id = auth.uid() OR recycler_id = auth.uid()`). `bookings` table is deprecated; transactions is the active link.
+- **Messages:** readable by sender/receiver or participants of the linked transaction.
+- **Users table:** users can read/update only their own row.
+- **Admin:** full read/write on all tables via `public.is_admin()` SECURITY DEFINER function — avoids infinite recursion that would occur if the policy queried `users` directly.
 
 ### V1 Scope Boundaries
 Know what is real vs placeholder in V1, and don't over-engineer the placeholder parts:
@@ -325,6 +367,17 @@ Plus Jakarta Sans and Lexend Giga were used in earlier versions. Files for both 
 - **`mono-caption` class overrides `text-white`**: When using `.mono-caption` on a dark background (e.g. inside the Why section's dark forest overlay), the class's default `color` wins over `text-white`. Use inline `style={{ color: "#ffffff" }}` to guarantee override. Same gotcha potentially applies to `.italic-accent` if you need a non-default color.
 - **CTA Band vertical centering**: Tried `min-h` + `flex items-center` — looked too tall on desktop. Final pattern is asymmetric padding (`pt-40 pb-16 md:pt-52 md:pb-20`) which positions content lower in the visual frame. If you change this section, don't switch to flex-centering without re-checking the user's reaction.
 - **Image cache for replaced bg images**: Next.js Image optimizer caches under `.next/dev/cache/images`. If a user replaces e.g. `herobg.jpg` with new content but the same filename, the dev server may serve the cached optimized version. Clearing `.next/dev/cache/images` fixes it.
+- **`/marketplace` and `/companies` are NOT in `(buyer)/`**: They live in `src/app/(public-browse)/` so anonymous visitors can read them (Phase 19). Do NOT move them back into `(buyer)/` — the buyer layout redirects all non-recyclers (including anon) to `/dashboard` or `/login`. The role-aware `(public-browse)/layout.tsx` picks the right nav at render time.
+- **`.ticker-pulse-dot` ≠ `.pulse-dot`**: `globals.css` defines both — the marketing nav live ticker uses `.ticker-pulse-dot` (mint, opacity fade); the older `live-marketplace-panel.tsx` uses `.pulse-dot` (forest, box-shadow ripple). The names look similar but the visuals differ. Don't merge them.
+- **`scraps.status` is `'live'` not `'available'`**: The Booking-era schema used `'available'` and some old code still says that. The enum is `"live" | "matched" | "picked" | "completed" | "cancelled"`. Any query filtering on `status='available'` returns nothing. (Fixed in `(public-browse)/companies/[id]/page.tsx` — grep for other instances if you see "no listings" empty states unexpectedly.)
+- **`scraps.images` AND `scraps.photos` are both required writes**: The `photos` column is NOT NULL (default `{}`) and most code that displays scrap images reads both with `[...photos, ...images]`. New scrap creation and scrap edit both write the same array to both columns. Don't write to only one — the marketplace detail page may display stale images.
+- **Contact page must be a server component** (after Phase 17): `/contact/page.tsx` is `async` and renders `<MarketingNav />` (a server component that does an SSR fetch for the live ticker). The form is extracted to `/contact/contact-form.tsx` with `"use client"`. Don't merge the form back into the page — async server components cannot be children of `"use client"` components.
+- **`listing_bids.seller_response_message`**: Optional text (max 280 chars enforced client-side) written when a seller accepts/declines via the `BidsList` confirmation dialog. Buyers see this via "Recyclers can view own bids" RLS on the same row. On Accept, all other pending bids on the listing get auto-rejected with NULL response_message — only the explicitly accepted/declined bid carries the seller's note.
+
+### Migrations Applied This Session (2026-05-17)
+Visible in `supabase migrations list` or the `supabase_migrations.schema_migrations` table:
+- `add_seller_response_message_to_listing_bids` — adds nullable TEXT column for Phase 18
+- `public_can_view_live_scraps_and_companies` — two SELECT policies allowing anon read of live scraps + all companies, for Phase 19
 
 ### Test Accounts (live in production Supabase)
 All created directly in `auth.users` + `public.users` via SQL. Seeded with companies, listings, bookings, and messages.

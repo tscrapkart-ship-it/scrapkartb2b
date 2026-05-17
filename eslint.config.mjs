@@ -19,6 +19,9 @@ const eslintConfig = defineConfig([
     "public/sw.js",
     "public/workbox-*.js",
     "public/swe-worker-*.js",
+    // Build-time Node scripts (CommonJS require() is the right call here — they're
+    // executed by node directly, not bundled). The TS-flavored rules don't apply.
+    "scripts/**/*.cjs",
   ]),
 ]);
 
