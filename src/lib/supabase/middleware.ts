@@ -44,11 +44,15 @@ export async function updateSession(request: NextRequest) {
     "/contact",
     "/blogs",
     "/pending-approval",
+    "/marketplace",
+    "/companies",
   ];
   const isPublicRoute =
     publicRoutes.some((route) => path === route) ||
     path.startsWith("/auth/") ||
-    path.startsWith("/blogs/");
+    path.startsWith("/blogs/") ||
+    path.startsWith("/marketplace/") ||
+    path.startsWith("/companies/");
 
   // Unauthenticated: redirect to login for protected routes
   if (!user && !isPublicRoute) {

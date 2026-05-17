@@ -28,7 +28,7 @@ async function getCompanyWithScraps(id: string) {
     .from("scraps")
     .select("*")
     .eq("company_id", id)
-    .eq("status", "available")
+    .eq("status", "live")
     .order("created_at", { ascending: false });
 
   return { company, scraps: scraps ?? [] };
