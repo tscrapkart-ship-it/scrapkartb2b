@@ -57,9 +57,9 @@ export function SellerNav({ userName }: { userName: string }) {
               <Image
                 src="/logos/ScrapKart Black Logo.png"
                 alt="ScrapKart"
-                width={130}
-                height={37}
-                className="h-auto w-[100px] sm:w-[130px]"
+                width={260}
+                height={40}
+                className="h-9 w-auto sm:h-10"
                 priority
               />
             </Link>

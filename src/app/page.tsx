@@ -40,7 +40,7 @@ export default async function Home() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to right, var(--paper) 0%, rgba(250,250,247,0.94) 38%, rgba(250,250,247,0.55) 70%, rgba(250,250,247,0.30) 100%)",
+                "linear-gradient(to right, rgba(250,250,247,0.82) 0%, rgba(250,250,247,0.68) 38%, rgba(250,250,247,0.36) 70%, rgba(250,250,247,0.16) 100%)",
             }}
           />
           {/* Subtle top-to-bottom tint so the section blends into the rest of the page below. */}

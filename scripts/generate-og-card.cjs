@@ -75,11 +75,15 @@ async function build() {
   `;
 
   // --- Layer 3: logo ------------------------------------------------------
-  // Native: 3508x2480 (1.41 aspect). Render at 540 wide → 382 tall, centered.
-  const LOGO_W = 540;
-  const LOGO_H = Math.round((2480 / 3508) * LOGO_W); // ~382
+  // Compute height from the source's actual aspect ratio so this script
+  // adapts to any future re-crop of the logo file.
+  const meta = await sharp(LOGO_PATH).metadata();
+  const naturalAspect = (meta.width || 1) / (meta.height || 1);
+  const LOGO_W = 720; // wider to give the banner wordmark presence
+  const LOGO_H = Math.round(LOGO_W / naturalAspect);
   const LOGO_X = Math.round((W - LOGO_W) / 2);
-  const LOGO_Y = 110;
+  // Center the logo vertically in the upper portion; tagline goes below.
+  const LOGO_Y = Math.round((H - LOGO_H) / 2) - 40;
 
   const logoBuf = await sharp(LOGO_PATH).resize(LOGO_W, LOGO_H).png().toBuffer();
 

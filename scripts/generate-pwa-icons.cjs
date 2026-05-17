@@ -48,24 +48,27 @@ async function buildOne(size) {
     </svg>
   `;
 
-  // Logo: source is 3508×2480 (1.41 aspect, with wordmark + glyph).
-  // Fit inside ~70% of the square so there's safe-zone padding for
-  // OS-level icon cropping (especially Android adaptive icons).
-  const logoTarget = Math.round(size * 0.72);
-  const logoH = Math.round((2480 / 3508) * logoTarget);
+  // The logo file is now a wide banner (glyph + wordmark, ~6.5:1 aspect).
+  // For a square PWA icon, crop just the leftmost square portion (the glyph).
+  // The glyph occupies roughly the leftmost height-equal region of the file.
+  const meta = await sharp(LOGO_PATH).metadata();
+  const cropSize = Math.min(meta.width || 0, meta.height || 0);
 
-  const logoBuf = await sharp(LOGO_PATH)
-    .resize(logoTarget, logoH, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .png()
+  const glyphBuf = await sharp(LOGO_PATH)
+    .extract({ left: 0, top: 0, width: cropSize, height: cropSize })
     .toBuffer();
+
+  // Fit glyph inside ~65% of the icon for safe-zone padding (Android adaptive
+  // icons crop to a circle/squircle — keep margin so it isn't clipped).
+  const target = Math.round(size * 0.65);
+  const sizedGlyph = await sharp(glyphBuf).resize(target, target).png().toBuffer();
 
   return sharp(Buffer.from(bgSvg))
     .composite([
       {
-        input: logoBuf,
-        // Centered both axes
-        left: Math.round((size - logoTarget) / 2),
-        top: Math.round((size - logoH) / 2),
+        input: sizedGlyph,
+        left: Math.round((size - target) / 2),
+        top: Math.round((size - target) / 2),
       },
     ])
     .png({ compressionLevel: 9 })

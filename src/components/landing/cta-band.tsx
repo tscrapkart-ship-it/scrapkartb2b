@@ -6,12 +6,13 @@ import { Reveal } from "@/components/shared/reveal";
 
 export function CtaBand() {
   return (
-    <section className="py-[var(--section-y)] bg-[var(--forest-tint)]">
+    <section className="bg-[var(--paper)] border-t border-[var(--line)] pt-40 pb-16 md:pt-52 md:pb-20">
       <div className="container-page">
         <Reveal>
           <div className="max-w-[760px] mx-auto text-center">
-            <h2 className="text-[clamp(36px,5.2vw,56px)] font-semibold tracking-[var(--tracking-display)] leading-[0.98]">
-              Ready to <span className="italic-accent">trade?</span>
+            <h2 className="text-[clamp(36px,5.2vw,56px)] font-semibold tracking-[var(--tracking-display)] leading-[0.98] text-[var(--ink)]">
+              Ready to{" "}
+              <span className="italic-accent" style={{ color: "#000000" }}>trade?</span>
             </h2>
             <p className="mt-5 text-[16px] md:text-[17px] text-[var(--ink-2)] leading-[1.55] max-w-[520px] mx-auto">
               Join 120+ verified yards already listing on ScrapKart. Free to post. We earn only on settlement.
@@ -25,7 +26,7 @@ export function CtaBand() {
               </Link>
               <Link
                 href="/marketplace"
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-[var(--radius-md)] border border-[var(--ink)]/15 bg-transparent text-[var(--ink)] text-[15px] font-medium hover:bg-[var(--paper)] transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3.5 rounded-[var(--radius-md)] border border-[var(--ink)]/15 bg-transparent text-[var(--ink)] text-[15px] font-medium hover:bg-[var(--paper-2)] transition-colors"
               >
                 Browse listings
               </Link>

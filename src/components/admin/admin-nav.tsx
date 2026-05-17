@@ -64,8 +64,9 @@ export function AdminNav() {
               <Image
                 src="/logos/ScrapKart Black Logo.png"
                 alt="ScrapKart"
-                width={110}
-                height={32}
+                width={234}
+                height={36}
+                className="h-9 w-auto"
                 priority
               />
               <span className="hidden rounded-md border border-[var(--forest)]/30 bg-[var(--forest-tint)] px-2 py-0.5 text-sm font-semibold text-[var(--forest)] sm:inline">

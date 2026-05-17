@@ -15,6 +15,13 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 - Keep momentum. Prefer completing a feature end-to-end rather than stopping to ask about every small detail.
 - If something is a V1 placeholder (see below), say so clearly rather than over-engineering it.
 
+**Working preferences (durable — confirmed across multiple sessions):**
+- **Backend stays untouched unless explicitly authorized.** If a frontend task requires a schema, RLS, or trigger change, surface it as a separate question first — don't quietly apply migrations.
+- **Test locally before pushing.** Default flow is: build → user views localhost → user explicitly says "push" → then commit + push. Never run `git push` proactively at the end of a task.
+- **Commit messages omit Claude co-author trailers.** Use the user's name only. Do NOT append `Co-Authored-By: Claude ...` lines.
+- **When the user signals confusion or overwhelm ("a bit confused", "revert", "wait")**, drop multi-step lists and serve one step at a time. Wait for "done" before the next step.
+- **B2B aesthetic must look professional, not like B2C-sibling.** The founder rejected an earlier attempt at B2C-style playfulness. Refined Premium (paper / forest / Fraunces italic) is the locked direction.
+
 ---
 
 ## Project Status
@@ -24,7 +31,7 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 ### What's been built
 | Phase | Scope | Status |
 |---|---|---|
-| 1 | Project init, Tailwind design tokens, Plus Jakarta Sans font, root layout | ✅ Done |
+| 1 | Project init, Tailwind design tokens, initial fonts, root layout (fonts later replaced — see Phase 12) | ✅ Done |
 | 2 | Supabase client/server setup, TypeScript domain types, middleware auth guard | ✅ Done |
 | 3 | Auth flows — login, signup, role selection (`(auth)/`) | ✅ Done |
 | 4 | Seller dashboard — company profile CRUD, scrap listing CRUD, image upload | ✅ Done |
@@ -32,58 +39,65 @@ The user is **vibe coding** this entire project — building it end-to-end throu
 | 6 | Post-booking chat — Supabase Realtime messaging per booking thread | ✅ Done |
 | 7 | Landing page — hero, stats, how-it-works, categories, features, testimonials, CTA, footer | ✅ Done |
 | Supabase | Schema + RLS + storage buckets applied to live project via MCP | ✅ Done |
-| UI/UX | Full frontend overhaul — dark theme, brand colors, all 35+ screens polished | ✅ Done |
+| UI/UX (v1) | Full frontend overhaul — dark theme, emerald palette, Plus Jakarta Sans. **Superseded by Phase 12** | ⚠️ Replaced |
 | 8 | PWA (`@ducanh2912/next-pwa`, `manifest.json`, icons) + Vercel deploy | ✅ Done |
 | 9 | Admin dashboard — `/admin/*` route, all 5 pages, admin role + RLS | ✅ Done |
 | 10 | Seed/test data — 5 test accounts live in Supabase with companies, listings, bookings, messages | ✅ Done |
 | 11 | Google OAuth — Sign in/up with Google on login + signup pages, DB trigger, smart callback routing | ✅ Done |
+| 12 | **Refined Premium UI overhaul** — full repaint from dark theme → light paper/forest/mint palette across all 35+ screens. Fraunces serif accents, Inter Tight body, hand-crafted shadows | ✅ Done |
+| 13 | **Landing image pass** — hybrid bg-image approach across hero / how-it-works / categories / why / cta sections (`herobg`, `hiwbg`, `categoriesbg`, `whybg`, `ctabg`) | ✅ Done |
+| 14 | **Marketing nav redesign** — floating glass pill on scroll, edge-to-edge transparent at top, scroll progress bar, animated mint underlines, IntersectionObserver-driven active section highlighting, hover lift on logo | ✅ Done |
+| 15 | **Logo + brand refresh** — user re-cropped white/black logos to 6.5:1 banner aspect. All 4 navs (marketing/admin/buyer/seller), OG card generator, and PWA icon generator updated to match | ✅ Done |
+| 16 | **Two-repo split** — landing page (`scrapkart.app`) extracted to its own repo as plain HTML/CSS/JS. This Next.js app is now B2B-only and deploys to `b2b.scrapkart.app` | ✅ Done |
 
 ### GitHub & Deployment
-- **GitHub:** `https://github.com/tscrapkart-ship-it/scrapkartrehaul.git` (branch: `master`)
+- **GitHub (B2B app, this repo):** `https://github.com/tscrapkart-ship-it/scrapkartb2b.git` (branch: `master`)
+- **GitHub (umbrella landing, sister repo):** `https://github.com/tscrapkart-ship-it/scrapkartlandingpage.git` — lives in `../main page/`, plain HTML/CSS/JS, owns `scrapkart.app`
 - **Deployed:** Vercel (connected to GitHub repo — auto-deploys on push to `master`)
-- **Production domain:** `https://scrapkart.app` (custom domain pointed at the Vercel deployment). The `*.vercel.app` URL still resolves but is not the canonical surface — all Supabase Auth URL config, Google OAuth, and PWA scope target `scrapkart.app`.
-- **Future B2B subdomain:** `https://b2b.scrapkart.app` (planned — not yet split). Treat OAuth allow-lists, cookie scope, and any environment-specific config as if both `scrapkart.app` and `b2b.scrapkart.app` will be live.
+- **Production domain:** `https://b2b.scrapkart.app` (B2B subdomain). The umbrella `https://scrapkart.app` is a separate Vercel project serving the landing site.
+- **Supabase Auth allow-list** includes `https://scrapkart.app`, `https://*.scrapkart.app/auth/callback` (covers `b2b.` and future subdomains), the Vercel preview pattern `https://*-tscrapkart-ship-it.vercel.app/auth/callback`, and `http://localhost:3000/auth/callback` for local dev.
 - **Build command:** `next build --webpack` (required for `next-pwa` service worker generation — Turbopack is incompatible with PWA webpack plugins)
 
 ### What's next
-1. **Replace PWA icons** — `public/icons/icon-192x192.png` and `icon-512x512.png` are currently copies of the white logo. Replace with properly sized 192×192 and 512×512 PNGs for full PWA installability (use realfavicongenerator.net)
-2. **Admin: suspend/activate users** — the users table has no `suspended` column yet; admin users page shows all users but the suspend action is not yet wired up
-3. **Google OAuth — publish consent screen** — currently in test mode (only added test users can sign in via Google). Before public launch, go to Google Cloud Console → OAuth consent screen → Publish App
+1. **Admin: suspend/activate users** — the users table has no `suspended` column yet; admin users page shows all users but the suspend action is not yet wired up
+2. **Google OAuth — publish consent screen** — currently in test mode (only added test users can sign in via Google). Before public launch, go to Google Cloud Console → OAuth consent screen → Publish App
+3. **Compress `whybg.jpg`** — currently ~14.5 MB on disk. Should down-sample to ~500 KB without visible quality loss
+4. **Final landing polish pass** — user mentioned "one final change to the landing page" but never specified what; ask before next session
 
-### Installed Animation Libraries (2026-03-26)
-- `gsap` + `@gsap/react` — used for hero entrance animations and stat count-up on landing page
-- `framer-motion` — used for auth page transitions (login, signup, role-select)
-- `next-themes` — installed, available
+### Installed Animation Libraries (current)
+- `framer-motion` — auth page transitions (login, signup, role-select) and various reveal components in `src/components/shared/reveal.tsx`, `motion.tsx`, `parallax-image.tsx`
+- `lenis` (`^1.3`) — page-wide smooth scroll, wired in `src/components/shared/lenis-provider.tsx` and mounted in `layout.tsx`. Respects `prefers-reduced-motion`. Lenis **does** dispatch native scroll events, so `window.scrollY` listeners still work (this matters for the marketing nav's pill-on-scroll behavior).
+- `nextjs-toploader` — thin 2px forest-color progress bar at top during route transitions. Configured with `color="#0F4D2A" height={2} showSpinner={false}` in `layout.tsx`. Note: this is a **different** bar from the marketing nav's scroll progress bar — toploader fires on navigation, the nav bar tracks scroll position.
 - `sonner` — wired into root layout via `<Toaster />`
+- **`gsap` removed** — was used in earlier dark-theme version; the Refined Premium overhaul replaced GSAP animations with CSS + Framer Motion. Do not reintroduce unless required.
 
-### UI/UX Redesign — Completed (2026-04-03)
-Professional B2B dark theme with emerald green palette. Solid surfaces (no glassmorphism), Plus Jakarta Sans font. Inspired by Recykal/Rubicon. Build passes with zero errors.
+### Refined Premium UI Overhaul — Active Aesthetic (2026-05)
+**The earlier dark-theme overhaul (2026-04-03) has been fully replaced.** Don't re-introduce the dark `#0A0A0A` / `#10B981` emerald palette. The current direction is "Refined Premium" — light paper surfaces, deep forest brand, Fraunces serif italic accents, hand-crafted shadows. Reference spec: `docs/superpowers/specs/2026-04-29-refined-premium-foundation-design.md`.
 
 **Global changes:**
-- `src/app/globals.css` — dark CSS variables (`#0A0A0A` bg, `#141414` card), brand color tokens, utility classes: `.glow-emerald`, `.text-gradient`, `.bg-grid-pattern`
-- `src/app/layout.tsx` — Plus Jakarta Sans font via `next/font/google` (`--font-jakarta`), `<Toaster />` wired
-- Font switched from Inter → **Plus Jakarta Sans**
+- `src/app/globals.css` — full token re-write (see Design Tokens table below). Surfaces are paper `#FAFAF7`, ink is near-black, brand is deep forest `#0F4D2A`, mint accent `#34D399` reserved for hover/active hairlines
+- `src/app/layout.tsx` — three Google fonts: **Inter Tight** (body/display), **Fraunces** (serif italic, used for accent words like "_real weight_" or "_Repeat._"), **JetBrains Mono** (eyebrow captions, badges). NextTopLoader + LenisProvider mounted at root
+- `Toaster` from sonner wired in root layout
 
-**Landing page (`src/app/page.tsx`):**
-- `"use client"` — GSAP hero animations (title, subtitle, CTA stagger on mount)
-- Stat count-up using GSAP + ScrollTrigger (animates numbers, never hides elements)
-- **Hero**: `herobg.jpg` as full-bleed background image, gradient overlay dark-left/transparent-right, text left-aligned
-- **Navbar**: `h-20`, `text-base` nav links, `h-11` CTA buttons, hamburger mobile menu
-- **Stats bar**: solid `bg-card border border-[#262626]` (no backdrop-blur)
-- **CTA**: subtle emerald tint `from-[#10B981]/5 to-background`
-- **Scrap Categories**: cards with large icon as subtle bg watermark (top-right, `opacity-20`), left-aligned text
-- **Features**: cards with large icon centered in bg (`opacity-12`), center-aligned text
+**Landing page (`src/app/page.tsx` + `src/components/landing/*`):**
+- **Hero** — full-bleed `/herobg.jpg` (aerial forest road) with low-opacity paper gradient overlay (left-heavy: 0.82 → 0.16), plus a paper fade strip at bottom. "Trade scrap. Build a _greener_ industry." with Fraunces italic accent. Live marketplace panel sits on the right.
+- **How It Works** — split layout: 2×2 step grid on the left, sticky `/hiwbg.jpg` image card (`aspect-[4/5]`) on the right. Section ID `how-it-works` is what the marketing nav's IntersectionObserver watches.
+- **Categories Grid** — banner image strip on top (`/categoriesbg.jpg`), then cards. Icons live as faded right-side watermarks (`opacity-[0.10]`, `size-[150px]`), not top-left.
+- **Why Section** — full-bleed `/whybg.jpg` with dark forest gradient overlay (`rgba(8,43,25,0.72) → rgba(15,77,42,0.78)`). White heading with `#34D399` mint italic accent. Three paper cards inside hold the actual copy (the image bg was too busy for direct text).
+- **CTA Band** — intentionally plain: white bg, centered, asymmetric padding (`pt-40 pb-16 md:pt-52 md:pb-20`) to vertically position the content. "Ready to _trade?_". The image bg version was tried and rejected.
 
-**Auth pages** (`src/app/(auth)/`):
-- Split-screen layout: solid dark left panel (logo, tagline, `border-r border-[#262626]`), form on right
-- No gradient blobs or glassmorphism — clean solid surfaces
-- Cards: `bg-[#141414] border border-[#262626]`
-- Buttons: solid `bg-[#10B981] hover:bg-[#059669] text-black`
+**Marketing nav (`src/components/shared/marketing-nav.tsx`):**
+- Sticky, edge-to-edge transparent at the very top
+- On scroll past 8px, animates into a **floating frosted pill**: `mt-3 px-5 rounded-full bg-[rgba(250,250,247,0.78)] backdrop-blur-xl shadow-[0_10px_30px_rgba(15,77,42,0.08)] border border-white/50`, 300ms transition
+- **Scroll progress bar** — `fixed top-0` 2px `bg-[var(--forest)]` bar with `transform: scaleX(progress)` based on `window.scrollY / (scrollHeight - innerHeight)`
+- **Animated mint underlines** on hover — `<span>` with `bg-[#34D399]` and `group-hover:scale-x-100`
+- **Active section highlighting** — IntersectionObserver on sections whose `id` matches `NAV_LINKS[i].sectionId`. When in view, link turns forest green and underline stays at `scale-x-100`. Currently wired for `#how-it-works`; extend by adding more sectionIds.
+- **Logo hover lift** — `hover:-translate-y-px`
+- B2B badge sits next to the logo
 
-**All buyer + seller pages**: dark theme, white headings, emerald accents, Lucide icons for empty states, dark status badges
+**Auth pages** (`src/app/(auth)/`): light paper surfaces, forest CTA, Framer Motion page transitions.
 
-### GSAP Gotcha — Scroll Animations
-Do NOT use `gsap.from()` with `opacity: 0` + ScrollTrigger on section content in Next.js. On hydration, GSAP sets elements to `opacity: 0` immediately; if the ScrollTrigger never fires (timing/hydration issue), content stays invisible. Safe pattern: only use GSAP `from()` for on-mount animations (no ScrollTrigger). For scroll reveals, use CSS or Framer Motion `whileInView` instead.
+**All buyer + seller + admin pages**: paper bg, forest accents, mint highlight on active nav items via `bg-[var(--forest-tint)]`.
 
 ### Supabase MCP
 **Status: Connected and working** (via terminal/CLI — as of 2026-03-26).
@@ -143,28 +157,54 @@ No test framework has been chosen yet.
 ```
 src/
   app/
-    (auth)/             # login, signup, role-select + layout
+    (auth)/             # login, signup, role-select + layout (route group, no URL segment)
     (buyer)/            # marketplace, companies, bookings, chat, profile + layout
     (seller)/           # dashboard, company, scraps, seller-bookings, chat + layout
+    admin/              # admin pages (real path /admin/*, NOT a route group — see Gotchas)
     auth/callback/      # Supabase OAuth callback route
-    page.tsx            # Landing page
+    blogs/              # /blogs and /blogs/[slug] — public marketing surface
+    contact/            # /contact
+    onboarding/         # producer + recycler onboarding flows
+    pending-approval/   # holding page for unapproved sellers
+    transactions/       # /transactions for both buyer + seller (RLS filters by role)
+    page.tsx            # Landing page (Refined Premium hero + sections)
     not-found.tsx
-    layout.tsx          # Root layout (font, theme, toaster)
+    layout.tsx          # Root layout — fonts, NextTopLoader, LenisProvider, Toaster
     globals.css
   components/
-    ui/                 # shadcn/ui primitives (button, card, badge, input, etc.)
-    shared/             # booking-card, chat-interface, scrap-card, company-card, image-upload, etc.
-    buyer/              # marketplace-filters, scrap-grid, book-scrap-dialog, buyer-nav
+    ui/                 # shadcn/ui primitives
+    shared/             # marketing-nav, marketing-footer, lenis-provider, reveal, motion,
+                        # parallax-image, live-marketplace-panel, chat-interface, booking-card,
+                        # company-card, scrap-card, image-upload, image-gallery, message-bubble
+    landing/            # hero-stat-counter, how-it-works, categories-grid, why-section, cta-band
+    auth/               # auth-specific components
+    buyer/              # buyer-nav, marketplace-filters, scrap-grid, book-scrap-dialog
     seller/             # seller-nav
+    admin/              # admin-nav and admin tables/cards
   lib/
     supabase/           # client.ts, server.ts, middleware.ts, storage.ts
+    queries/            # live-listings.ts (server-side data fetchers for the landing page)
     hooks/              # use-realtime-messages.ts
     mock-data.ts        # Mock fixtures + isMockMode() helper
     utils.ts
   types/
     index.ts            # All TypeScript domain model types
   middleware.ts         # Route auth guard (role-based)
-  fonts/                # Lexend Giga variable font
+  fonts/                # Legacy Lexend Giga font files (unused, safe to delete)
+scripts/
+  generate-og-card.cjs       # Renders public/og-card.png from logo + brand gradient
+  generate-pwa-icons.cjs     # Renders public/icons/{192,512,apple-touch-icon}.png
+public/
+  herobg.jpg, hiwbg.jpg, categoriesbg.jpg, whybg.jpg, ctabg.jpg   # Landing bg images
+  logos/                                                          # All logo variants
+  icons/                                                          # PWA icons
+  og-card.png
+  manifest.json
+  sw.js, workbox-*.js, swe-worker-*.js   # Generated by next-pwa, gitignored
+docs/
+  superpowers/specs/2026-04-29-refined-premium-foundation-design.md   # Source-of-truth aesthetic spec
+  superpowers/plans/2026-04-29-ui-overhaul.md
+  superpowers/plans/2026-04-29-refined-premium-foundation.md
 ```
 
 ### Domain Models
@@ -175,20 +215,33 @@ Five core entities (see `SCRAPKART.md` §5 for full field list):
 - **Booking** — links recycler + waste producer + scrap
 - **Message** — scoped to booking conversation thread
 
-### Design Tokens
-| Token | Hex |
-|---|---|
-| Background | `#0A0A0A` |
-| Card/Surface | `#141414` |
-| Primary (emerald 500) | `#10B981` |
-| Secondary (emerald 600) | `#059669` |
-| Light accent (emerald 400) | `#34D399` |
-| Foreground | `#F5F5F5` |
-| Muted text | `#A3A3A3` |
-| Muted bg | `#1A1A1A` |
-| Border | `#262626` |
+### Design Tokens — Refined Premium (current)
+Full set lives in `src/app/globals.css` `:root`. Always reference via CSS var (`var(--forest)`), never hard-code the hex inline unless you need a one-off opacity tweak.
 
-Configured via CSS variables in `globals.css`. Target aesthetic: Recykal / Rubicon — professional B2B, solid surfaces, emerald green palette.
+| Token | Var | Hex | Usage |
+|---|---|---|---|
+| Paper (page bg) | `--paper` | `#FAFAF7` | Default body bg |
+| Paper 2 | `--paper-2` | `#F4F2EC` | Secondary surface, button hover |
+| Paper 3 | `--paper-3` | `#EFEDE5` | Tertiary surface |
+| Ink (primary text) | `--ink` | `#0A0A0A` | Headings, primary body |
+| Ink 2 | `--ink-2` | `#3A3A38` | Secondary body |
+| Ink 3 | `--ink-3` | `#6E6C66` | Muted text, captions |
+| Ink 4 | `--ink-4` | `#A4A29A` | Disabled, lowest contrast |
+| Line | `--line` | `#E5E2D8` | Default borders |
+| Line 2 | `--line-2` | `#EFEDE5` | Subtle dividers |
+| **Forest (brand)** | `--forest` | `#0F4D2A` | Primary CTAs, active states, scroll progress bar |
+| Forest 2 | `--forest-2` | `#0B3D1F` | Darker hover |
+| Forest tint | `--forest-tint` | `#E8F0EA` | Active nav bg, soft callouts |
+| Bark | `--bark` | `#1A2419` | Rare — deepest forest |
+| **Mint (accent)** | inline `#34D399` | — | Hairlines, hover underlines, italic accent on dark sections. **Not a CSS var** — kept inline since it's intentionally rare |
+| Warning | `--warning` | `#B96A11` | Amber-style warning |
+| Danger | `--danger` | `#B0322A` | Errors, destructive |
+| Info | `--info` | `#0F3D6E` | Info badges |
+| Success | `--success` | `#0F4D2A` | Same as forest |
+
+Spacing scale (`--space-1` to `--space-32`), radius scale (`--radius-xs` 4px through `--radius-xl` 16px), three whisper-level shadows (`--shadow-1/2/3`), and forest/ink rings (`--ring-forest`, `--ring-ink`) also defined.
+
+Target aesthetic: monopo-saigon / Stripe Press / Mast Coffee — premium B2B, hand-feeling typography, paper not glass, deep forest brand. **Not** the recykal/rubicon dark theme (that was the prior version).
 
 ### Auth Pattern
 - Supabase Auth with role stored in `users` table (`recycler` | `waste_producer` | `admin`)
@@ -231,10 +284,21 @@ Know what is real vs placeholder in V1, and don't over-engineer the placeholder 
 | Admin dashboard | ✅ Live — `/admin/*`, 5 pages, role-gated |
 
 ### Fonts
-**Plus Jakarta Sans** is the active font, loaded via `next/font/google` in `src/app/layout.tsx` with variable `--font-jakarta`. Lexend Giga files still exist in `Fonts/Lexend_Giga/` and `src/fonts/` but are no longer used.
+Three Google fonts loaded via `next/font/google` in `src/app/layout.tsx`:
+- **Inter Tight** (`--font-inter-tight`) — body and display. The workhorse for headings, paragraphs, UI text. Weights 300–800.
+- **Fraunces** (`--font-fraunces`) — serif italic, variable axes. Reserved for **accent words only** (e.g., "Trade. Recycle. _Repeat._", "Build a _greener_ industry."). Apply via the `.italic-accent` utility class. Do NOT use for body text.
+- **JetBrains Mono** (`--font-jetbrains-mono`) — eyebrow captions, badges, code-like labels. Apply via `.mono-caption` utility class. Weights 400, 500.
+
+Plus Jakarta Sans and Lexend Giga were used in earlier versions. Files for both still exist in `src/fonts/` and `Fonts/Lexend_Giga/` but are unused — safe to delete in a future cleanup, but currently harmless.
 
 ### Brand Assets
-Logo variants are in `Logos/` and mirrored in `public/logos/` — white, black, and full-color versions.
+- Logo variants are in `Logos/` (top-level) and mirrored in `public/logos/` — white, black, full-color.
+- **Logo aspect ratio is ~6.5:1** (user re-cropped from the original ~1.4:1 in May 2026 to remove blank whitespace around the glyph+wordmark). When adding new logo-rendering code:
+  - For `next/image` in nav components: use `width={260} height={40}` (or proportional) with `className="h-10 w-auto"` so width auto-scales from the height constraint. Don't hard-code dimensions assuming the old square-ish aspect.
+  - For the OG card (`scripts/generate-og-card.cjs`): the script reads natural aspect via `sharp.metadata()` and derives height — re-cropping the logo doesn't require script changes.
+  - For PWA icons (`scripts/generate-pwa-icons.cjs`): the script crops the **leftmost square portion** of the wide logo (the glyph alone) and centers it on a forest-gradient bg. The wordmark would be unreadable at 192/512 px so it's intentionally cropped out.
+- Background images in `public/` (all user-provided JPGs): `herobg.jpg`, `hiwbg.jpg`, `categoriesbg.jpg`, `whybg.jpg` (heavy, ~14.5 MB), `ctabg.jpg` (loaded on disk but no longer referenced — CTA Band reverted to plain white).
+- `public/og-card.png` is generated; re-run `node scripts/generate-og-card.cjs` if brand colors or logo change.
 
 ### Known Quirks & Gotchas
 - **shadcn v4 uses Base UI** — no `asChild` prop; use `render` prop instead
@@ -254,6 +318,13 @@ Logo variants are in `Logos/` and mirrored in `public/logos/` — white, black, 
 - **DB trigger `handle_new_user()`**: Fires on every `auth.users` INSERT. Auto-inserts into `public.users` with name from Google metadata and `role = NULL`. Uses `ON CONFLICT (id) DO NOTHING` so it's safe for all signup methods.
 - **Google OAuth consent screen is in TEST MODE**: Only whitelisted test users can sign in via Google. Must publish the app in Google Cloud Console before public launch.
 - **Marketplace filter performance**: Category/sort filters use URL params + server re-render (SSR). `useTransition` in `marketplace-filters.tsx` + `loading.tsx` skeleton eliminate the frozen UI feeling. Do NOT switch to client-side filtering — SSR is intentional for SEO.
+- **Local prod-build SW survives `npm run dev`**: Running `npm run build` locally generates `public/sw.js` + `workbox-*.js` + `swe-worker-*.js`. The dev server then serves these, browsers register the SW, and your edits appear cached. Symptom: hard reload + cache clear doesn't show new code. Fix: delete the generated SW files from `public/` (they're gitignored), then in DevTools → Application → unregister any active worker + Clear site data. Verify in incognito.
+- **Lenis smooth scroll is mounted globally**: `LenisProvider` in root layout. It DOES dispatch native scroll events, so `window.scrollY` listeners (e.g. the marketing nav's pill-on-scroll behavior) still work — but the values update on rAF cadence, not raw wheel events. If you add scroll-driven UI that feels "delayed", that's Lenis interpolation, not a bug. The provider respects `prefers-reduced-motion` and bails out for those users.
+- **Two progress bars at top of page**: NextTopLoader (route-transition bar from `nextjs-toploader`) and the marketing nav's scroll progress bar are both 2px and both forest-colored. They never fire at the same time (one is navigation, the other is scroll), but visually they look identical. Don't "fix" one thinking it's a duplicate.
+- **Logo aspect ratio (6.5:1)**: After the May 2026 re-crop, ANY new `<Image>` of `ScrapKart Black Logo.png` / `ScrapKart White Logo.png` must use proportional width/height. A common bug: setting both `width={40} height={40}` produces a squished banner. Use the marketing-nav pattern: `width={260} height={40} className="h-10 w-auto"`.
+- **`mono-caption` class overrides `text-white`**: When using `.mono-caption` on a dark background (e.g. inside the Why section's dark forest overlay), the class's default `color` wins over `text-white`. Use inline `style={{ color: "#ffffff" }}` to guarantee override. Same gotcha potentially applies to `.italic-accent` if you need a non-default color.
+- **CTA Band vertical centering**: Tried `min-h` + `flex items-center` — looked too tall on desktop. Final pattern is asymmetric padding (`pt-40 pb-16 md:pt-52 md:pb-20`) which positions content lower in the visual frame. If you change this section, don't switch to flex-centering without re-checking the user's reaction.
+- **Image cache for replaced bg images**: Next.js Image optimizer caches under `.next/dev/cache/images`. If a user replaces e.g. `herobg.jpg` with new content but the same filename, the dev server may serve the cached optimized version. Clearing `.next/dev/cache/images` fixes it.
 
 ### Test Accounts (live in production Supabase)
 All created directly in `auth.users` + `public.users` via SQL. Seeded with companies, listings, bookings, and messages.
