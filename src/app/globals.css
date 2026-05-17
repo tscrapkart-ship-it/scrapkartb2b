@@ -314,7 +314,7 @@
   50% { opacity: 0.35; }
 }
 
-.pulse-dot {
+.ticker-pulse-dot {
   display: inline-block;
   width: 6px;
   height: 6px;
@@ -324,7 +324,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse-dot {
+  .ticker-pulse-dot {
     animation: none;
   }
 }
