@@ -307,3 +307,24 @@
     }
   }
 }
+
+/* === Live-ticker pulse dot === */
+@keyframes pulse-mint {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #34D399; /* mint */
+  border-radius: 50%;
+  animation: pulse-mint 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot {
+    animation: none;
+  }
+}
