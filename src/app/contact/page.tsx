@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Loader2, CheckCircle, ArrowLeft, Send, Check } from "lucide-react";
 import Link from "next/link";
-import { MarketingNav } from "@/components/shared/marketing-nav";
+import { MarketingNavClient } from "@/components/shared/marketing-nav-client";
 import { MarketingFooter } from "@/components/shared/marketing-footer";
 import { Reveal } from "@/components/shared/reveal";
 
@@ -43,7 +43,7 @@ export default function ContactPage() {
   if (submitted) {
     return (
       <div className="min-h-screen bg-[var(--paper)] flex flex-col">
-        <MarketingNav />
+        <MarketingNavClient initialStats={{ listingsLive: 0, listingsToday: 0, lastActivityAt: null, trendingCategories: [] }} />
         <main className="flex-1 flex items-center justify-center py-24">
           <Reveal>
             <div className="max-w-md w-full text-center px-6">
@@ -74,7 +74,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[var(--paper)] flex flex-col">
-      <MarketingNav />
+      <MarketingNavClient initialStats={{ listingsLive: 0, listingsToday: 0, lastActivityAt: null, trendingCategories: [] }} />
 
       <section className="pt-20 pb-12 md:pt-28 md:pb-16">
         <div className="container-page max-w-4xl">
