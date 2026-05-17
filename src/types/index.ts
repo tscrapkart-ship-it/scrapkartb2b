@@ -169,3 +169,15 @@ export interface Booking {
   scheduled_at: string | null;
   created_at: string;
 }
+
+export type TrendingCategory = {
+  category: ScrapCategory;
+  count: number;
+};
+
+export type LiveStats = {
+  listingsLive: number;
+  listingsToday: number;
+  lastActivityAt: string | null;
+  trendingCategories: TrendingCategory[];
+};
