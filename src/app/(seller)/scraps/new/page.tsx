@@ -35,7 +35,7 @@ export default function NewScrapPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
-  const [companyId, setCompanyId] = useState<string | null>(null);
+  const [companyId, setCompanyId] = useState<string | null | undefined>(undefined);
   const [selectedCategory, setSelectedCategory] = useState<ScrapCategory>("Metal");
   const [selectedSubType, setSelectedSubType] = useState<string>("");
 
@@ -48,8 +48,8 @@ export default function NewScrapPage() {
         .from("companies")
         .select("id")
         .eq("owner_id", user.id)
-        .single();
-      if (data) setCompanyId(data.id);
+        .maybeSingle();
+      setCompanyId(data?.id ?? null);
     }
     fetchCompany();
   }, []);
@@ -110,7 +110,7 @@ export default function NewScrapPage() {
     router.refresh();
   }
 
-  if (companyId === null) {
+  if (companyId === undefined) {
     return (
       <div className="mx-auto max-w-2xl animate-fade-in">
         <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-8 flex items-center justify-center gap-3 shadow-[var(--shadow-1)]">
@@ -121,12 +121,20 @@ export default function NewScrapPage() {
     );
   }
 
-  if (companyId === undefined) {
+  if (companyId === null) {
     return (
       <div className="mx-auto max-w-2xl animate-fade-in">
-        <div className="rounded-[var(--radius-lg)] border border-[var(--warning)]/30 bg-[var(--warning)]/5 p-8 text-center">
-          <p className="text-[var(--warning)] font-semibold text-lg">Company profile required</p>
-          <p className="text-base text-[var(--ink-3)] mt-1">Set up your company before posting listings.</p>
+        <div className="rounded-[var(--radius-lg)] border border-[var(--warning)]/30 bg-[var(--warning)]/5 p-8 text-center space-y-4">
+          <div>
+            <p className="text-[var(--warning)] font-semibold text-lg">Company profile required</p>
+            <p className="text-base text-[var(--ink-3)] mt-1">Set up your company before posting listings.</p>
+          </div>
+          <a
+            href="/company/setup"
+            className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] bg-[var(--forest)] hover:bg-[var(--forest-2)] text-white px-5 py-2.5 text-base font-medium shadow-[var(--shadow-1)] transition-colors"
+          >
+            Set up company
+          </a>
         </div>
       </div>
     );

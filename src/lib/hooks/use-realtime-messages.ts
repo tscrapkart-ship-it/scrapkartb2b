@@ -60,6 +60,7 @@ export function useRealtimeMessages(
         sender_id: senderId,
         receiver_id: receiverId,
         content,
+        read_status: false,
       });
       return !error;
     },
