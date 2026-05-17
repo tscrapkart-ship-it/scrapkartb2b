@@ -76,7 +76,7 @@ export default async function SellerBidsPage() {
             const sc = statusConfig[bid.status] ?? statusConfig.withdrawn;
 
             return (
-              <Link key={bid.id} href={`/marketplace/${scrap?.id ?? ""}`}>
+              <Link key={bid.id} href={`/seller-bookings/${bid.id}`}>
                 <div className={`animate-slide-up delay-${Math.min(i + 1, 6)} group rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--paper)] p-3 sm:p-5 transition-all hover:border-[var(--forest)]/30 hover:bg-[var(--paper-2)] cursor-pointer shadow-[var(--shadow-1)]`}>
                   <div className="flex items-start justify-between gap-2 sm:gap-3">
                     <div className="flex-1 min-w-0">

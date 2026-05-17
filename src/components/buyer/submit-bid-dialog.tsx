@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Gavel, CheckCircle, IndianRupee, CalendarDays, MessageSquare, Loader2 } from "lucide-react";
+import { Gavel, CheckCircle, IndianRupee, CalendarDays, MessageSquare, Loader2, Reply } from "lucide-react";
 import { toast } from "sonner";
 
 interface SubmitBidDialogProps {
@@ -25,6 +25,7 @@ interface SubmitBidDialogProps {
     status: string;
     estimated_pickup_date: string | null;
     message: string | null;
+    seller_response_message: string | null;
   } | null;
   listingStatus: string;
 }
@@ -130,10 +131,25 @@ export function SubmitBidDialog({
   // If user's bid was accepted
   if (isAccepted) {
     return (
-      <div className="rounded-[var(--radius-md)] border border-[var(--forest)]/30 bg-[var(--forest-tint)] p-4 text-center">
-        <CheckCircle className="h-6 w-6 text-[var(--forest)] mx-auto mb-2" />
-        <p className="font-semibold text-[var(--forest)]">Your bid was accepted!</p>
-        <p className="text-sm text-[var(--ink-3)] mt-1">Check your Deals section for next steps.</p>
+      <div className="rounded-[var(--radius-md)] border border-[var(--forest)]/30 bg-[var(--forest-tint)] p-4 space-y-3">
+        <div className="text-center">
+          <CheckCircle className="h-6 w-6 text-[var(--forest)] mx-auto mb-2" />
+          <p className="font-semibold text-[var(--forest)]">Your bid was accepted!</p>
+          <p className="text-sm text-[var(--ink-3)] mt-1">Check your Deals section for next steps.</p>
+        </div>
+        {existingBid?.seller_response_message && (
+          <div className="flex items-start gap-2 rounded-[var(--radius-sm)] border border-[var(--forest)]/15 bg-[var(--paper)] px-3 py-2 text-left">
+            <Reply className="h-3.5 w-3.5 text-[var(--forest)] shrink-0 mt-0.5" />
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--forest)]/85 mb-0.5">
+                Producer&apos;s note
+              </p>
+              <p className="text-sm text-[var(--ink-2)] leading-relaxed">
+                {existingBid.seller_response_message}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -141,9 +157,24 @@ export function SubmitBidDialog({
   // If user's bid was rejected
   if (isRejected) {
     return (
-      <div className="rounded-[var(--radius-md)] border border-[var(--danger)]/30 bg-[var(--danger)]/10 p-4 text-center">
-        <p className="font-medium text-[var(--danger)]">Your bid was not accepted.</p>
-        <p className="text-sm text-[var(--ink-3)] mt-1">The producer chose a different recycler.</p>
+      <div className="rounded-[var(--radius-md)] border border-[var(--danger)]/30 bg-[var(--danger)]/10 p-4 space-y-3">
+        <div className="text-center">
+          <p className="font-medium text-[var(--danger)]">Your bid was not accepted.</p>
+          <p className="text-sm text-[var(--ink-3)] mt-1">The producer chose a different recycler.</p>
+        </div>
+        {existingBid?.seller_response_message && (
+          <div className="flex items-start gap-2 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--paper)] px-3 py-2 text-left">
+            <Reply className="h-3.5 w-3.5 text-[var(--ink-3)] shrink-0 mt-0.5" />
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--ink-3)] mb-0.5">
+                Producer&apos;s note
+              </p>
+              <p className="text-sm text-[var(--ink-2)] leading-relaxed">
+                {existingBid.seller_response_message}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
